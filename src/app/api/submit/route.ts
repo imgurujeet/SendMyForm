@@ -70,7 +70,7 @@ export async function POST(req: Request) {
           </div>
           <div style="padding: 30px;">
             <p style="color: #64748b; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
-              You have received a new form submission from your website <b>achaialabs.com</b>. Here are the details:
+              You have received a new form submission from your website <b>achaialabs.tech</b>. Here are the details:
             </p>
             <table style="width: 100%; border-collapse: collapse;">
               ${htmlRows}
