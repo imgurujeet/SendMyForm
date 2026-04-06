@@ -1,32 +1,50 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase-admin";
 import { nanoid } from "nanoid";
 
 export async function POST(req: Request) {
   try {
-    const { uid, name, emailTo } = await req.json();
+    const { uid, name, slug, emailTo } = await req.json();
 
-    if (!uid || !name) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!uid || !name || !slug) {
+      return NextResponse.json({ error: "Missing identity fields" }, { status: 400 });
+    }
+
+    const formattedSlug = slug.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+    // CHECK FOR DUPLICATE SLUG (using Admin SDK)
+    const slugQuery = await db.collection("projects").where("slug", "==", formattedSlug).get();
+    if (!slugQuery.empty) {
+      return NextResponse.json({ error: "That URL Slug is already taken" }, { status: 400 });
     }
 
     const apiKey = `ak_${nanoid(24)}`;
     
-    const projectRef = await addDoc(collection(db, "projects"), {
+    // Bypass Client Rules by using Firebase Admin SDK
+    const projectRef = await db.collection("projects").add({
       uid,
       name,
+      slug: formattedSlug,
       emailTo: emailTo || "",
       apiKey,
       isActive: true,
-      createdAt: serverTimestamp(),
+      createdAt: new Date().toISOString(), // Standard date for admin
       theme: "modern",
       emailConfirmations: true,
-      successMessage: "Submission received. We'll be in touch.",
+      successMessage: "Submission received.",
     });
 
-    return NextResponse.json({ id: projectRef.id, apiKey }, { status: 201 });
+    return NextResponse.json({ 
+      success: true, 
+      id: projectRef.id, 
+      apiKey 
+    }, { status: 201 });
+
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("Firebase Admin Error:", error);
+    return NextResponse.json({ 
+      success: false,
+      error: error.message 
+    }, { status: 500 });
   }
 }
