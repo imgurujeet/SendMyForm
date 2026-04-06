@@ -1,119 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* --- Custom easyForm Design System --- */
 :root {
-  --primary: #6d28d9;
-  --primary-hover: #5b21b6;
-  --secondary: #ec4899;
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --card-bg: rgba(30, 41, 59, 0.7);
-  --border: rgba(148, 163, 184, 0.1);
-  --glow: rgba(109, 40, 217, 0.3);
+  --primary-color: #6d28d9;
+  --secondary-color: #ec4899;
+  --accent-color: #8b5cf6;
+  --bg-color: #000000;
+  --card-bg: rgba(15, 23, 42, 0.4);
+  --text-color: #ffffff;
+  --muted-text: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.05);
+  --glass-effect: blur(20px);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  body {
+    @apply bg-black text-white antialiased selection:bg-violet-600/50;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
 }
 
-body {
-  font-family: 'Outfit', sans-serif;
-  background: var(--background);
-  color: var(--foreground);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-x: hidden;
+@layer components {
+  .glass-card {
+    @apply bg-slate-950/40 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-2xl;
+  }
+  
+  .btn-primary {
+    @apply bg-violet-600 hover:bg-violet-500 text-white font-black uppercase text-xs tracking-widest px-8 py-4 rounded-2xl shadow-2xl shadow-violet-900/40 transition-all hover:scale-105 active:scale-95 italic;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent;
+  }
+
+  .form-input {
+    @apply w-full bg-black border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold text-white focus:border-violet-500/40 transition-all outline-none italic placeholder:text-slate-800;
+  }
 }
 
-.gradient-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: radial-gradient(circle at top left, var(--glow), transparent 40%),
-              radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.15), transparent 40%),
-              #0f172a;
-}
-
-.success-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 3rem;
-  width: 90%;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideUp {
+/* --- Smooth Entrance Animation --- */
+@keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.icon-wrapper {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 2rem;
-  box-shadow: 0 10px 20px -5px var(--glow);
-}
-
-.icon-wrapper svg {
-  width: 40px;
-  height: 40px;
-  color: white;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  background: linear-gradient(to right, #fff, #94a3b8);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-p {
-  color: #94a3b8;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.8rem 2rem;
-  background: var(--primary);
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.btn:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px var(--glow);
-}
-
-.footer {
-  margin-top: 3rem;
-  color: #475569;
-  font-size: 0.875rem;
-  font-weight: 500;
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
