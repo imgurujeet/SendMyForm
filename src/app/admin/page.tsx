@@ -34,7 +34,7 @@ import { cn } from "@/lib/utils";
 
 export default function SuperAdmin() {
   const [user, setUser] = useState<any>(null);
-  const [stats, setStats] = useState<any>({ users: 0, projects: 0, submissions: 0, growth: 12.5 });
+  const [stats, setStats] = useState({ users: 0, projects: 0, submissions: 0, growth: 12.5 });
   const [config, setConfig] = useState<any>({ 
     topAd: "", 
     middleAd: "", 
