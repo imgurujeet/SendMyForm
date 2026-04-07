@@ -51,7 +51,7 @@ export default function ApiDocsPage() {
 
   if (!mounted) return (
     <div className="h-screen bg-black flex items-center justify-center text-white italic font-black uppercase tracking-widest text-2xl animate-pulse">
-      easyForm Node Booting...
+      SendMyForm Node Booting...
     </div>
   );
 
@@ -65,7 +65,7 @@ export default function ApiDocsPage() {
       {/* --- DOCS NAVBAR --- */}
       <nav className="fixed top-0 w-full z-50 py-2 md:py-3 px-4 md:px-8 flex justify-between items-center backdrop-blur-2xl border-b border-white/5">
         <Link href="/" className="text-2xl font-black tracking-tighter italic uppercase">
-          easyForm <span className="text-violet-600 block text-[10px] font-bold tracking-[0.4em] mt-1 italic">DEVELOPER_DOCS</span>
+          Send<span className="text-violet-600">My</span>Form <span className="text-violet-600 block text-[10px] font-bold tracking-[0.4em] mt-1 italic">DEVELOPER_DOCS</span>
         </Link>
         <div className="flex gap-8 items-center">
           <Link href="/dashboard" className="bg-violet-600 hover:bg-violet-500 text-white font-black uppercase text-xs px-8 py-3.5 rounded-2xl shadow-2xl shadow-violet-900/40 transition-all hover:scale-105 active:scale-95 italic">Open Studio</Link>
