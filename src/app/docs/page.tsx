@@ -19,7 +19,7 @@ import {
   Smartphone
 } from "lucide-react";
 import { THEMES } from "@/lib/themes";
-//h
+
 export default function ApiDocsPage() {
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
