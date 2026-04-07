@@ -45,7 +45,7 @@ export default function LandingPage() {
             href="/#"
             className="text-lg md:text-2xl font-black italic tracking-tightest uppercase hover:text-violet-500 transition-all"
           >
-            SendMyForm
+            Send<span className="text-violet-600">My</span>Form
           </Link>
 
           <span className="text-violet-600 font-bold block text-[9px] tracking-[0.5em] mt-1 italic">

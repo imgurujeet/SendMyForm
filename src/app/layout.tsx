@@ -3,6 +3,9 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  icons:{
+    icon: "/icon.png"
+  },
   title: "Achaia Labs | Form Submitted",
   description: "Form submission confirmation for Achaia Labs",
   keywords: "form submission, confirmation, Achaia Labs",
