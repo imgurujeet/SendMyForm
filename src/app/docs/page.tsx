@@ -63,7 +63,7 @@ export default function ApiDocsPage() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-600/5 blur-[120px] rounded-full"></div>
 
       {/* --- DOCS NAVBAR --- */}
-      <nav className="border-b border-white/5 p-8 flex justify-between items-center sticky top-0 z-[100] bg-black/80 backdrop-blur-3xl">
+      <nav className="fixed top-0 w-full z-50 py-2 md:py-3 px-4 md:px-8 flex justify-between items-center backdrop-blur-2xl border-b border-white/5">
         <Link href="/" className="text-2xl font-black tracking-tighter italic uppercase">
           easyForm <span className="text-violet-600 block text-[10px] font-bold tracking-[0.4em] mt-1 italic">DEVELOPER_DOCS</span>
         </Link>
@@ -228,7 +228,11 @@ export default function ApiDocsPage() {
 
       <footer className="py-24 px-10 border-t border-white/5 bg-black text-center">
         <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] italic italic decoration-white/5">
-           &copy; 2026 Achaia Labs. Secured by easyForm v2 Protocol.
+           &copy; 2026 
+           <a href="https://achaialabs.tech" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           className="hover:text-violet-500 transition-colors duration-200">Achaia Labs</a>. Secured by easyForm v2 Protocol.
         </p>
       </footer>
 
