@@ -45,7 +45,7 @@ export default function ApiDocsPage() {
     "Full Name": "James Achaia",
     "Email": "james@achaialabs.tech",
     "Company": "Achaia Labs",
-    "Message": "I need a high-performance form backend for my new portfolio site. The easyForm API looks incredible!",
+    "Message": "I need a high-performance form backend for my new portfolio site. The SendMyForm API looks incredible!",
     "Timestamp": "2026-04-06 14:25:33"
   };
 
@@ -99,7 +99,7 @@ export default function ApiDocsPage() {
             <div className="flex justify-between items-center mb-10">
               <p className="text-[10px] font-black italic uppercase tracking-widest text-slate-500 underline decoration-violet-500 underline-offset-8">Neural Node Path</p>
               <button
-                onClick={() => copyToClipboard(`${origin || 'https://easyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]`)}
+                onClick={() => copyToClipboard(`${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]`)}
                 className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl text-slate-500 hover:text-white transition-all text-[10px] font-black uppercase tracking-widest italic"
               >
                 {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
@@ -111,7 +111,7 @@ export default function ApiDocsPage() {
               <pre className="text-sm font-mono text-violet-400 group-hover:text-white transition-colors duration-500 italic leading-loose overflow-x-auto whitespace-pre-wrap">
                 <code>
                   {`<!-- Simply add this to your website -->
-<form action="${origin || 'https://easyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]" method="POST">
+<form action="${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]" method="POST">
   <input name="email" type="email" required />
   <button type="submit">Submit</button>
 </form>`}
@@ -232,7 +232,7 @@ export default function ApiDocsPage() {
           <a href="https://achaialabs.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-violet-500 transition-colors duration-200">Achaia Labs</a>. Secured by easyForm v2 Protocol.
+            className="hover:text-violet-500 transition-colors duration-200">Achaia Labs</a>. Secured by SendMyForm v2 Protocol.
         </p>
       </footer>
 
