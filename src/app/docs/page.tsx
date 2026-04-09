@@ -42,7 +42,7 @@ export default function ApiDocsPage() {
   };
 
   const dummyData = {
-    "Full Name": "James Achaia",
+    "Full Name": "James Potter",
     "Email": "james@achaialabs.tech",
     "Company": "Achaia Labs",
     "Message": "I need a high-performance form backend for my new portfolio site. The SendMyForm API looks incredible!",
@@ -76,7 +76,7 @@ export default function ApiDocsPage() {
 
         <header className="mb-24">
           <span className="bg-violet-600/10 border border-violet-500/20 text-violet-400 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] italic mb-10 inline-block">
-            API VERSION: V2.0 (STABLE)
+            API VERSION: V2.0
           </span>
           <h1 className="text-7xl font-black tracking-tightest leading-none mb-10 uppercase italic">
             Build with <span className="text-violet-600">Neural</span><br /> Ingestion.
