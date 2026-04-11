@@ -74,7 +74,7 @@ export default function LandingPage() {
       </nav>
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-36 md:pt-64 pb-16 md:pb-32 flex flex-col items-center justify-center text-center px-4 md:px-6">
+      <section className="relative min-h-screen pt-28 flex flex-col items-center justify-center text-center px-4 md:px-6">
 
         <div className="inline-flex items-center gap-3 px-4 md:px-6 py-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase tracking-[0.3em] mb-8 md:mb-12 italic">
           <ShieldX size={14} /> Zero-Persistence Gateway
@@ -99,12 +99,12 @@ export default function LandingPage() {
         </div>
 
         {/* Global Node ID Indicator */}
-        <div className="mt-16 md:mt-32 w-full max-w-4xl grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 px-2">
+        <div className="mt-16 md:mt-32 w-full max-w-3xl grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 px-2">
           {[
             { label: "Uptime", val: "99.98%", icon: Activity },
             { label: "Ingestion Latency", val: "12ms", icon: Zap },
             { label: "Data Persistence", val: "OFF", icon: Lock },
-            { label: "Encryption", val: "AES-256", icon: ShieldCheck },
+            
           ].map((item, i) => (
             <div key={i} className="p-6 md:p-10 rounded-[24px] md:rounded-[40px] bg-slate-950/20 border border-white/5 text-left group hover:border-white/20 transition-all">
               <item.icon size={22} className="text-violet-500 mb-4 md:mb-6" />
@@ -151,15 +151,71 @@ export default function LandingPage() {
           Launch Your First Node <ChevronRight size={22} className="group-hover:translate-x-2 transition-transform" />
         </Link>
       </section>
+        
 
-      {/* --- FOOTER --- */}
-      <footer className="p-8 md:p-20 border-t border-white/5 flex flex-col items-center gap-6 md:gap-8">
-        <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] md:tracking-[1em] italic leading-none text-center">The Future of Ingestion Protocol v2.1</p>
-        <div className="flex gap-8 md:gap-20 items-center flex-wrap justify-center">
-          <Link href="/" className="text-xs font-black italic text-slate-500 hover:text-white transition-colors uppercase tracking-widest">Portal</Link>
-          <Link href="/dashboard" className="text-xs font-black italic text-slate-500 hover:text-white transition-colors uppercase tracking-widest">Launch Pad</Link>
-          <Link href="/docs" className="text-xs font-black italic text-slate-500 hover:text-white transition-colors uppercase tracking-widest">Protocol Docs</Link>
+      {/* FOOTER */}  
+      <footer className="border-t border-white/5 px-6 md:px-20 py-12 md:py-16 flex flex-col gap-12">
+
+        {/* TOP TAGLINE */}
+        <div className="text-center">
+          <p className="text-[10px] md:text-xs font-black text-slate-700 uppercase tracking-[0.4em] md:tracking-[0.8em] italic">
+            Zero Persistence • Maximum Privacy • Dev First
+          </p>
         </div>
+
+        {/* MAIN GRID */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 text-center md:text-left">
+
+          {/* PRODUCT */}
+          <div className="flex flex-col gap-3">
+            <p className="text-white text-xs font-black uppercase tracking-widest">Product</p>
+            <Link href="/dashboard" className="footer-link">Dashboard</Link>
+            <Link href="/docs" className="footer-link">Documentation</Link>
+            <Link href="/api" className="footer-link">API</Link>
+            <Link href="/playground" className="footer-link">Playground</Link>
+          </div>
+
+          {/* DEVELOPERS */}
+          <div className="flex flex-col gap-3">
+            <p className="text-white text-xs font-black uppercase tracking-widest">Developers</p>
+            <Link href="/docs" className="footer-link">Getting Started</Link>
+            <Link href="/examples" className="footer-link">Examples</Link>
+            <Link href="/status" className="footer-link">System Status</Link>
+          </div>
+
+          {/* COMPANY */}
+          <div className="flex flex-col gap-3">
+            <p className="text-white text-xs font-black uppercase tracking-widest">Company</p>
+            <Link href="/about" className="footer-link">About</Link>
+            <Link href="/services" className="footer-link">Services</Link>
+            <Link href="/contact" className="footer-link">Contact</Link>
+          </div>
+
+          {/* SUPPORT */}
+          <div className="flex flex-col gap-3">
+            <p className="text-white text-xs font-black uppercase tracking-widest">Support</p>
+            <Link href="/help" className="footer-link">Help Center</Link>
+            <Link href="/support" className="footer-link">Support</Link>
+            <Link href="/privacy" className="footer-link">Privacy Policy</Link>
+          </div>
+
+        </div>
+
+        {/* BOTTOM BAR */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 pt-6">
+
+          <p className="text-xs text-slate-600 font-bold">
+            © 2026 YourBrand. All rights reserved.
+          </p>
+
+          <div className="flex gap-6 text-slate-500">
+            <a href="#" className="hover:text-white transition">Twitter</a>
+            <a href="#" className="hover:text-white transition">GitHub</a>
+            <a href="#" className="hover:text-white transition">LinkedIn</a>
+          </div>
+
+        </div>
+
       </footer>
 
       <style jsx global>{`

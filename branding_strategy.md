@@ -1,8 +1,8 @@
-# easyForm by Achaia Labs | Strategic Brand & SEO Blueprint
+# SendMyForm by Achaia Labs | Strategic Brand & SEO Blueprint
 
 ## 🏷️ 1. Branding Strategy
 
-**Brand Name:** `easyForm`
+**Brand Name:** `SendMyForm`
 **Entity:** `Achaia Labs`
 **Tagline:** *Form Endpoints for the Modern Web.*
 **Value Proposition:** Instant, secure, and beautiful form backends for developers and businesses. No servers, no setup, just results.
@@ -26,13 +26,13 @@
 *   **Long-tail:** "Free form submission backend for Next.js", "Serverless form endpoints for static sites", "Best form backend with email notifications".
 
 ### 📑 Headings & Meta
-*   **Title Tag:** `easyForm | Instant Form Backends for Modern Developers`
-*   **Meta Description:** `Capture form submissions instantly with easyForm by Achaia Labs. Branded emails, custom endpoints, and themeable notifications for your static websites.`
+*   **Title Tag:** `SendMyForm | Instant Form Backends for Modern Developers`
+*   **Meta Description:** `Capture form submissions instantly with SendMyForm by Achaia Labs. Branded emails, custom endpoints, and themeable notifications for your static websites.`
 *   **H1:** `The Only Form Backend You'll Ever Need.`
 
 ---
 
-## 📚 3. Documentation (The easyForm Protocol)
+## 📚 3. Documentation (The SendMyForm Protocol)
 
 ### 🚀 Quick Start
 1.  **Sign In:** Auth with Google in one click.

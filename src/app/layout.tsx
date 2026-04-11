@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import Footer from "./footer";
 
 export const metadata: Metadata = {
   icons:{
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body>
         <div className="gradient-bg" />
         {children}
+        {/* <Footer /> */}
       </body>
     </html>
   );
