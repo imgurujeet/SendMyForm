@@ -83,7 +83,7 @@ export function generateEmailHtml(data: any, projectName: string, themeId: strin
         '</div>',
         '<div style="margin-top: 48px; text-align: center; border-top: 1px solid ' + theme.border + '; padding-top: 24px;">',
            '<p style="font-size: 10px; font-weight: 700; color: ' + theme.muted + '; text-transform: uppercase; letter-spacing: 0.1em;">',
-             'Sent securely via easyForm (by Achaia Labs)',
+             'Sent securely via SendMyForm (by Achaia Labs)',
            '</p>',
         '</div>',
       '</div>',

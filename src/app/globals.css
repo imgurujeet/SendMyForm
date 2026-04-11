@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Custom easyForm Design System --- */
+/* --- Custom SendMyForm Design System --- */
 :root {
   --primary-color: #6d28d9;
   --secondary-color: #ec4899;

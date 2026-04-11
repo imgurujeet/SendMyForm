@@ -12,7 +12,7 @@ export async function GET() {
         adTitle: "Build with Achaia Labs",
         adText: "Looking for high-conversion web designs and premium developer tools? Visit Achaia Labs today.",
         adLink: "https://achaialabs.tech",
-        brandingName: "easyForm by Achaia Labs"
+        brandingName: "SendMyForm by Achaia Labs"
       };
     }
 

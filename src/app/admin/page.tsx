@@ -40,7 +40,7 @@ export default function SuperAdmin() {
     middleAd: "", 
     bottomAd: "",
     sideAd: "",
-    brandingName: "easyForm",
+    brandingName: "sendmyform",
   });
   const [activeTab, setActiveTab] = useState("overview"); // overview, ads, users, monitoring
   const [loading, setLoading] = useState(true);
