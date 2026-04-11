@@ -108,6 +108,7 @@ export default function Dashboard() {
             <Zap size={20} fill="#3b82f6" /> SendMyForm
           </Link>
         </div>
+        
 
         {/* User profile in sidebar */}
         <div className="p-4 border-b border-zinc-800 flex items-center gap-3">
@@ -137,7 +138,7 @@ export default function Dashboard() {
       </aside>
 
       {/* Main content */}
-      <main className="md:ml-64 flex-1 p-4 md:p-10 max-w-5xl overflow-y-auto h-full w-full">
+      <main className="md:ml-64 flex-1 p-4 md:p-10 overflow-y-auto h-full">
 
         {/* Mobile top bar */}
         <div className="flex md:hidden items-center justify-between mb-6">
