@@ -80,7 +80,8 @@ export default function LandingPage() {
           <ShieldX size={14} /> Zero-Persistence Gateway
         </div>
 
-        <h1 className="text-[14vw] md:text-[12vw] font-black tracking-tightest uppercase italic leading-[0.8] mb-8 md:mb-12">
+        {/* <h1 className="text-[14vw] md:text-[12vw] font-black tracking-tightest uppercase italic leading-[0.8] mb-8 md:mb-12"> */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight uppercase italic leading-[0.9] mb-8 md:mb-12">
           Ingest <span className="text-violet-600">&</span> <br />
           <span className="text-white underline decoration-violet-600 decoration-[6px] md:decoration-[12px] underline-offset-[10px] md:underline-offset-[20px]">Forget.</span>
         </h1>
