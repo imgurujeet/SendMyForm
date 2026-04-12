@@ -109,7 +109,6 @@ export default function Dashboard() {
           </Link>
         </div>
         
-
         {/* User profile in sidebar */}
         <div className="p-4 border-b border-zinc-800 flex items-center gap-3">
           {user?.photoURL ? (
