@@ -38,7 +38,12 @@ export default function AuthPage() {
           theme: "modern",
         });
       }
-      window.location.href = "/dashboard";
+      // Route admin users to admin panel
+      if (user.email === "achaialabs@gmail.com" || user.email?.endsWith("@achaialabs.tech")) {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
