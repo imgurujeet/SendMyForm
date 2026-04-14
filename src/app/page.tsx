@@ -206,13 +206,13 @@ export default function LandingPage() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-white/5 pt-6">
 
           <p className="text-xs text-slate-600 font-bold">
-            © 2026 YourBrand. All rights reserved.
+            © 2026 Achaia Labs. All rights reserved.
           </p>
 
           <div className="flex gap-6 text-slate-500">
-            <a href="#" className="hover:text-white transition">Twitter</a>
+            <a href="https://x.com/achaialabs" target= "_blank" rel= "noopener noreferrer" className="hover:text-white transition">Twitter</a>
             <a href="#" className="hover:text-white transition">GitHub</a>
-            <a href="#" className="hover:text-white transition">LinkedIn</a>
+            <a href="https://www.linkedin.com/company/achaia-labs/" target= "_blank" rel= "noopener noreferrer" className="hover:text-white transition">LinkedIn</a>
           </div>
 
         </div>
