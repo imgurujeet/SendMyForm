@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import TermsModal from "@/components/TermsModal";
 import { auth, db } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
@@ -9,6 +10,7 @@ import { Zap } from "lucide-react";
 export default function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -86,8 +88,10 @@ export default function AuthPage() {
         </button>
 
         <p className="text-center mt-6 text-[12px] text-zinc-600 italic">
-          By signing in, you agree to Achaia Labs' <a href="/#" className="text-blue-600 hover:underline">Terms of Service</a>.
+          By signing in, you agree to Achaia Labs&apos; <button onClick={() => setShowTerms(true)} className="text-blue-600 hover:underline cursor-pointer bg-transparent border-none p-0 font-inherit text-inherit">Terms of Service</button>.
         </p>
+
+        <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
       </div>
 
       <style jsx global>{`
