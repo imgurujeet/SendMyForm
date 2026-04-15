@@ -86,6 +86,37 @@ export default function ApiDocsPage() {
           </p>
         </header>
 
+        {/* --- QUICK START --- */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-10">
+            <Zap size={24} className="text-violet-500" />
+            <h2 className="text-3xl font-black italic uppercase">Quick Start</h2>
+          </div>
+
+          <div className="grid grid-cols-3 gap-8">
+            {[
+
+              { step: "01", desc: "Create your form endpoint" },
+              { step: "02", desc: "Paste it into your form action" },
+              { step: "03", desc: "Receive submissions instantly" }
+            ].map((step, i) => (
+              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
+                <p className="text-4xl font-black italic text-white/10 mb-6 group-hover:text-white transition-all duration-300 uppercase">{step.step}</p>
+                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 p-8 bg-black border border-white/10 rounded-2xl">
+            <pre className="text-sm text-violet-400">
+              {`<form action="https://sendmyform.vercel.app/api/f/contact" method="POST">
+          <input name="email" type="email" required />
+          <button type="submit">Submit</button>
+        </form>`}
+            </pre>
+          </div>
+        </section>
+
         {/* --- CORE INTEGRATION --- */}
         <section className="mb-32">
           <div className="flex items-center gap-4 mb-10">
@@ -97,10 +128,10 @@ export default function ApiDocsPage() {
             <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/5 blur-[60px] group-hover:bg-violet-600/10 transition-all"></div>
 
             <div className="flex justify-between items-center mb-10">
-              <p className="text-[10px] font-black italic uppercase tracking-widest text-slate-500 underline decoration-violet-500 underline-offset-8">Neural Node Path</p>
+              <p className="text-[12px] font-black italic uppercase tracking-widest text-slate-500 underline decoration-violet-500 underline-offset-8">Neural Node Path</p>
               <button
                 onClick={() => copyToClipboard(`${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]`)}
-                className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl text-slate-500 hover:text-white transition-all text-[10px] font-black uppercase tracking-widest italic"
+                className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl text-slate-500 hover:text-white transition-all text-[12px] font-black uppercase tracking-widest italic"
               >
                 {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
                 {copied ? "NODE PATH COPIED" : "Copy Form URL"}
@@ -111,39 +142,163 @@ export default function ApiDocsPage() {
               <pre className="text-sm font-mono text-violet-400 group-hover:text-white transition-colors duration-500 italic leading-loose overflow-x-auto whitespace-pre-wrap">
                 <code>
                   {`<!-- Simply add this to your website -->
-<form action="${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]" method="POST">
-  <input name="email" type="email" required />
-  <button type="submit">Submit</button>
-</form>`}
+                  <form action="${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]" method="POST">
+                    <input name="email" type="email" required />
+                    <button type="submit">Submit</button>
+                  </form>`}
                 </code>
               </pre>
             </div>
+          </div>
+        </section>
 
-            <div className="grid grid-cols-2 gap-8">
-              <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
-                <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Response Codes</h5>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
-                    <span className="text-slate-500">Success</span>
-                    <span className="text-emerald-500">200 OK</span>
-                  </div>
-                </div>
+        {/* --- REQUEST FORMAT --- */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-16">
+            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><CheckCircle2 size={24} className="text-violet-500" /></div>
+            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Request <span className="text-violet-600">Format</span></h2>
+          </div>
+
+          <div className="p-8 bg-black border border-white/10 rounded-2xl">
+            <pre className="text-sm text-violet-400">
+              {
+                `{
+              "email": "required",
+              "name": "optional",
+              "message": "any field allowed"
+              }`
+              }
+            </pre>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mt-10">
+            {[
+              "Accepts multipart/form-data",
+              "Accepts JSON payloads",
+              "No strict schema required"
+            ].map((item, i) => (
+              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
+                <CheckCircle2 className="text-violet-500 mb-2" />
+                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
               </div>
-              <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
-                <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Zero-Code Setup</h5>
-                <div className="space-y-3">
-                  {['Works on WordPress', 'Works on Framer/Wix', 'Works on Custom Sites'].map((f, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <CheckCircle2 size={12} className="text-violet-600" />
-                      <span className="text-[10px] font-black uppercase tracking-widest italic text-slate-500">{f}</span>
-                    </div>
-                  ))}
+            ))}
+          </div>
+        </section>
+
+        {/* --- EXAMPLES --- */}
+        <section className="mb-32">
+          <h2 className="text-3xl font-black mb-10">Usage Examples</h2>
+
+          <div className="space-y-10">
+
+            <div>
+              <h4 className="text-white mb-2">HTML</h4>
+              <pre className="text-violet-400 text-sm">
+                {`<form action="/api/f/contact" method="POST">
+          <input name="email" />
+        </form>`}
+              </pre>
+            </div>
+
+            <div>
+              <h4 className="text-white mb-2">Fetch API</h4>
+              <pre className="text-violet-400 text-sm">
+                {`fetch("/api/f/contact", {
+          method: "POST",
+          body: JSON.stringify({ email: "test@test.com" })
+        })`}
+              </pre>
+            </div>
+
+            <div>
+              <h4 className="text-white mb-2">cURL</h4>
+              <pre className="text-violet-400 text-sm">
+                {`curl -X POST https://sendmyform.vercel.app/api/f/contact`}
+              </pre>
+            </div>
+
+          </div>
+        </section>
+
+        {/* --- EMAIL DELIVERY --- */}
+        <section className="mb-32">
+          <h2 className="text-3xl font-black mb-10">Email Delivery</h2>
+
+          <ul className="space-y-3 text-xs uppercase text-slate-400">
+            <li>✔ Submissions sent instantly to your inbox</li>
+            <li>✔ Custom themed email templates</li>
+            <li>✔ Supports multiple fields dynamically</li>
+          </ul>
+        </section>
+
+        {/* --- SECURITY --- */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-16">
+            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><ShieldCheck size={24} className="text-violet-500" /></div>
+            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Security <span className="text-violet-600">Associated</span></h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              "Spam protection via honeypots",
+              "Rate limiting on endpoints",
+              "Input validation with Zod"
+            ].map((item, i) => (
+              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
+                <ShieldCheck className="text-violet-500 mb-2" />
+                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* --- RESPONSE CODES --- */}
+        <section className="mb-32">
+          <div className="flex items-center gap-4 mb-16">
+            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><CheckCircle2 size={24} className="text-violet-500" /></div>
+            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Response <span className="text-violet-600">Codes</span></h2>
+          </div>
+          <div className="grid grid-cols-2 gap-8">
+            <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
+              <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Response Codes</h5>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
+                  <span className="text-slate-500">Success</span>
+                  <span className="text-emerald-500">200 OK</span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
+                  <span className="text-slate-500">Invalid Data</span>
+                  <span className="text-red-500">400</span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
+                  <span className="text-slate-500">Server Error</span>
+                  <span className="text-red-500">500</span>
                 </div>
               </div>
             </div>
+            <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
+              <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Zero-Code Setup</h5>
+              <div className="space-y-3">
+                {['Works on WordPress', 'Works on Framer/Wix', 'Works on Custom Sites'].map((f, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <CheckCircle2 size={12} className="text-violet-600" />
+                    <span className="text-[10px] font-black uppercase tracking-widest italic text-slate-500">{f}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+        </section>
+
+        {/* --- REDIRECT --- */}
+        <section className="mb-32">
+          <h2 className="text-3xl font-black mb-10">Redirect Behavior</h2>
+
+          <p className="text-xs text-slate-400 uppercase">
+            After successful submission, users are redirected to /success page.
+          </p>
         </section>
 
         {/* --- DYNAMIC THEME PREVIEW (DUMMY DATA) --- */}
@@ -216,9 +371,29 @@ export default function ApiDocsPage() {
               { title: "Delivery", step: "03", desc: "Transmission to project owner via themed SMTP nodes with ad monetization." }
             ].map((w, i) => (
               <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <p className="text-4xl font-black italic text-white/5 mb-6 group-hover:text-violet-500/10 transition-colors uppercase">{w.step}</p>
+                <p className="text-4xl font-black italic text-white/10 mb-6 group-hover:text-white transition-all duration-300 uppercase">{w.step}</p>
                 <h4 className="text-xl font-black italic text-white uppercase mb-4 tracking-tighter italic">{w.title}</h4>
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* --- WHY US --- */}
+        <section className="mb-32">
+          <h2 className="text-3xl font-black mb-10">Why SendMyForm?</h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              "Single endpoint replaces entire backend",
+              "Works with ANY frontend or language",
+              "No SDK, no lock-in, no config",
+              "Supports multipart & dynamic fields out of the box",
+              "Zero setup — live in under 30 seconds",
+              "Built-in email delivery with themed templates"
+            ].map((item, i) => (
+              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
+                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
               </div>
             ))}
           </div>
