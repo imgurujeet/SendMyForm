@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import TermsModal from "@/components/TermsModal";
+import PrivacyModal from "@/components/PrivacyModal";
 import {
   Plus,
   ArrowRight,
@@ -24,6 +26,8 @@ import { cn } from "@/lib/utils";
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -105,7 +109,7 @@ export default function LandingPage() {
             { label: "Uptime", val: "99.98%", icon: Activity },
             { label: "Ingestion Latency", val: "12ms", icon: Zap },
             { label: "Data Persistence", val: "OFF", icon: Lock },
-            
+
           ].map((item, i) => (
             <div key={i} className="p-6 md:p-10 rounded-[24px] md:rounded-[40px] bg-slate-950/20 border border-white/5 text-left group hover:border-white/20 transition-all">
               <item.icon size={22} className="text-violet-500 mb-4 md:mb-6" />
@@ -152,9 +156,9 @@ export default function LandingPage() {
           Launch Your First Node <ChevronRight size={22} className="group-hover:translate-x-2 transition-transform" />
         </Link>
       </section>
-        
 
-      {/* FOOTER */}  
+
+      {/* FOOTER */}
       <footer className="border-t border-white/5 px-6 md:px-20 py-12 md:py-16 flex flex-col gap-12">
 
         {/* TOP TAGLINE */}
@@ -197,7 +201,8 @@ export default function LandingPage() {
             <p className="text-white text-xs font-black uppercase tracking-widest">Support</p>
             <Link href="/help" className="footer-link">Help Center</Link>
             <Link href="/support" className="footer-link">Support</Link>
-            <Link href="/privacy" className="footer-link">Privacy Policy</Link>
+            <button onClick={() => setShowPrivacy(true)} className="footer-link text-left bg-transparent border-none p-0 cursor-pointer">Privacy Policy</button>
+            <button onClick={() => setShowTerms(true)} className="footer-link text-left bg-transparent border-none p-0 cursor-pointer">Terms & Conditions</button>
           </div>
 
         </div>
@@ -210,14 +215,17 @@ export default function LandingPage() {
           </p>
 
           <div className="flex gap-6 text-slate-500">
-            <a href="https://x.com/achaialabs" target= "_blank" rel= "noopener noreferrer" className="hover:text-white transition">Twitter</a>
+            <a href="https://x.com/achaialabs" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">Twitter</a>
             <a href="#" className="hover:text-white transition">GitHub</a>
-            <a href="https://www.linkedin.com/company/achaia-labs/" target= "_blank" rel= "noopener noreferrer" className="hover:text-white transition">LinkedIn</a>
+            <a href="https://www.linkedin.com/company/achaia-labs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">LinkedIn</a>
           </div>
 
         </div>
 
       </footer>
+
+      <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
+      <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
 
       <style jsx global>{`
         @keyframes fadeIn {
