@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import Footer from "./footer";
+import ThemeProvider from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
-  icons:{
+  icons: {
     icon: "/icon.png"
   },
-  title: "Achaia Labs | Form Submitted",
-  description: "Form submission confirmation for Achaia Labs",
-  keywords: "form submission, confirmation, Achaia Labs",
+  title: "SendMyForm — Form Backend as a Service | Handle Form Submissions Instantly",
+  description: "SendMyForm is a form backend service that receives, validates, and delivers form submissions directly to your inbox. No backend code required. Works with any HTML form, React, Vue, or frontend framework.",
+  keywords: "form backend, form submission service, HTML form handler, form as a service, form endpoint, contact form backend, form API, email form submissions, no backend form, SendMyForm",
+  openGraph: {
+    title: "SendMyForm — Handle Form Submissions Without a Backend",
+    description: "Point your HTML form at a single endpoint. We validate, filter spam, and deliver submissions to your inbox instantly.",
+    url: "https://sendmyform.vercel.app",
+    siteName: "SendMyForm",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SendMyForm — Form Backend as a Service",
+    description: "Handle form submissions without writing a backend. Works with any frontend or framework.",
+    site: "@achaialabs",
+  },
 };
 
 export default function RootLayout({
@@ -18,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           async
@@ -26,10 +39,10 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body>
-        <div className="gradient-bg" />
-        {children}
-        {/* <Footer /> */}
+      <body suppressHydrationWarning>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

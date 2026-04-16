@@ -2,33 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- Custom SendMyForm Design System --- */
+/* --- Theme CSS Variables --- */
 :root {
-  --primary-color: #6d28d9;
-  --secondary-color: #ec4899;
-  --accent-color: #8b5cf6;
-  --bg-color: #000000;
-  --card-bg: rgba(15, 23, 42, 0.4);
-  --text-color: #ffffff;
-  --muted-text: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.05);
-  --glass-effect: blur(20px);
+  --bg-primary: #0A0A0F;
+  --bg-secondary: #111118;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --bg-card-hover: rgba(255, 255, 255, 0.06);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --accent-color: #7c3aed;
+  --accent-light: #8b5cf6;
+  --nav-bg: rgba(10, 10, 15, 0.8);
+  --code-bg: #080810;
+  --scrollbar-track: #0A0A0F;
+  --scrollbar-thumb: #1e1e2e;
+}
+
+/* Light mode overrides */
+.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-card: rgba(0, 0, 0, 0.02);
+  --bg-card-hover: rgba(0, 0, 0, 0.05);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  --accent-color: #7c3aed;
+  --accent-light: #6d28d9;
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --code-bg: #f1f5f9;
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
 }
 
 @layer base {
   body {
-    @apply bg-black text-white antialiased selection:bg-violet-600/50;
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: rgba(124, 58, 237, 0.4);
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-slate-950/40 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-2xl;
+    @apply backdrop-blur-3xl shadow-2xl;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 40px;
   }
-  
+
   .btn-primary {
-    @apply bg-violet-600 hover:bg-violet-500 text-white font-black uppercase text-xs tracking-widest px-8 py-4 rounded-2xl shadow-2xl shadow-violet-900/40 transition-all hover:scale-105 active:scale-95 italic;
+    @apply bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm px-6 py-3 rounded-lg shadow-lg shadow-violet-900/30 transition-all;
   }
 
   .gradient-text {
@@ -36,7 +72,28 @@
   }
 
   .form-input {
-    @apply w-full bg-black border border-white/5 rounded-2xl px-6 py-4 text-sm font-bold text-white focus:border-violet-500/40 transition-all outline-none italic placeholder:text-slate-800;
+    @apply w-full rounded-xl px-5 py-3 text-sm font-medium transition-all outline-none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+  }
+
+  .form-input:focus {
+    border-color: rgba(124, 58, 237, 0.4);
+  }
+
+  .form-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .footer-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover {
+    color: var(--text-primary);
   }
 }
 
@@ -49,3 +106,9 @@
 .animate-fade-in {
   animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
