@@ -6,25 +6,27 @@ import {
   Code2,
   Zap,
   ShieldCheck,
-  ArrowRight,
-  Globe,
   CheckCircle2,
   Copy,
   Check,
   Server,
-  Layers,
   Palette,
-  Layout,
-  Mail,
-  Smartphone
+  MailCheck,
+  ArrowRight,
+  FileCode,
+  Globe,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-react";
-import { THEMES } from "@/lib/themes";
+import { THEMES, getTheme } from "@/lib/themes";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function ApiDocsPage() {
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [origin, setOrigin] = useState("");
+  const [origin, setOrigin] = useState("https://sendmyform.vercel.app");
   const [activeThemePreview, setActiveThemePreview] = useState("modern");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -45,400 +47,472 @@ export default function ApiDocsPage() {
     "Full Name": "James Potter",
     "Email": "james@achaialabs.tech",
     "Company": "Achaia Labs",
-    "Message": "I need a high-performance form backend for my new portfolio site. The SendMyForm API looks incredible!",
+    "Message": "I need a reliable form backend for my portfolio. SendMyForm looks like exactly what I needed!",
     "Timestamp": "2026-04-06 14:25:33"
   };
 
   if (!mounted) return (
-    <div className="h-screen bg-black flex items-center justify-center text-white italic font-black uppercase tracking-widest text-2xl animate-pulse">
-      SendMyForm Node Booting...
+    <div className="h-screen bg-[#0A0A0F] flex items-center justify-center text-white text-sm font-medium">
+      Loading...
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-black text-slate-100 font-sans selection:bg-violet-600/50 overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', 'Inter', sans-serif", background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
 
-      {/* Background Neural Effects */}
-      <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-violet-600/10 blur-[180px] rounded-full"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-600/5 blur-[120px] rounded-full"></div>
+      {/* Background effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-violet-700/6 blur-[140px] rounded-full"></div>
+      </div>
 
       {/* --- DOCS NAVBAR --- */}
-      <nav className="fixed top-0 w-full z-50 py-2 md:py-3 px-4 md:px-8 flex justify-between items-center backdrop-blur-2xl border-b border-white/5">
-        <Link href="/" className="text-2xl font-black tracking-tighter italic uppercase">
-          Send<span className="text-violet-600">My</span>Form <span className="text-violet-600 block text-[10px] font-bold tracking-[0.4em] mt-1 italic">DEVELOPER_DOCS</span>
-        </Link>
-        <div className="flex gap-8 items-center">
-          <Link href="/dashboard" className="bg-violet-600 hover:bg-violet-500 text-white font-black uppercase text-xs px-8 py-3.5 rounded-2xl shadow-2xl shadow-violet-900/40 transition-all hover:scale-105 active:scale-95 italic">Open Studio</Link>
+      <nav className="fixed top-0 w-full z-50 py-3 px-6 md:px-10 flex justify-between items-center backdrop-blur-xl" style={{ background: 'var(--nav-bg)', borderBottom: '1px solid var(--border-color)' }}>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="hidden lg:flex p-2 rounded-lg hover:bg-white/[0.06] transition-colors text-slate-400 hover:text-white"
+            aria-label="Toggle sidebar"
+          >
+            {sidebarOpen ? <PanelLeftClose size={18} /> : <PanelLeft size={18} />}
+          </button>
+          <Link href="/" className="text-xl font-bold tracking-tight text-white">
+            Send<span className="text-violet-500">My</span>Form
+          </Link>
+          <span className="hidden sm:block text-[10px] text-violet-400 font-medium tracking-wider uppercase border border-violet-500/20 bg-violet-500/8 px-2 py-0.5 rounded">
+            Docs
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link href="/dashboard" className="px-4 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/30">
+            Open Dashboard
+          </Link>
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto py-24 px-10 relative z-10">
-
-        <header className="mb-24">
-          <span className="bg-violet-600/10 border border-violet-500/20 text-violet-400 px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] italic mb-10 inline-block">
-            API VERSION: V2.0
-          </span>
-          <h1 className="text-7xl font-black tracking-tightest leading-none mb-10 uppercase italic">
-            Build with <span className="text-violet-600">Neural</span><br /> Ingestion.
-          </h1>
-          <p className="text-slate-500 text-xl font-bold italic uppercase tracking-tight max-w-2xl leading-relaxed">
-            Integration is zero-friction. Just pass data to our endpoint and we do the rest. No setup, no complex backend code.
-          </p>
-        </header>
-
-        {/* --- QUICK START --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-10">
-            <Zap size={24} className="text-violet-500" />
-            <h2 className="text-3xl font-black italic uppercase">Quick Start</h2>
-          </div>
-
-          <div className="grid grid-cols-3 gap-8">
+      {/* --- SIDEBAR (FIXED) --- */}
+      {sidebarOpen && (
+        <aside className="hidden lg:flex flex-col w-64 fixed left-0 top-16 bottom-0 z-40 py-12 px-6 overflow-y-auto" style={{ background: 'var(--bg-primary)', borderRight: '1px solid var(--border-color)' }}>
+          <nav className="space-y-1">
             {[
-
-              { step: "01", desc: "Create your form endpoint" },
-              { step: "02", desc: "Paste it into your form action" },
-              { step: "03", desc: "Receive submissions instantly" }
-            ].map((step, i) => (
-              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <p className="text-4xl font-black italic text-white/10 mb-6 group-hover:text-white transition-all duration-300 uppercase">{step.step}</p>
-                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{step.desc}</p>
-              </div>
+              { label: "Quick Start", href: "#quickstart" },
+              { label: "Your Endpoint", href: "#endpoint" },
+              { label: "Request Format", href: "#format" },
+              { label: "Usage Examples", href: "#examples" },
+              { label: "Email Delivery", href: "#email" },
+              { label: "Security", href: "#security" },
+              { label: "Response Codes", href: "#responses" },
+              { label: "Email Themes", href: "#themes" },
+              { label: "How It Works", href: "#workflow" },
+              { label: "Why SendMyForm", href: "#why" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="block text-sm transition-colors py-1.5 px-3 rounded-lg hover:bg-white/[0.04]"
+                style={{ color: 'var(--text-muted)' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+              >
+                {item.label}
+              </a>
             ))}
-          </div>
+          </nav>
+        </aside>
+      )}
 
-          <div className="mt-10 p-8 bg-black border border-white/10 rounded-2xl">
-            <pre className="text-sm text-violet-400">
+      {/* --- MAIN CONTENT --- */}
+      <div className={`min-h-screen pt-16 ${sidebarOpen ? 'lg:pl-64' : ''}`}>
+        <main className="max-w-4xl mx-auto py-16 px-6 md:px-10 relative z-10">
+
+          {/* Page Header */}
+          <header className="mb-20">
+            <span className="inline-flex items-center gap-2 bg-violet-600/10 border border-violet-500/20 text-violet-400 px-4 py-1.5 rounded-full text-xs font-medium tracking-wide mb-6">
+              API v2.0
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight mb-5 text-white">
+              SendMyForm <span className="text-violet-400">Documentation</span>
+            </h1>
+            <p className="text-slate-400 text-lg leading-relaxed max-w-2xl">
+              Integrate form submissions into any project in minutes. Just point your form at an endpoint — we handle validation, spam filtering, and email delivery.
+            </p>
+          </header>
+
+          {/* --- QUICK START --- */}
+          <section id="quickstart" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Zap} title="Quick Start" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+              {[
+                { step: "01", title: "Create endpoint", desc: "Log in and create a new project to get your form endpoint URL." },
+                { step: "02", title: "Add to your form", desc: "Set your form's action attribute to your endpoint URL." },
+                { step: "03", title: "Get submissions", desc: "Receive every submission instantly in your inbox." },
+              ].map((item, i) => (
+                <div key={i} className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-violet-500/20 transition-all">
+                  <p className="text-2xl font-bold text-white/10 mb-4">{item.step}</p>
+                  <h4 className="text-sm font-semibold text-white mb-2">{item.title}</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <CodeBlock lang="HTML">
               {`<form action="https://sendmyform.vercel.app/api/f/contact" method="POST">
-          <input name="email" type="email" required />
-          <button type="submit">Submit</button>
-        </form>`}
-            </pre>
-          </div>
-        </section>
+  <input name="email" type="email" required />
+  <button type="submit">Submit</button>
+</form>`}
+            </CodeBlock>
+          </section>
 
-        {/* --- CORE INTEGRATION --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><Terminal size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Your <span className="text-violet-600">Form Endpoint</span></h2>
-          </div>
+          {/* --- YOUR ENDPOINT --- */}
+          <section id="endpoint" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Terminal} title="Your Form Endpoint" />
 
-          <div className="p-12 rounded-[56px] bg-slate-950/30 border border-white/5 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/5 blur-[60px] group-hover:bg-violet-600/10 transition-all"></div>
-
-            <div className="flex justify-between items-center mb-10">
-              <p className="text-[12px] font-black italic uppercase tracking-widest text-slate-500 underline decoration-violet-500 underline-offset-8">Neural Node Path</p>
-              <button
-                onClick={() => copyToClipboard(`${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]`)}
-                className="flex items-center gap-2 p-3 bg-white/5 rounded-2xl text-slate-500 hover:text-white transition-all text-[12px] font-black uppercase tracking-widest italic"
-              >
-                {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
-                {copied ? "NODE PATH COPIED" : "Copy Form URL"}
-              </button>
-            </div>
-
-            <div className="p-10 bg-black border border-white/10 rounded-[40px] shadow-inner mb-12">
-              <pre className="text-sm font-mono text-violet-400 group-hover:text-white transition-colors duration-500 italic leading-loose overflow-x-auto whitespace-pre-wrap">
-                <code>
-                  {`<!-- Simply add this to your website -->
-                  <form action="${origin || 'https://sendmyform.achaialabs.tech'}/api/f/[YOUR_FORM_ID]" method="POST">
-                    <input name="email" type="email" required />
-                    <button type="submit">Submit</button>
-                  </form>`}
-                </code>
-              </pre>
-            </div>
-          </div>
-        </section>
-
-        {/* --- REQUEST FORMAT --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><CheckCircle2 size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Request <span className="text-violet-600">Format</span></h2>
-          </div>
-
-          <div className="p-8 bg-black border border-white/10 rounded-2xl">
-            <pre className="text-sm text-violet-400">
-              {
-                `{
-              "email": "required",
-              "name": "optional",
-              "message": "any field allowed"
-              }`
-              }
-            </pre>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 mt-10">
-            {[
-              "Accepts multipart/form-data",
-              "Accepts JSON payloads",
-              "No strict schema required"
-            ].map((item, i) => (
-              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <CheckCircle2 className="text-violet-500 mb-2" />
-                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
+            <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.07] relative overflow-hidden">
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Endpoint URL</p>
+                <button
+                  onClick={() => copyToClipboard(`${origin || 'https://sendmyform.vercel.app'}/api/f/[YOUR_FORM_ID]`)}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/[0.08] rounded-lg text-slate-400 hover:text-white transition-all text-xs font-medium"
+                >
+                  {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
+                  {copied ? "Copied!" : "Copy URL"}
+                </button>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* --- EXAMPLES --- */}
-        <section className="mb-32">
-          <h2 className="text-3xl font-black mb-10">Usage Examples</h2>
-
-          <div className="space-y-10">
-
-            <div>
-              <h4 className="text-white mb-2">HTML</h4>
-              <pre className="text-violet-400 text-sm">
-                {`<form action="/api/f/contact" method="POST">
-          <input name="email" />
-        </form>`}
-              </pre>
+              <CodeBlock lang="HTML">
+                {`<!-- Add this to your website -->
+<form
+  action="${origin || 'https://sendmyform.vercel.app'}/api/f/[YOUR_FORM_ID]"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <input name="email" type="email" required />
+  <button type="submit">Submit</button>
+</form>`}
+              </CodeBlock>
             </div>
+          </section>
 
-            <div>
-              <h4 className="text-white mb-2">Fetch API</h4>
-              <pre className="text-violet-400 text-sm">
-                {`fetch("/api/f/contact", {
-          method: "POST",
-          body: JSON.stringify({ email: "test@test.com" })
-        })`}
-              </pre>
+          {/* --- REQUEST FORMAT --- */}
+          <section id="format" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={FileCode} title="Request Format" />
+
+            <CodeBlock lang="JSON">
+              {`{
+  "email": "required",
+  "name": "optional",
+  "message": "any field — no strict schema required"
+}`}
+            </CodeBlock>
+
+            <div className="grid sm:grid-cols-3 gap-4 mt-6">
+              {[
+                "Accepts multipart/form-data",
+                "Accepts JSON payloads",
+                "No strict schema required",
+              ].map((item, i) => (
+                <FeatureChip key={i} text={item} />
+              ))}
             </div>
+          </section>
 
-            <div>
-              <h4 className="text-white mb-2">cURL</h4>
-              <pre className="text-violet-400 text-sm">
-                {`curl -X POST https://sendmyform.vercel.app/api/f/contact`}
-              </pre>
+          {/* --- USAGE EXAMPLES --- */}
+          <section id="examples" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Code2} title="Usage Examples" />
+
+            <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-white/[0.06] bg-white/[0.02]">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider w-[140px]">Method</th>
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Code</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-5 align-top">
+                      <span className="text-xs font-semibold text-white bg-white/5 px-2 py-1 rounded">HTML</span>
+                    </td>
+                    <td className="px-6 py-5">
+                      <pre className="text-sm text-violet-300 font-mono leading-relaxed overflow-x-auto">
+                        {`<form action="/api/f/contact" method="POST">
+  <input name="email" />
+</form>`}
+                      </pre>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-white/[0.05] hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-5 align-top">
+                      <span className="text-xs font-semibold text-white bg-white/5 px-2 py-1 rounded">Fetch API</span>
+                    </td>
+                    <td className="px-6 py-5">
+                      <pre className="text-sm text-violet-300 font-mono leading-relaxed overflow-x-auto">
+                        {`fetch("/api/f/contact", {
+  method: "POST",
+  body: JSON.stringify({ email: "test@test.com" })
+})`}
+                      </pre>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-5 align-top">
+                      <span className="text-xs font-semibold text-white bg-white/5 px-2 py-1 rounded">cURL</span>
+                    </td>
+                    <td className="px-6 py-5">
+                      <pre className="text-sm text-violet-300 font-mono leading-relaxed overflow-x-auto">
+                        {`curl -X POST https://sendmyform.vercel.app/api/f/contact \\
+  -d "email=test@test.com"`}
+                      </pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </section>
 
-          </div>
-        </section>
+          {/* --- EMAIL DELIVERY --- */}
+          <section id="email" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={MailCheck} title="Email Delivery" />
 
-        {/* --- EMAIL DELIVERY --- */}
-        <section className="mb-32">
-          <h2 className="text-3xl font-black mb-10">Email Delivery</h2>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                "Submissions sent instantly to your inbox",
+                "Custom themed email templates",
+                "Supports multiple fields dynamically",
+              ].map((item, i) => (
+                <FeatureChip key={i} icon={MailCheck} text={item} />
+              ))}
+            </div>
+          </section>
 
-          <ul className="space-y-3 text-xs uppercase text-slate-400">
-            <li>✔ Submissions sent instantly to your inbox</li>
-            <li>✔ Custom themed email templates</li>
-            <li>✔ Supports multiple fields dynamically</li>
-          </ul>
-        </section>
+          {/* --- SECURITY --- */}
+          <section id="security" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={ShieldCheck} title="Security" />
 
-        {/* --- SECURITY --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><ShieldCheck size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Security <span className="text-violet-600">Associated</span></h2>
-          </div>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {[
+                "Spam protection via honeypot fields",
+                "Rate limiting on all endpoints",
+                "Input validation with Zod schemas",
+              ].map((item, i) => (
+                <FeatureChip key={i} icon={ShieldCheck} text={item} />
+              ))}
+            </div>
+          </section>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              "Spam protection via honeypots",
-              "Rate limiting on endpoints",
-              "Input validation with Zod"
-            ].map((item, i) => (
-              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <ShieldCheck className="text-violet-500 mb-2" />
-                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+          {/* --- RESPONSE CODES --- */}
+          <section id="responses" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={CheckCircle2} title="Response Codes" />
 
-        {/* --- RESPONSE CODES --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><CheckCircle2 size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Response <span className="text-violet-600">Codes</span></h2>
-          </div>
-          <div className="grid grid-cols-2 gap-8">
-            <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
-              <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Response Codes</h5>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
-                  <span className="text-slate-500">Success</span>
-                  <span className="text-emerald-500">200 OK</span>
-                </div>
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
-                  <span className="text-slate-500">Invalid Data</span>
-                  <span className="text-red-500">400</span>
-                </div>
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest italic border-b border-white/5 pb-2">
-                  <span className="text-slate-500">Server Error</span>
-                  <span className="text-red-500">500</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="p-7 rounded-2xl bg-white/[0.03] border border-white/[0.07]">
+                <h5 className="text-sm font-semibold text-white mb-5">HTTP Status Codes</h5>
+                <div className="space-y-3">
+                  {[
+                    { label: "Success", code: "200 OK", color: "text-emerald-400" },
+                    { label: "Invalid Data", code: "400", color: "text-red-400" },
+                    { label: "Not Found", code: "404", color: "text-red-400" },
+                    { label: "Server Error", code: "500", color: "text-red-400" },
+                  ].map((r, i) => (
+                    <div key={i} className="flex justify-between items-center text-xs border-b border-white/[0.05] pb-3">
+                      <span className="text-slate-400">{r.label}</span>
+                      <span className={`font-mono font-semibold ${r.color}`}>{r.code}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
-            <div className="p-10 rounded-[32px] bg-black border border-white/5 hover:border-violet-600/30 transition-all group cursor-pointer relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-16 h-16 bg-violet-600/5 blur-[40px]"></div>
-              <h5 className="text-lg font-black text-white uppercase italic mb-4 tracking-tighter">Zero-Code Setup</h5>
-              <div className="space-y-3">
-                {['Works on WordPress', 'Works on Framer/Wix', 'Works on Custom Sites'].map((f, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <CheckCircle2 size={12} className="text-violet-600" />
-                    <span className="text-[10px] font-black uppercase tracking-widest italic text-slate-500">{f}</span>
-                  </div>
-                ))}
+              <div className="p-7 rounded-2xl bg-white/[0.03] border border-white/[0.07]">
+                <h5 className="text-sm font-semibold text-white mb-5">Platform Compatibility</h5>
+                <div className="space-y-3">
+                  {["Works on WordPress", "Works on Framer / Webflow", "Works on Wix", "Works on custom sites"].map((f, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <CheckCircle2 size={13} className="text-violet-400 flex-shrink-0" />
+                      <span className="text-xs text-slate-400">{f}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* --- REDIRECT --- */}
-        <section className="mb-32">
-          <h2 className="text-3xl font-black mb-10">Redirect Behavior</h2>
+          {/* --- REDIRECT BEHAVIOR --- */}
+          <section className="mb-20">
+            <SectionHeader icon={ArrowRight} title="Redirect Behavior" />
+            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/[0.07]">
+              <p className="text-sm text-slate-400 leading-relaxed">
+                After a successful submission, users are automatically redirected to the <code className="text-violet-400 font-mono bg-violet-500/10 px-1.5 py-0.5 rounded">/success</code> page. You can customize the redirect URL in your project settings.
+              </p>
+            </div>
+          </section>
 
-          <p className="text-xs text-slate-400 uppercase">
-            After successful submission, users are redirected to /success page.
-          </p>
-        </section>
+          {/* --- EMAIL THEME PREVIEWS --- */}
+          <section id="themes" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Palette} title="Email Theme Previews" />
+            <p className="text-sm text-slate-500 mb-8 leading-relaxed">
+              Every submission is delivered as a formatted email. Choose a theme that matches your brand from your dashboard settings.
+            </p>
 
-        {/* --- DYNAMIC THEME PREVIEW (DUMMY DATA) --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-10">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><Palette size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Neural Theme <span className="text-violet-600">Previews</span></h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
-            {Object.values(THEMES).map((theme: any) => (
-              <button
-                key={theme.id}
-                onClick={() => setActiveThemePreview(theme.id)}
-                className={`px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest italic transition-all border ${activeThemePreview === theme.id ? 'bg-violet-600 border-violet-500 text-white shadow-2xl shadow-violet-900/40' : 'bg-white/5 border-white/5 text-slate-500 hover:text-white'}`}
-              >
-                {theme.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Actual Preview Browser Mockup */}
-          <div className="p-10 rounded-[64px] bg-slate-950/40 border border-white/5 min-h-[600px] flex items-center justify-center relative overflow-hidden animate-fade-in" key={activeThemePreview}>
-            <div className="absolute top-0 left-0 w-full p-4 border-b border-white/5 bg-black/40 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-rose-500"></div>
-              <div className="w-2 h-2 rounded-full bg-amber-500"></div>
-              <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-              <span className="text-[8px] font-black uppercase text-slate-700 ml-4 italic">Neural-Node: Confirming Transmission...</span>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+              {Object.values(THEMES).map((theme: any) => (
+                <button
+                  key={theme.id}
+                  onClick={() => setActiveThemePreview(theme.id)}
+                  className={`px-4 py-3 rounded-xl text-xs font-semibold transition-all border ${activeThemePreview === theme.id
+                    ? 'bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-900/30'
+                    : 'bg-white/[0.03] border-white/[0.07] text-slate-500 hover:text-white hover:border-white/[0.12]'
+                    }`}
+                >
+                  {theme.name}
+                </button>
+              ))}
             </div>
 
-            {/* The Styled Email Frame */}
-            <div
-              className="max-w-md w-full rounded-[40px] p-12 shadow-2xl transition-all duration-500"
-              style={{
-                backgroundColor: THEMES[activeThemePreview.toUpperCase().replace(/-/g, '_') as keyof typeof THEMES]?.bg || "#000",
-                color: THEMES[activeThemePreview.toUpperCase().replace(/-/g, '_') as keyof typeof THEMES]?.text || "#fff",
-                border: `1px solid ${THEMES[activeThemePreview.toUpperCase().replace(/-/g, '_') as keyof typeof THEMES]?.border || "transparent"}`
-              }}
-            >
-              <h4 className="text-center font-black uppercase italic mb-10 tracking-widest text-xs" style={{ color: THEMES[activeThemePreview.toUpperCase().replace(/-/g, '_') as keyof typeof THEMES]?.primary }}>Lead Received: Portfolio</h4>
-              <div className="space-y-6">
-                {Object.entries(dummyData).map(([k, v]) => (
-                  <div key={k} className="border-b pb-4" style={{ borderColor: THEMES[activeThemePreview.toUpperCase().replace(/-/g, '_') as keyof typeof THEMES]?.border }}>
-                    <p className="text-[9px] font-black uppercase tracking-widest mb-1 opacity-50">{k}</p>
-                    <p className="text-sm font-bold italic">{v}</p>
-                  </div>
-                ))}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.07] overflow-hidden">
+              <div className="flex items-center gap-2 px-5 py-3 border-b border-white/[0.06] bg-white/[0.02]">
+                <div className="w-2.5 h-2.5 rounded-full bg-rose-500/60"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500/60"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60"></div>
+                <span className="text-[10px] text-slate-600 ml-3 font-mono">email preview</span>
               </div>
-              <div className="mt-12 p-6 rounded-3xl bg-black text-white text-center">
-                <p className="text-[8px] font-black uppercase tracking-widest text-violet-500 mb-2 italic">Achaia Labs Partner</p>
-                <h5 className="text-[10px] font-black uppercase italic mb-2">Build with Precision</h5>
-                <p className="text-[8px] text-slate-500 mb-6 italic">Upgrade your project with our premium UI nodes.</p>
-                <span className="px-6 py-2 bg-white text-black text-[8px] font-black uppercase rounded-full">Discover</span>
+              <div className="p-10 flex items-center justify-center min-h-[500px] animate-fade-in" key={activeThemePreview}>
+                {(() => {
+                  const theme = getTheme(activeThemePreview);
+                  return (
+                    <div
+                      className="max-w-md w-full rounded-2xl p-10 shadow-2xl transition-all duration-300"
+                      style={{
+                        background: theme.bg,
+                        color: theme.text,
+                        border: `1px solid ${theme.border}`,
+                      }}
+                    >
+                      <div className="mb-8">
+                        <p style={{ color: theme.accent }} className="text-xs font-semibold uppercase tracking-widest mb-2">
+                          New Submission
+                        </p>
+                        <h3 className="text-xl font-bold">Contact Form</h3>
+                      </div>
+                      <div className="space-y-4">
+                        {Object.entries(dummyData).map(([key, val]) => (
+                          <div key={key} style={{ borderBottom: `1px solid ${theme.border}`, paddingBottom: "12px" }}>
+                            <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: theme.muted }}>{key}</p>
+                            <p className="text-sm font-medium">{val}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-8 p-5 rounded-xl text-center" style={{ background: theme.primary === theme.bg ? theme.card : theme.primary, color: '#fff' }}>
+                        <p className="text-[9px] font-semibold uppercase tracking-widest mb-1" style={{ color: theme.accent }}>Achaia Labs</p>
+                        <p className="text-xs font-bold">Powered by SendMyForm</p>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* --- NODE ARCHITECTURE --- */}
-        <section className="mb-32">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="p-3 bg-violet-600/10 rounded-2xl border border-violet-500/20"><Server size={24} className="text-violet-500" /></div>
-            <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white">Neural Ingestion <span className="text-violet-600">Workflow</span></h2>
-          </div>
+          {/* --- HOW IT WORKS --- */}
+          <section id="workflow" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Server} title="How It Works" />
 
-          <div className="grid grid-cols-3 gap-8">
-            {[
-              { title: "Ingestion", step: "01", desc: "Data enters our edge node. Validated against our neural Zod schema instantly." },
-              { title: "Filtering", step: "02", desc: "Native bot protection filters spoofed headers and honeypot triggers." },
-              { title: "Delivery", step: "03", desc: "Transmission to project owner via themed SMTP nodes with ad monetization." }
-            ].map((w, i) => (
-              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <p className="text-4xl font-black italic text-white/10 mb-6 group-hover:text-white transition-all duration-300 uppercase">{w.step}</p>
-                <h4 className="text-xl font-black italic text-white uppercase mb-4 tracking-tighter italic">{w.title}</h4>
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{w.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              {[
+                { title: "Receive", step: "01", desc: "Your form data arrives at our endpoint. It's validated instantly against expected types and checked for malformed input." },
+                { title: "Filter", step: "02", desc: "Spam bots are blocked via honeypot fields. Rate limiting prevents endpoint abuse. Only genuine submissions pass through." },
+                { title: "Deliver", step: "03", desc: "The submission is formatted with your chosen email theme and delivered to your inbox. Nothing is stored on our servers." },
+              ].map((w, i) => (
+                <div key={i} className="p-7 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-violet-500/20 transition-all group">
+                  <p className="text-3xl font-bold text-white/8 mb-5 group-hover:text-white/20 transition-all">{w.step}</p>
+                  <h4 className="text-base font-semibold text-white mb-3">{w.title}</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">{w.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
 
-        {/* --- WHY US --- */}
-        <section className="mb-32">
-          <h2 className="text-3xl font-black mb-10">Why SendMyForm?</h2>
+          {/* --- WHY SENDMYFORM --- */}
+          <section id="why" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={Globe} title="Why SendMyForm?" />
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              "Single endpoint replaces entire backend",
-              "Works with ANY frontend or language",
-              "No SDK, no lock-in, no config",
-              "Supports multipart & dynamic fields out of the box",
-              "Zero setup — live in under 30 seconds",
-              "Built-in email delivery with themed templates"
-            ].map((item, i) => (
-              <div key={i} className="p-12 rounded-[48px] bg-white/5 border border-white/5 hover:border-violet-600/40 transition-all group">
-                <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest leading-loose italic">{item}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {[
+                "Single endpoint replaces an entire backend",
+                "Works with any frontend framework or language",
+                "No SDK, no lock-in, no configuration files",
+                "Supports multipart uploads and dynamic fields",
+                "Live in under 60 seconds — zero setup",
+                "Built-in email delivery with customizable themes",
+              ].map((item, i) => (
+                <FeatureChip key={i} text={item} />
+              ))}
+            </div>
+          </section>
 
-      </main>
+        </main>
+      </div>
 
-      <footer className="py-24 px-10 border-t border-white/5 bg-black text-center">
-        <p className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] italic italic decoration-white/5">
-          &copy; 2026
-          <a href="https://achaialabs.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-violet-500 transition-colors duration-200">Achaia Labs</a>. Secured by SendMyForm v2 Protocol.
+      {/* Footer */}
+      <footer className="py-10 px-10 border-t border-white/[0.06] text-center">
+        <p className="text-xs text-slate-700">
+          © 2026{" "}
+          <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="hover:text-violet-400 transition-colors">
+            Achaia Labs
+          </a>. All rights reserved.
         </p>
       </footer>
 
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(30px); }
+          from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-in {
-          animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .tracking-tightest {
-          letter-spacing: -0.09em;
-        }
-        .shadow-glow {
-          box-shadow: 0 0 30px -5px currentColor;
-        }
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #111;
-          border-radius: 99px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #6d28d9;
-        }
+        .animate-fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
       `}</style>
+    </div>
+  );
+}
+
+// --- Helper Components ---
+
+function SectionHeader({ icon: Icon, title }: { icon: any; title: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-8">
+      <div className="p-2.5 bg-violet-600/10 rounded-xl border border-violet-500/20">
+        <Icon size={18} className="text-violet-400" />
+      </div>
+      <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
+    </div>
+  );
+}
+
+function CodeBlock({ children, lang }: { children: string; lang?: string }) {
+  return (
+    <div className="rounded-xl bg-[#080810] border border-white/[0.08] overflow-hidden">
+      {lang && (
+        <div className="px-4 py-2 border-b border-white/[0.06] flex items-center gap-2">
+          <span className="text-[10px] text-slate-600 font-mono uppercase">{lang}</span>
+        </div>
+      )}
+      <pre className="p-5 text-sm font-mono text-violet-300 leading-relaxed overflow-x-auto">
+        {children}
+      </pre>
+    </div>
+  );
+}
+
+function FeatureChip({ text, icon: Icon = CheckCircle2 }: { text: string; icon?: any }) {
+  return (
+    <div className="flex items-start gap-3 p-5 rounded-xl bg-white/[0.03] border border-white/[0.07] hover:border-violet-500/20 transition-all">
+      <Icon size={14} className="text-violet-400 mt-0.5 flex-shrink-0" />
+      <p className="text-xs text-slate-400 leading-relaxed">{text}</p>
     </div>
   );
 }
