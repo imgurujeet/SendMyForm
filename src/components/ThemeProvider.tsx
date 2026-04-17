@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { trackThemeChange } from "@/lib/analytics";
 
 type Theme = "dark" | "light" | "system";
 
@@ -63,6 +64,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     }, [theme]);
 
     const setTheme = (newTheme: Theme) => {
+        trackThemeChange(newTheme);
         setThemeState(newTheme);
         localStorage.setItem("theme", newTheme);
     };

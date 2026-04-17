@@ -6,6 +6,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 import { nanoid } from "nanoid";
 import { Zap } from "lucide-react";
+import { trackSignIn, trackSignUp } from "@/lib/analytics";
 
 export default function AuthPage() {
   const [error, setError] = useState("");
@@ -39,6 +40,9 @@ export default function AuthPage() {
           createdAt: new Date(),
           theme: "modern",
         });
+        trackSignUp("google");
+      } else {
+        trackSignIn("google");
       }
       // Route admin users to admin panel
       if (user.email === "achaialabs@gmail.com" || user.email?.endsWith("@achaialabs.tech")) {

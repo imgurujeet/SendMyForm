@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { THEMES, getTheme } from "@/lib/themes";
 import ThemeToggle from "@/components/ThemeToggle";
+import { trackDocSection, trackCopyEndpoint, trackEmailThemePreview } from "@/lib/analytics";
 
 export default function ApiDocsPage() {
   const [mounted, setMounted] = useState(false);
@@ -38,6 +39,7 @@ export default function ApiDocsPage() {
   const copyToClipboard = (text: string) => {
     if (typeof navigator !== "undefined") {
       navigator.clipboard.writeText(text);
+      trackCopyEndpoint("docs_endpoint");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -357,7 +359,7 @@ export default function ApiDocsPage() {
               {Object.values(THEMES).map((theme: any) => (
                 <button
                   key={theme.id}
-                  onClick={() => setActiveThemePreview(theme.id)}
+                  onClick={() => { trackEmailThemePreview(theme.id); setActiveThemePreview(theme.id); }}
                   className={`px-4 py-3 rounded-xl text-xs font-semibold transition-all border ${activeThemePreview === theme.id
                     ? 'bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-900/30'
                     : 'bg-white/[0.03] border-white/[0.07] text-slate-500 hover:text-white hover:border-white/[0.12]'
