@@ -39,7 +39,7 @@ export default function Footer() {
 
           <div className="flex flex-col gap-3">
             <p className="text-white text-xs font-black uppercase tracking-widest">Company</p>
-            <Link href="/about" className="footer-link">About</Link>
+            <Link href="/About" className="footer-link">About</Link>
             <Link href="/services" className="footer-link">Services</Link>
             <Link href="/contact" className="footer-link">Contact</Link>
           </div>
