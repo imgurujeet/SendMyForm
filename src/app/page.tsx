@@ -48,7 +48,7 @@ export default function LandingPage() {
             Send<span className="text-violet-500">My</span>Form
           </Link>
           <span className="hidden sm:block text-[10px] text-slate-600 font-medium tracking-wider uppercase border border-slate-800 px-2 py-0.5 rounded">
-            by Achaia Labs
+            by <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="hover:text-violet-400 transition-colors">Achaia Labs</a>
           </span>
         </div>
 
@@ -113,8 +113,9 @@ export default function LandingPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
-          {/* Connector line */}
-          <div className="hidden md:block absolute top-[28px] left-[33%] right-[33%] h-px bg-gradient-to-r from-violet-500/30 via-violet-500/50 to-violet-500/30"></div>
+
+          {/* Connector line — sits behind the badges, spans badge centers */}
+          <div className="hidden md:block absolute top-[20px] left-[calc(16.67%+20px)] right-[calc(16.67%+20px)] h-px bg-gradient-to-r from-violet-500/40 via-violet-500/60 to-violet-500/40"></div>
 
           {[
             { step: "01", title: "Create your endpoint", desc: "Sign in and create a project. You'll get a unique form endpoint URL in seconds." },
@@ -122,7 +123,7 @@ export default function LandingPage() {
             { step: "03", title: "Receive submissions", desc: "Every submission is validated, spam-filtered, and delivered directly to your inbox." },
           ].map((item, i) => (
             <div key={i} className="relative p-8 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-violet-500/20 transition-all group">
-              <div className="w-10 h-10 rounded-xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 font-bold text-sm mb-6">
+              <div className="w-10 h-10 rounded-xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center text-violet-400 font-bold text-sm mb-6 relative z-10">
                 {item.step}
               </div>
               <h3 className="text-base font-semibold text-white mb-3">{item.title}</h3>
@@ -313,6 +314,7 @@ export default function LandingPage() {
 
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold text-white uppercase tracking-wider">Product</p>
+            <Link href="/about" className="text-sm text-slate-500 hover:text-white transition-colors">About</Link>
             <Link href="/dashboard" className="text-sm text-slate-500 hover:text-white transition-colors">Dashboard</Link>
             <Link href="/docs" className="text-sm text-slate-500 hover:text-white transition-colors">Documentation</Link>
           </div>
