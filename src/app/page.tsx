@@ -4,6 +4,7 @@ import Link from "next/link";
 import TermsModal from "@/components/TermsModal";
 import PrivacyModal from "@/components/PrivacyModal";
 import ThemeToggle from "@/components/ThemeToggle";
+import { trackCTAClick } from "@/lib/analytics";
 import {
   Code2,
   ShieldCheck,
@@ -81,10 +82,10 @@ export default function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto px-4 sm:px-0">
-          <Link href="/dashboard" className="px-6 py-3 bg-violet-600 text-white font-semibold text-sm rounded-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/30 flex items-center justify-center gap-2 group">
+          <Link href="/dashboard" onClick={() => trackCTAClick("get_started", "hero")} className="px-6 py-3 bg-violet-600 text-white font-semibold text-sm rounded-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/30 flex items-center justify-center gap-2 group">
             Get started free <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
           </Link>
-          <Link href="/docs" className="px-6 py-3 bg-white/5 border border-white/10 text-white font-semibold text-sm rounded-lg hover:bg-white/8 transition-all flex items-center justify-center gap-2">
+          <Link href="/docs" onClick={() => trackCTAClick("view_docs", "hero")} className="px-6 py-3 bg-white/5 border border-white/10 text-white font-semibold text-sm rounded-lg hover:bg-white/8 transition-all flex items-center justify-center gap-2">
             <Terminal size={15} /> View docs
           </Link>
         </div>

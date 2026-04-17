@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { CheckCircle2, Megaphone, Terminal, Zap, ShieldCheck, Globe, ShieldX } from "lucide-react";
+import { event } from "@/lib/analytics";
 
 export default function SimpleThankYou() {
    const [ad, setAd] = useState<any>({
@@ -15,6 +16,7 @@ export default function SimpleThankYou() {
 
    useEffect(() => {
       setMounted(true);
+      event("form_submission_success", { page: "thank_you" });
       fetch("/api/admin/config")
          .then(r => r.json())
          .then(data => {

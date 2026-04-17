@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Plus, Layers, LogOut, Settings, Home, Copy, Check, X, ShieldCheck, Trash2, Zap, Link2, Menu, User } from "lucide-react";
 import { THEMES } from "@/lib/themes";
 import { cn } from "@/lib/utils";
+import { trackProjectCreate, trackProjectDelete, trackTabSwitch, trackCopyEndpoint } from "@/lib/analytics";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
@@ -64,6 +65,7 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if (data.id || data.success) {
+        trackProjectCreate(newName);
         setSelectedProjectId(data.id);
         setIsCreatingNew(false);
         setNewName("");
@@ -76,10 +78,14 @@ export default function Dashboard() {
   };
 
   const deleteProj = async (id: string) => {
-    if (confirm("Terminate Node?")) await deleteDoc(doc(db, "projects", id));
+    if (confirm("Terminate Node?")) {
+      trackProjectDelete(id);
+      await deleteDoc(doc(db, "projects", id));
+    }
   };
 
   const switchTab = (tab: string) => {
+    trackTabSwitch(tab);
     setActiveTab(tab);
     setIsCreatingNew(false);
     setError(null);
@@ -108,7 +114,7 @@ export default function Dashboard() {
             <Zap size={20} fill="#3b82f6" /> SendMyForm
           </Link>
         </div>
-        
+
         {/* User profile in sidebar */}
         <div className="p-4 border-b border-zinc-800 flex items-center gap-3">
           {user?.photoURL ? (
@@ -210,7 +216,7 @@ export default function Dashboard() {
               <p className="text-zinc-500 text-xs font-bold uppercase mb-3 flex items-center gap-2 tracking-widest"><Link2 size={14} /> Node Ingress Point</p>
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-black p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border border-zinc-800 mb-8 shadow-inner">
                 <code className="text-blue-400 text-xs sm:text-sm font-mono tracking-tighter break-all">{origin}/api/f/{currentProject.slug || currentProject.id}</code>
-                <button onClick={() => { navigator.clipboard.writeText(`${origin}/api/f/${currentProject.slug || currentProject.id}`); setCopiedLink(true); setTimeout(() => setCopiedLink(false), 2000) }} className="bg-zinc-800 p-3 rounded-2xl border border-zinc-700 hover:bg-zinc-700 transition-all shrink-0">{copiedLink ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}</button>
+                <button onClick={() => { navigator.clipboard.writeText(`${origin}/api/f/${currentProject.slug || currentProject.id}`); trackCopyEndpoint(currentProject.id); setCopiedLink(true); setTimeout(() => setCopiedLink(false), 2000) }} className="bg-zinc-800 p-3 rounded-2xl border border-zinc-700 hover:bg-zinc-700 transition-all shrink-0">{copiedLink ? <Check size={18} className="text-green-500" /> : <Copy size={18} />}</button>
               </div>
               <p className="text-zinc-500 text-xs font-bold uppercase mb-4 opacity-50 tracking-widest">Integration Point</p>
               <div className="bg-black p-4 md:p-6 rounded-2xl border border-zinc-800 shadow-inner overflow-x-auto">
