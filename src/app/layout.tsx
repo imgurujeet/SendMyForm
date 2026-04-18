@@ -7,6 +7,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 const GA_ID = process.env.NEXT_PUBLIC_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sendmyform.vercel.app"),
   icons: {
     icon: "/icon.png"
   },
@@ -19,12 +20,19 @@ export const metadata: Metadata = {
     url: "https://sendmyform.vercel.app",
     siteName: "SendMyForm",
     type: "website",
+    images: [{
+      url: "/og-image.png",
+      width: 1200,
+      height: 630,
+      alt: "SendMyForm Preview",
+    }],
   },
   twitter: {
     card: "summary_large_image",
     title: "SendMyForm — Form Backend as a Service",
     description: "Handle form submissions without writing a backend. Works with any frontend or framework.",
     site: "@achaialabs",
+    images: ["/og-image.png"],
   },
 };
 
