@@ -249,6 +249,32 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* --- TOOL CTA --- */}
+      <section className="py-20 px-4 max-w-5xl mx-auto">
+        <div className="p-1 w-full bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-600 rounded-3xl">
+          <div className="bg-[#0A0A0F] rounded-[22px] px-8 py-12 md:px-16 md:py-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="max-w-xl">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Don't want to code? <span className="text-violet-400">Generate it.</span></h2>
+              <p className="text-slate-400 mb-6">Use our free visual builder to create your form and get the HTML code instantly. One click to connect, no backend skills required.</p>
+              <Link href="/tools/form-generator" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-sm rounded-xl hover:bg-slate-200 transition-all">
+                Try the Form Generator <ArrowRight size={16} />
+              </Link>
+            </div>
+            <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+              <div className="absolute inset-0 bg-violet-600/20 blur-[60px] rounded-full animate-pulse"></div>
+              <div className="relative z-10 p-6 bg-white/[0.03] border border-white/10 rounded-2xl transform rotate-6 hover:rotate-0 transition-transform duration-500">
+                <Code2 className="text-violet-400 w-16 h-16 mb-4" />
+                <div className="space-y-2">
+                  <div className="h-2 w-32 bg-white/10 rounded"></div>
+                  <div className="h-2 w-24 bg-white/10 rounded"></div>
+                  <div className="h-2 w-40 bg-white/10 rounded"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- COMPARISON --- */}
       <section className="py-24 md:py-32 px-4 max-w-4xl mx-auto">
         <div className="text-center mb-14">

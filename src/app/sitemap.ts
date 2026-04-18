@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
+      url: `${baseUrl}/tools/form-generator`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/privacy`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
