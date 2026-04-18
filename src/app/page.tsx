@@ -285,6 +285,63 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* --- DIRECT ANSWER FOR AEO --- */}
+      <section className="py-24 px-4 max-w-4xl mx-auto border-t border-white/[0.05]">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-2xl font-bold mb-4">What is a No-Backend Form?</h2>
+            <p className="text-slate-400 text-sm leading-relaxed mb-4">
+              A no-backend form allows you to collect data from your website's visitors without setting up a database or writing server-side code (Node.js, PHP, Python).
+            </p>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              By using <strong>SendMyForm</strong>, you simply point your HTML form's action attribute to our secure endpoint. We handle the heavy lifting: receiving data, filtering spam, and delivering it instantly to your email.
+            </p>
+          </div>
+          <div className="p-8 rounded-2xl bg-violet-600/5 border border-violet-500/10">
+            <h3 className="text-lg font-semibold mb-2 text-violet-400">Perfect for:</h3>
+            <ul className="space-y-2 text-sm text-slate-500">
+              <li className="flex gap-2"><span>✅</span> Static Site Generators (Next.js, Hugo, Jekyll)</li>
+              <li className="flex gap-2"><span>✅</span> Landing Pages & Portfolios</li>
+              <li className="flex gap-2"><span>✅</span> Marketing Sites (WordPress, Webflow, Framer)</li>
+              <li className="flex gap-2"><span>✅</span> JAMstack Applications</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FAQ SECTION FOR AEO --- */}
+      <section className="py-24 md:py-32 px-4 max-w-4xl mx-auto">
+        <div className="text-center mb-16">
+          <p className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Questions</p>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Frequently Asked Questions</h2>
+        </div>
+        <div className="grid gap-6">
+          {[
+            {
+              q: "How do I use SendMyForm with React or Next.js?",
+              a: "You can use a standard HTML form or the Fetch API. Simply POST your form data to your unique SendMyForm endpoint URL. It works perfectly with libraries like Formik and React Hook Form."
+            },
+            {
+              q: "Is it really free to start?",
+              a: "Yes! Our free tier includes everything you need to get started. You can create projects, handle submissions, and receive email notifications without any upfront cost."
+            },
+            {
+              q: "Do you store my submission data?",
+              a: "Privacy is our priority. We process and deliver your submissions instantly to your email, and then we discard the data. We do not store your users' sensitive information on our servers."
+            },
+            {
+              q: "Can I use SendMyForm on Webflow or Framer?",
+              a: "Absolutely. SendMyForm is framework-agnostic. In Webflow or Framer, simply set the form's action to your SendMyForm endpoint and change the method to POST."
+            }
+          ].map((item, i) => (
+            <div key={i} className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-violet-500/20 transition-all">
+              <h3 className="text-lg font-semibold text-white mb-3">{item.q}</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* --- CTA --- */}
       <section className="py-28 md:py-40 relative overflow-hidden flex flex-col items-center px-4">
         <div className="absolute inset-0 pointer-events-none">

@@ -107,6 +107,7 @@ export default function ApiDocsPage() {
               { label: "Email Themes", href: "#themes" },
               { label: "How It Works", href: "#workflow" },
               { label: "Why SendMyForm", href: "#why" },
+              { label: "Use Cases", href: "#usecases" },
             ].map((item) => (
               <a
                 key={item.href}
@@ -448,6 +449,31 @@ export default function ApiDocsPage() {
               ].map((item, i) => (
                 <FeatureChip key={i} text={item} />
               ))}
+            </div>
+          </section>
+
+          {/* --- COMMON USE CASES FOR SEO/AEO --- */}
+          <section id="usecases" className="mb-20 scroll-mt-20">
+            <SectionHeader icon={CheckCircle2} title="Common Use Cases" />
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3">How to handle forms in a static site?</h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                  Static sites (HTML, Hugo, Jekyll) don't have a server to process form data. By using SendMyForm, you can handle contact forms, lead generation, and surveys without any backend code.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3">Integrating with React and Next.js</h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                  For modern React frameworks, you can use the standard <code className="text-violet-400">form</code> tag or create custom handlers with the Fetch API to POST data to your endpoint.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3">Adding a contact form to Webflow or Framer</h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-4">
+                  SendMyForm is the perfect companion for no-code tools. Simply set your Webflow form's action URL to your SendMyForm project endpoint to start receiving submissions in your email.
+                </p>
+              </div>
             </div>
           </section>
 

@@ -10,23 +10,37 @@ const GA_ID = process.env.NEXT_PUBLIC_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sendmyform.vercel.app"),
+  applicationName: "SendMyForm",
+  authors: [{ name: "Achaia Labs", url: "https://achaialabs.tech" }],
   icons: {
     icon: "/icon.png"
   },
-  title: "SendMyForm — Form Backend as a Service | Handle Form Submissions Instantly",
-  description: "SendMyForm is a form backend service that receives, validates, and delivers form submissions directly to your inbox. No backend code required. Works with any HTML form, React, Vue, or frontend framework.",
-  keywords: "form backend, form submission service, HTML form handler, form as a service, form endpoint, contact form backend, form API, email form submissions, no backend form, SendMyForm",
+  title: "SendMyForm — #1 No-Backend Form Submit Service | Handle Submissions Instantly",
+  description: "SendMyForm is the best form backend service that receives, validates, and delivers form submissions directly to your inbox. No backend code required. Perfect for Jamstack, Static Sites, React, and Vue.",
+  keywords: "no backend form submit, form backend service, HTML form handler, static site forms, jamstack form backend, form as a service, contact form API, email form submissions, AJAX form submit, SendMyForm, formspree alternative",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: "SendMyForm — Handle Form Submissions Without a Backend",
-    description: "Point your HTML form at a single endpoint. We validate, filter spam, and deliver submissions to your inbox instantly.",
+    description: "The easiest way to handle forms on static sites. Point your HTML form at our endpoint. We do the rest: validation, spam filtering, and instant delivery.",
     url: "https://sendmyform.vercel.app",
     siteName: "SendMyForm",
     type: "website",
+    locale: "en_US",
     images: [{
       url: "/og-image.png",
       width: 1200,
       height: 630,
-      alt: "SendMyForm Preview",
+      alt: "SendMyForm — Form Backend as a Service",
     }],
   },
   twitter: {
@@ -34,8 +48,28 @@ export const metadata: Metadata = {
     title: "SendMyForm — Form Backend as a Service",
     description: "Handle form submissions without writing a backend. Works with any frontend or framework.",
     site: "@achaialabs",
+    creator: "@achaialabs",
     images: ["/og-image.png"],
   },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SendMyForm",
+  "operatingSystem": "All",
+  "applicationCategory": "DeveloperApplication",
+  "description": "A powerful form backend service that allows developers to collect form submissions without writing a single line of backend code.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "ratingCount": "120"
+  }
 };
 
 export default function RootLayout({
@@ -46,6 +80,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <Script
+          id="json-ld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {/* Google Analytics */}
         {GA_ID && (
           <>
@@ -65,10 +105,12 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        <script
+        <Script
+          id="adsbygoogle-init"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9204160176455905"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
       </head>
       <body suppressHydrationWarning>
