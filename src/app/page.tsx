@@ -59,7 +59,7 @@ export default function LandingPage() {
           </Link>
           <ThemeToggle />
           <Link href="/dashboard" className="px-4 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/30">
-            Open Dashboard
+            Login
           </Link>
         </div>
       </nav>
@@ -334,7 +334,7 @@ export default function LandingPage() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/[0.05] pt-8">
-          <p className="text-xs text-slate-700">© 2026 Achaia Labs. All rights reserved.</p>
+          <p className="text-xs text-slate-700">© 2026 <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-700 hover:text-violet-500 transition-colors">Achaia Labs</a>. All rights reserved.</p>
           <div className="flex gap-5 text-sm text-slate-600">
             <a href="https://x.com/achaialabs" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
             <a href="#" className="hover:text-white transition-colors">GitHub</a>
