@@ -323,7 +323,7 @@ export default function LandingPage() {
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold text-white uppercase tracking-wider">Company</p>
             <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-500 hover:text-white transition-colors">Achaia Labs</a>
-            <Link href="/contact" className="text-sm text-slate-500 hover:text-white transition-colors">Contact</Link>
+            <a href="mailto:contact@sendmyform.live" className="text-sm text-slate-500 hover:text-white transition-colors">Contact</a>
           </div>
 
           <div className="flex flex-col gap-3">
