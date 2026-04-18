@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://sendmyform.vercel.app' // Assuming this is the production URL based on previous info
+  const baseUrl = 'https://sendmyform.live' // Assuming this is the production URL based on previous info
 
   return [
     {

@@ -234,7 +234,7 @@ export default function LandingPage() {
             </div>
             <pre className="p-5 text-[13px] font-mono leading-relaxed overflow-x-auto text-slate-300">
               {`<form
-  action="https://sendmyform.vercel.app/api/f/YOUR_ID"
+  action="https://sendmyform.live/api/f/YOUR_ID"
   method="POST"
   enctype="multipart/form-data"
 >

@@ -25,7 +25,7 @@ import { trackDocSection, trackCopyEndpoint, trackEmailThemePreview } from "@/li
 export default function ApiDocsPage() {
   const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [origin, setOrigin] = useState("https://sendmyform.vercel.app");
+  const [origin, setOrigin] = useState("https://sendmyform.live");
   const [activeThemePreview, setActiveThemePreview] = useState("modern");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -160,7 +160,7 @@ export default function ApiDocsPage() {
             </div>
 
             <CodeBlock lang="HTML">
-              {`<form action="https://sendmyform.vercel.app/api/f/contact" method="POST">
+              {`<form action="https://sendmyform.live/api/f/contact" method="POST">
   <input name="email" type="email" required />
   <button type="submit">Submit</button>
 </form>`}
@@ -175,7 +175,7 @@ export default function ApiDocsPage() {
               <div className="flex justify-between items-center mb-6">
                 <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Endpoint URL</p>
                 <button
-                  onClick={() => copyToClipboard(`${origin || 'https://sendmyform.vercel.app'}/api/f/[YOUR_FORM_ID]`)}
+                  onClick={() => copyToClipboard(`${origin || 'https://sendmyform.live'}/api/f/[YOUR_FORM_ID]`)}
                   className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/[0.08] rounded-lg text-slate-400 hover:text-white transition-all text-xs font-medium"
                 >
                   {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
@@ -186,7 +186,7 @@ export default function ApiDocsPage() {
               <CodeBlock lang="HTML">
                 {`<!-- Add this to your website -->
 <form
-  action="${origin || 'https://sendmyform.vercel.app'}/api/f/[YOUR_FORM_ID]"
+  action="${origin || 'https://sendmyform.live'}/api/f/[YOUR_FORM_ID]"
   method="POST"
   enctype="multipart/form-data"
 >
@@ -264,7 +264,7 @@ export default function ApiDocsPage() {
                     </td>
                     <td className="px-6 py-5">
                       <pre className="text-sm text-violet-300 font-mono leading-relaxed overflow-x-auto">
-                        {`curl -X POST https://sendmyform.vercel.app/api/f/contact \\
+                        {`curl -X POST https://sendmyform.live/api/f/contact \\
   -d "email=test@test.com"`}
                       </pre>
                     </td>

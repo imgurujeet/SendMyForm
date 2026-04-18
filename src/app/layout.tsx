@@ -9,7 +9,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 const GA_ID = process.env.NEXT_PUBLIC_MEASUREMENT_ID || "";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sendmyform.vercel.app"),
+  metadataBase: new URL("https://sendmyform.live"),
   applicationName: "SendMyForm",
   authors: [{ name: "Achaia Labs", url: "https://achaialabs.tech" }],
   icons: {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SendMyForm — Handle Form Submissions Without a Backend",
     description: "The easiest way to handle forms on static sites. Point your HTML form at our endpoint. We do the rest: validation, spam filtering, and instant delivery.",
-    url: "https://sendmyform.vercel.app",
+    url: "https://sendmyform.live",
     siteName: "SendMyForm",
     type: "website",
     locale: "en_US",
@@ -57,8 +57,8 @@ const orgLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Achaia Labs",
-  "url": "https://achaialabs.tech",
-  "logo": "https://sendmyform.vercel.app/logo.jpeg",
+  "url": "https://sendmyform.live",
+  "logo": "https://sendmyform.live/logo.jpeg",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "",

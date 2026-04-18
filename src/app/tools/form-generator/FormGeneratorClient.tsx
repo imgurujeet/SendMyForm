@@ -37,7 +37,7 @@ export default function FormGeneratorClient() {
   </div>`;
     }).join("\n");
 
-    return `<form action="https://sendmyform.vercel.app/api/f/${endpointId}" method="POST">
+    return `<form action="https://sendmyform.live/api/f/${endpointId}" method="POST">
 ${fieldHtml}
   <button type="submit">Submit</button>
 </form>`;
