@@ -87,7 +87,7 @@ export default function ApiDocsPage() {
         <div className="flex items-center gap-3">
           <ThemeToggle />
           <Link href="/dashboard" className="px-4 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-900/30">
-            Open Dashboard
+            Login
           </Link>
         </div>
       </nav>
