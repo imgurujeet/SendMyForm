@@ -53,6 +53,24 @@ export const metadata: Metadata = {
   },
 };
 
+const orgLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Achaia Labs",
+  "url": "https://achaialabs.tech",
+  "logo": "https://sendmyform.vercel.app/logo.jpeg",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "",
+    "contactType": "customer service",
+    "email": "contact@sendmyform.live"
+  },
+  "sameAs": [
+    "https://x.com/achaialabs",
+    "https://www.linkedin.com/company/achaia-labs/"
+  ]
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -60,6 +78,10 @@ const jsonLd = {
   "operatingSystem": "All",
   "applicationCategory": "DeveloperApplication",
   "description": "A powerful form backend service that allows developers to collect form submissions without writing a single line of backend code.",
+  "author": {
+    "@type": "Organization",
+    "name": "Achaia Labs"
+  },
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -85,6 +107,12 @@ export default function RootLayout({
           type="application/ld+json"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Script
+          id="org-ld"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
         />
         {/* Google Analytics */}
         {GA_ID && (

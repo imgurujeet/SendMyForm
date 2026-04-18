@@ -206,6 +206,31 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* ── TRUST & TRANSPARENCY (E-E-A-T) ── */}
+        <section className="max-w-4xl mx-auto px-6 md:px-10 py-16 border-t border-white/[0.05]">
+          <div className="grid md:grid-cols-3 gap-10">
+            <div className="col-span-2">
+              <h3 className="text-xl font-bold text-white mb-4">Trust & Transparency</h3>
+              <div className="space-y-4 text-sm text-slate-500">
+                <p>
+                  We believe that tools for developers should be built with absolute transparency. Our "Zero-Storage" backend is a technical choice to ensure your users' data never rests on our infrastructure longer than is necessary for delivery.
+                </p>
+                <p>
+                  Based in <strong>Indore, India</strong>, the Achaia Labs team is committed to the open web and privacy-centric development. We are not a faceless corporation; we are engineers building for engineers.
+                </p>
+              </div>
+            </div>
+            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.05]">
+              <h4 className="text-xs font-bold text-white uppercase tracking-widest mb-4">Direct Contact</h4>
+              <p className="text-sm text-slate-400 mb-2">Technical Support:</p>
+              <a href="mailto:contact@sendmyform.live" className="text-sm text-violet-400 font-medium hover:underline">contact@sendmyform.live</a>
+              <div className="mt-6 pt-6 border-t border-white/[0.05]">
+                <p className="text-xs text-slate-600 italic">Expected response time: &lt; 24 hours</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── DIVIDER ── */}
         <div className="w-full h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
