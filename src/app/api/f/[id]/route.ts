@@ -52,11 +52,23 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
         projectID = snapshot.docs[0].id;
       }
     } else {
+      // 1a. Try lookup by slug
       const q = db.collection("projects").where("slug", "==", id.toLowerCase()).limit(1);
       const snapshot = await q.get();
       if (!snapshot.empty) {
         projectDoc = snapshot.docs[0].data();
         projectID = snapshot.docs[0].id;
+      } else {
+        // 1b. Try lookup by document ID directly (fallback)
+        try {
+           const doc = await db.collection("projects").doc(id).get();
+           if (doc.exists) {
+             projectDoc = doc.data();
+             projectID = doc.id;
+           }
+        } catch (e) {
+           // Skip if not a valid doc ID
+        }
       }
     }
 
@@ -158,18 +170,20 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
     // 7. REDIRECT TO THANK YOU PAGE WITH ADS
     const origin = new URL(req.url).origin;
+    const successUrl = `${origin}/success`;
     
     // If JSON request, return success result with redirect URL
     if (contentType.includes("application/json")) {
       return NextResponse.json({ 
         success: true, 
         message: "Submission received", 
-        redirect: `${origin}/success` 
+        redirect: successUrl 
       }, { status: 200, headers: corsHeaders });
     }
 
-    // Otherwise standard redirect for form actions
-    const response = NextResponse.redirect(`${origin}/success`);
+    // Use 303 (See Other) instead of default 307 to force browser to change method from POST to GET
+    // This prevents the browser from trying to POST to the /success page, which causes 404/405 errors.
+    const response = NextResponse.redirect(successUrl, 303);
     
     // Add CORS headers to the redirect response to prevent browser blocks
     Object.entries(corsHeaders).forEach(([key, value]) => {
