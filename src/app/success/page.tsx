@@ -22,14 +22,14 @@ export default function SimpleThankYou() {
 
    // Helper to extract ad slot from raw HTML string
    const extractSlot = (html: string) => {
-      if (!html) return null;
+      if (!html) return undefined;
       const match = html.match(/data-ad-slot="(\d+)"/);
-      return match ? match[1] : null;
+      return match ? match[1] : undefined;
    };
 
    // Helper to extract ad client from raw HTML string
    const extractClient = (html: string) => {
-      if (!html) return null;
+      if (!html) return undefined;
       const match = html.match(/data-ad-client="([^"]+)"/);
       return match ? match[1] : "ca-pub-9204160176455905";
    };
@@ -46,17 +46,15 @@ export default function SimpleThankYou() {
 
          {/* 1. TOP AD SLOT (Leaderboard) */}
          <div className="w-full max-w-5xl mb-16 min-h-[100px] flex items-center justify-center">
-            {adConfig?.topAd ? (
-               extractSlot(adConfig.topAd) ? (
-                  <AdSense 
-                     adSlot={extractSlot(adConfig.topAd)!} 
-                     adClient={extractClient(adConfig.topAd)}
-                     adTest={isTestMode(adConfig.topAd)} 
-                     adFormat="horizontal" 
-                  />
-               ) : (
-                  <div dangerouslySetInnerHTML={{ __html: adConfig.topAd }} className="w-full" />
-               )
+            {adConfig?.topAd && extractSlot(adConfig.topAd) ? (
+               <AdSense 
+                  adSlot={extractSlot(adConfig.topAd)!} 
+                  adClient={extractClient(adConfig.topAd)}
+                  adTest={isTestMode(adConfig.topAd)} 
+                  adFormat="horizontal" 
+               />
+            ) : adConfig?.topAd ? (
+               <div dangerouslySetInnerHTML={{ __html: adConfig.topAd }} className="w-full" />
             ) : (
                <AdSense adSlot="success_top_fallback" adFormat="horizontal" />
             )}
@@ -74,17 +72,15 @@ export default function SimpleThankYou() {
 
             {/* 2. MIDDLE AD SLOT (Native/Square) */}
             <div className="w-full max-w-2xl mb-12 min-h-[250px] flex items-center justify-center">
-               {adConfig?.middleAd ? (
-                  extractSlot(adConfig.middleAd) ? (
-                     <AdSense 
-                        adSlot={extractSlot(adConfig.middleAd)!} 
-                        adClient={extractClient(adConfig.middleAd)}
-                        adTest={isTestMode(adConfig.middleAd)} 
-                        adFormat="rectangle" 
-                     />
-                  ) : (
-                     <div dangerouslySetInnerHTML={{ __html: adConfig.middleAd }} className="w-full" />
-                  )
+               {adConfig?.middleAd && extractSlot(adConfig.middleAd) ? (
+                  <AdSense 
+                     adSlot={extractSlot(adConfig.middleAd)!} 
+                     adClient={extractClient(adConfig.middleAd)}
+                     adTest={isTestMode(adConfig.middleAd)} 
+                     adFormat="rectangle" 
+                  />
+               ) : adConfig?.middleAd ? (
+                  <div dangerouslySetInnerHTML={{ __html: adConfig.middleAd }} className="w-full" />
                ) : (
                   <AdSense adSlot="success_middle_fallback" adFormat="rectangle" />
                )}
@@ -98,21 +94,20 @@ export default function SimpleThankYou() {
 
          {/* 3. BOTTOM AD SLOT (Footer Banner) */}
          <div className="w-full max-w-5xl mt-12 min-h-[100px] flex items-center justify-center">
-            {adConfig?.bottomAd ? (
-               extractSlot(adConfig.bottomAd) ? (
-                  <AdSense 
-                     adSlot={extractSlot(adConfig.bottomAd)!} 
-                     adClient={extractClient(adConfig.bottomAd)}
-                     adTest={isTestMode(adConfig.bottomAd)} 
-                     adFormat="horizontal" 
-                  />
-               ) : (
-                  <div dangerouslySetInnerHTML={{ __html: adConfig.bottomAd }} className="w-full" />
-               )
+            {adConfig?.bottomAd && extractSlot(adConfig.bottomAd) ? (
+               <AdSense 
+                  adSlot={extractSlot(adConfig.bottomAd)!} 
+                  adClient={extractClient(adConfig.bottomAd)}
+                  adTest={isTestMode(adConfig.bottomAd)} 
+                  adFormat="horizontal" 
+               />
+            ) : adConfig?.bottomAd ? (
+               <div dangerouslySetInnerHTML={{ __html: adConfig.bottomAd }} className="w-full" />
             ) : (
                <AdSense adSlot="success_bottom_fallback" adFormat="horizontal" />
             )}
          </div>
+
 
 
          <div className="mt-32 text-center pb-20 border-t border-slate-50 pt-20 w-full flex flex-col items-center gap-6">
