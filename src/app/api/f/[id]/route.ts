@@ -12,30 +12,30 @@ const EMAIL_FROM = process.env.EMAIL_FROM || "noreply@sendmyform.com";
 
 const formSchema = z.record(z.string(), z.any());
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Max-Age": "86400",
+};
+
 export async function OPTIONS() {
   return new Response(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Max-Age": "86400",
-    },
+    headers: corsHeaders,
   });
 }
 
 export async function GET(req: Request) {
   const origin = new URL(req.url).origin;
-  return NextResponse.redirect(`${origin}/docs`);
+  const response = NextResponse.redirect(`${origin}/docs`);
+  Object.entries(corsHeaders).forEach(([k, v]) => response.headers.set(k, v));
+  return response;
 }
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-  };
+
 
   try {
     // 1. Find Project by Custom Slug OR API Key
