@@ -5,6 +5,7 @@ import TermsModal from "@/components/TermsModal";
 import PrivacyModal from "@/components/PrivacyModal";
 import ThemeToggle from "@/components/ThemeToggle";
 import { trackCTAClick } from "@/lib/analytics";
+import AdSense from "@/components/AdSense";
 import {
   Code2,
   ShieldCheck,
@@ -104,6 +105,7 @@ export default function LandingPage() {
             </div>
           ))}
         </div>
+        <AdSense adSlot="home_hero_bottom" className="mt-20" />
       </section>
 
       {/* --- HOW IT WORKS --- */}
@@ -141,6 +143,8 @@ export default function LandingPage() {
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Everything your forms need</h2>
           <p className="text-slate-500 mt-4 max-w-lg mx-auto text-sm leading-relaxed">Built for developers who want reliable form handling without the overhead of a custom backend.</p>
         </div>
+
+        <AdSense adSlot="home_features_top" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
@@ -341,6 +345,9 @@ export default function LandingPage() {
           <p className="text-xs font-semibold text-violet-400 uppercase tracking-widest mb-3">Questions</p>
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Frequently Asked Questions</h2>
         </div>
+        
+        <AdSense adSlot="home_faq_top" />
+        
         <div className="grid gap-6">
           {[
             {

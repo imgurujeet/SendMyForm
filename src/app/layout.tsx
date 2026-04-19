@@ -51,6 +51,9 @@ export const metadata: Metadata = {
     creator: "@achaialabs",
     images: ["/og-image.png"],
   },
+  other: {
+    "google-adsense-account": "ca-pub-9204160176455905"
+  }
 };
 
 const orgLd = {

@@ -21,6 +21,7 @@ import {
 import { THEMES, getTheme } from "@/lib/themes";
 import ThemeToggle from "@/components/ThemeToggle";
 import { trackDocSection, trackCopyEndpoint, trackEmailThemePreview } from "@/lib/analytics";
+import AdSense from "@/components/AdSense";
 
 export default function ApiDocsPage() {
   const [mounted, setMounted] = useState(false);
@@ -165,6 +166,7 @@ export default function ApiDocsPage() {
   <button type="submit">Submit</button>
 </form>`}
             </CodeBlock>
+            <AdSense adSlot="docs_quickstart_bottom" />
           </section>
 
           {/* --- YOUR ENDPOINT --- */}
@@ -272,6 +274,7 @@ export default function ApiDocsPage() {
                 </tbody>
               </table>
             </div>
+            <AdSense adSlot="docs_examples_bottom" />
           </section>
 
           {/* --- EMAIL DELIVERY --- */}
@@ -451,6 +454,8 @@ export default function ApiDocsPage() {
               ))}
             </div>
           </section>
+
+          <AdSense adSlot="docs_footer" />
 
           {/* --- COMMON USE CASES FOR SEO/AEO --- */}
           <section id="usecases" className="mb-20 scroll-mt-20">

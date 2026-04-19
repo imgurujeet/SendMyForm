@@ -13,6 +13,7 @@ import { THEMES } from "@/lib/themes";
 import { cn } from "@/lib/utils";
 import { trackProjectCreate, trackProjectDelete, trackTabSwitch, trackCopyEndpoint } from "@/lib/analytics";
 import ThemeToggle from "@/components/ThemeToggle";
+import AdSense from "@/components/AdSense";
 
 const THEME_LIST = Object.values(THEMES) as Array<{
   id: string; name: string; primary: string; bg: string;
@@ -278,12 +279,11 @@ export default function Dashboard() {
           ))}
         </nav>
 
-        <div className="p-3" style={{ borderTop: "1px solid var(--border-color)" }}>
-          <button onClick={() => signOut(auth)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium hover:text-red-400 hover:bg-red-500/5 transition-all"
-            style={muted}>
-            <LogOut size={16} />Sign out
           </button>
+        </div>
+
+        <div className="mt-auto px-4 pb-4">
+          <AdSense adSlot="dashboard_sidebar_bottom" adFormat="vertical" />
         </div>
       </aside>
 
@@ -408,13 +408,10 @@ export default function Dashboard() {
                   { label: "Data Stored", val: "Zero", icon: ShieldCheck, cls: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20" },
                   { label: "System Status", val: "Online", icon: Activity, cls: "text-blue-400 bg-blue-500/10 border-blue-500/20" },
                 ].map((s, i) => (
-                  <div key={i} className="p-6 rounded-2xl border" style={card}>
-                    <div className={`p-2 rounded-lg border w-fit mb-4 ${s.cls}`}><s.icon size={15} /></div>
-                    <p className="text-2xl font-bold mb-1">{s.val}</p>
-                    <p className="text-xs font-medium" style={muted}>{s.label}</p>
-                  </div>
                 ))}
               </div>
+
+              <AdSense adSlot="dashboard_overview_middle" />
 
               {projects.length === 0 ? (
                 <div className="rounded-2xl border border-dashed p-16 text-center" style={{ borderColor: "var(--border-color)" }}>
@@ -541,6 +538,8 @@ export default function Dashboard() {
                       <p className="text-xs" style={muted}>* The URL will be unique to each project.</p>
                     </div>
                   </div>
+
+                  <AdSense adSlot="dashboard_project_middle" />
 
                   {/* Code snippet card */}
                   <div className="rounded-2xl border overflow-hidden" style={card}>

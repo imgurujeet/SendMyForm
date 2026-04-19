@@ -12,6 +12,7 @@ import {
   Terminal,
   Zap
 } from "lucide-react";
+import AdSense from "@/components/AdSense";
 
 export default function FormGeneratorClient() {
   const [copied, setCopied] = useState(false);
@@ -70,9 +71,11 @@ ${fieldHtml}
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Build your form visually, generate the code, and connect it to our no-backend service in seconds. No setup required.
           </p>
-        </header>
+          </header>
 
-        <div className="grid lg:grid-cols-2 gap-10">
+          <AdSense adSlot="tools_form_gen_top" />
+
+          <div className="grid lg:grid-cols-2 gap-10">
           {/* Configurator */}
           <section className="space-y-6">
             <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
@@ -181,7 +184,9 @@ ${fieldHtml}
           </section>
         </div>
 
-        {/* SEO Content Section */}
+        <AdSense adSlot="tools_form_gen_bottom" />
+
+        {/* SEO Content Section --- */}
         <article className="mt-24 pt-24 border-t border-white/[0.05] max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-8">How to use the HTML Form Generator</h2>
           <div className="grid md:grid-cols-2 gap-12 text-slate-400 leading-relaxed text-sm">
