@@ -169,11 +169,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
 
     // Otherwise standard redirect for form actions
-    return NextResponse.redirect(`${origin}/success`);
+    const response = NextResponse.redirect(`${origin}/success`);
+    
+    // Add CORS headers to the redirect response to prevent browser blocks
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+    
+    return response;
 
   } catch (error: any) {
     console.error("Submission error:", error);
     return NextResponse.json({ success: false, error: "Server Error" }, { status: 500, headers: corsHeaders });
   }
 }
+
 
