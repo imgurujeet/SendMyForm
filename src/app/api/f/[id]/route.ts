@@ -13,17 +13,29 @@ const EMAIL_FROM = process.env.EMAIL_FROM || "noreply@sendmyform.com";
 const formSchema = z.record(z.string(), z.any());
 
 export async function OPTIONS() {
-  return NextResponse.json({}, {
+  return new Response(null, {
+    status: 204,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Max-Age": "86400",
     },
   });
 }
 
+export async function GET(req: Request) {
+  const origin = new URL(req.url).origin;
+  return NextResponse.redirect(`${origin}/docs`);
+}
+
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
 
   try {
     // 1. Find Project by Custom Slug OR API Key
@@ -49,7 +61,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
 
     if (!projectDoc) {
-      return NextResponse.json({ success: false, error: "Identifier not found" }, { status: 404 });
+      return NextResponse.json({ success: false, error: "Identifier not found" }, { status: 404, headers: corsHeaders });
     }
 
     // 2. Fetch Global Admin Ad Config
@@ -64,11 +76,15 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const contentType = req.headers.get("content-type") || "";
     let data: any;
 
-    if (contentType.includes("application/json")) {
-      data = await req.json();
-    } else {
-      const formData = await req.formData();
-      data = Object.fromEntries(formData);
+    try {
+      if (contentType.includes("application/json")) {
+        data = await req.json();
+      } else {
+        const formData = await req.formData();
+        data = Object.fromEntries(formData);
+      }
+    } catch (e) {
+      data = {}; // Fallback for empty body or malformed data
     }
 
     const validatedData = formSchema.parse(data);
@@ -105,47 +121,59 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
        }
     );
 
-    await transporter.sendMail({
-      from: `"SendMyForm Ingest" <${EMAIL_FROM}>`,
-      to: projectDoc.emailTo,
-      subject: `[Lead Notification] ${projectDoc.name}`,
-      html: ownerEmailHtml,
-    });
+    // Only send if transporter is configured
+    if (SMTP_HOST && SMTP_USER) {
+      await transporter.sendMail({
+        from: `"SendMyForm Ingest" <${EMAIL_FROM}>`,
+        to: projectDoc.emailTo,
+        subject: `[Lead Notification] ${projectDoc.name}`,
+        html: ownerEmailHtml,
+      });
 
-    // 6. SEND CONFIRMATION TO SUBMITTER (MANDATORY PLATFORM FEATURE + AD)
-    const submitterEmail = validatedData.email || validatedData.Email || validatedData.EMAIL;
-    if (submitterEmail) {
-       const userConfirmationHtml = [
-          '<div style="font-family: sans-serif; background-color: #000; padding: 60px 20px; color: #fff;">',
-             '<div style="max-width: 600px; margin: 0 auto; background: #0a0a0a; border-radius: 32px; padding: 48px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">',
-                '<div style="margin-bottom: 40px;">',
-                  '<div style="width: 64px; height: 64px; background: #22c55e; border-radius: 20px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 32px;">✓</div>',
-                '</div>',
-                '<h1 style="font-size: 28px; font-weight: 900; letter-spacing: -0.05em; margin-bottom: 12px; font-style: italic;">SUBMISSION SUCCESSFUL!</h1>',
-                '<p style="font-size: 16px; color: #64748b; margin-bottom: 48px; font-weight: 500; font-style: italic;">Success! Your submission to <strong>' + projectDoc.name + '</strong> has been processed by our global nodes.</p>',
-                finalAdContent,
-                '<p style="font-size: 10px; color: #334155; margin-top: 48px; font-weight: 800; letter-spacing: 0.4em; text-transform: uppercase; font-style: italic;">&copy; 2026 SendMyForm Platform. Secured Processing.</p>',
-             '</div>',
-          '</div>'
-       ].join('');
+      // 6. SEND CONFIRMATION TO SUBMITTER
+      const submitterEmail = validatedData.email || validatedData.Email || validatedData.EMAIL;
+      if (submitterEmail) {
+         const userConfirmationHtml = [
+            '<div style="font-family: sans-serif; background-color: #000; padding: 60px 20px; color: #fff;">',
+               '<div style="max-width: 600px; margin: 0 auto; background: #0a0a0a; border-radius: 32px; padding: 48px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">',
+                  '<div style="margin-bottom: 40px;">',
+                    '<div style="width: 64px; height: 64px; background: #22c55e; border-radius: 20px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 32px;">✓</div>',
+                  '</div>',
+                  '<h1 style="font-size: 28px; font-weight: 900; letter-spacing: -0.05em; margin-bottom: 12px; font-style: italic;">SUBMISSION SUCCESSFUL!</h1>',
+                  '<p style="font-size: 16px; color: #64748b; margin-bottom: 48px; font-weight: 500; font-style: italic;">Success! Your submission to <strong>' + projectDoc.name + '</strong> has been processed by our global nodes.</p>',
+                  finalAdContent,
+                  '<p style="font-size: 10px; color: #334155; margin-top: 48px; font-weight: 800; letter-spacing: 0.4em; text-transform: uppercase; font-style: italic;">&copy; 2026 SendMyForm Platform. Secured Processing.</p>',
+               '</div>',
+            '</div>'
+         ].join('');
 
-       await transporter.sendMail({
-          from: `"SendMyForm" <${EMAIL_FROM}>`,
-          to: submitterEmail,
-          subject: `Submission Confirmed: ${projectDoc.name}`,
-          html: userConfirmationHtml,
-       });
+         await transporter.sendMail({
+            from: `"SendMyForm" <${EMAIL_FROM}>`,
+            to: submitterEmail,
+            subject: `Submission Confirmed: ${projectDoc.name}`,
+            html: userConfirmationHtml,
+         });
+      }
     }
-
-    // [NOTE: DATABASE SAVING DISABLED PER USER REQUEST]
-    // await db.collection("submissions").add({ projectId: projectID, submittedAt: new Date(), data: validatedData });
 
     // 7. REDIRECT TO THANK YOU PAGE WITH ADS
     const origin = new URL(req.url).origin;
+    
+    // If JSON request, return success result with redirect URL
+    if (contentType.includes("application/json")) {
+      return NextResponse.json({ 
+        success: true, 
+        message: "Submission received", 
+        redirect: `${origin}/success` 
+      }, { status: 200, headers: corsHeaders });
+    }
+
+    // Otherwise standard redirect for form actions
     return NextResponse.redirect(`${origin}/success`);
 
   } catch (error: any) {
     console.error("Submission error:", error);
-    return NextResponse.json({ success: false, error: "Server Error" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Server Error" }, { status: 500, headers: corsHeaders });
   }
 }
+
