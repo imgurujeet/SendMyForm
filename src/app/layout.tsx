@@ -13,7 +13,12 @@ export const metadata: Metadata = {
   applicationName: "SendMyForm",
   authors: [{ name: "Achaia Labs", url: "https://achaialabs.tech" }],
   icons: {
-    icon: "/icon.png"
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: "/icon.png",
+    shortcut: "/favicon.ico",
   },
   title: "SendMyForm — #1 No-Backend Form Submit Service | Handle Submissions Instantly",
   description: "SendMyForm is the best form backend service that receives, validates, and delivers form submissions directly to your inbox. No backend code required. Perfect for Jamstack, Static Sites, React, and Vue.",
@@ -105,16 +110,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Script
+        <script
           id="json-ld"
           type="application/ld+json"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <Script
+        <script
           id="org-ld"
           type="application/ld+json"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
         />
         {/* Google Analytics */}
@@ -136,13 +139,6 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        <Script
-          id="adsbygoogle-init"
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9204160176455905"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
       </head>
       <body suppressHydrationWarning>
         <ThemeProvider>
