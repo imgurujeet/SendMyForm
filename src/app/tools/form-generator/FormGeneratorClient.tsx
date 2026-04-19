@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  Code2, 
-  Copy, 
-  Check, 
-  ArrowLeft, 
-  Layout, 
-  Eye, 
+import {
+  Code2,
+  Copy,
+  Check,
+  ArrowLeft,
+  Layout,
+  Eye,
   Settings2,
   Terminal,
   Zap
@@ -23,6 +23,16 @@ export default function FormGeneratorClient() {
     { id: 2, label: "Email Address", type: "email", name: "email", required: true },
     { id: 3, label: "Message", type: "textarea", name: "message", required: true },
   ]);
+
+  const [isAddingField, setIsAddingField] = useState(false);
+  const [newField, setNewField] = useState({ label: "", type: "text", name: "", required: false });
+
+  const handleAddField = () => {
+    if (!newField.label || !newField.name) return;
+    setFields([...fields, { ...newField, id: Date.now() }]);
+    setIsAddingField(false);
+    setNewField({ label: "", type: "text", name: "", required: false });
+  };
 
   const generateCode = () => {
     const fieldHtml = fields.map(field => {
@@ -56,7 +66,7 @@ ${fieldHtml}
       <nav className="border-b border-white/5 bg-black/20 backdrop-blur-xl px-6 py-4 flex justify-between items-center sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2 group">
           <ArrowLeft size={18} className="text-slate-500 group-hover:text-white transition-colors" />
-          <span className="font-bold">Send<span className="text-violet-500">My</span>Form</span>
+          <span className="text-xl font-bold tracking-tight text-white">Send<span className="text-violet-500">My</span>Form</span>
         </Link>
         <span className="text-xs font-medium text-slate-500 uppercase tracking-widest border border-white/10 px-3 py-1 rounded-full">
           SEO Tool: Form Generator
@@ -71,11 +81,11 @@ ${fieldHtml}
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Build your form visually, generate the code, and connect it to our no-backend service in seconds. No setup required.
           </p>
-          </header>
+        </header>
 
-          <AdSense adSlot="tools_form_gen_top" />
+        <AdSense adSlot="tools_form_gen_top" />
 
-          <div className="grid lg:grid-cols-2 gap-10">
+        <div className="grid lg:grid-cols-2 gap-10">
           {/* Configurator */}
           <section className="space-y-6">
             <div className="p-8 rounded-2xl bg-white/[0.03] border border-white/[0.08]">
@@ -83,22 +93,22 @@ ${fieldHtml}
                 <Settings2 size={20} className="text-violet-400" />
                 <h2 className="text-xl font-semibold">Configure</h2>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Form Name</label>
-                  <input 
-                    type="text" 
-                    value={formName} 
+                  <input
+                    type="text"
+                    value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-3 text-sm outline-none focus:border-violet-500/50 transition-all font-medium"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Your Endpoint ID</label>
-                  <input 
-                    type="text" 
-                    value={endpointId} 
+                  <input
+                    type="text"
+                    value={endpointId}
                     onChange={(e) => setEndpointId(e.target.value)}
                     placeholder="e.g. contact-form-123"
                     className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-3 text-sm outline-none focus:border-violet-500/50 transition-all font-mono"
@@ -113,8 +123,14 @@ ${fieldHtml}
                   <Layout size={20} className="text-violet-400" />
                   <h2 className="text-xl font-semibold">Fields</h2>
                 </div>
+                <button
+                  onClick={() => setIsAddingField(true)}
+                  className="text-xs font-bold bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-colors border border-white/10"
+                >
+                  + Add Field
+                </button>
               </div>
-              
+
               <div className="space-y-3">
                 {fields.map((field) => (
                   <div key={field.id} className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 group">
@@ -122,7 +138,7 @@ ${fieldHtml}
                       <p className="text-sm font-semibold">{field.label}</p>
                       <p className="text-[10px] text-slate-500 uppercase tracking-tighter">{field.type} • {field.required ? 'Required' : 'Optional'}</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => setFields(fields.filter(f => f.id !== field.id))}
                       className="opacity-0 group-hover:opacity-100 p-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all"
                     >
@@ -130,6 +146,73 @@ ${fieldHtml}
                     </button>
                   </div>
                 ))}
+
+                {isAddingField && (
+                  <div className="p-4 rounded-xl bg-violet-500/10 border border-violet-500/30 space-y-3 mt-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[10px] text-violet-300 uppercase tracking-wider mb-1">Label</label>
+                        <input
+                          type="text"
+                          value={newField.label}
+                          onChange={e => setNewField({ ...newField, label: e.target.value })}
+                          className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-violet-500"
+                          placeholder="e.g. Phone Number"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] text-violet-300 uppercase tracking-wider mb-1">Name Attribute</label>
+                        <input
+                          type="text"
+                          value={newField.name}
+                          onChange={e => setNewField({ ...newField, name: e.target.value })}
+                          className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-violet-500"
+                          placeholder="e.g. phone"
+                        />
+                      </div>
+                      <div className="col-span-2 sm:col-span-1">
+                        <label className="block text-[10px] text-violet-300 uppercase tracking-wider mb-1">Type</label>
+                        <select
+                          value={newField.type}
+                          onChange={e => setNewField({ ...newField, type: e.target.value })}
+                          className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-violet-500 mb-1 [&>option]:bg-[#0D0D16] [&>option]:text-slate-300"
+                        >
+                          <option value="text">Text</option>
+                          <option value="email">Email</option>
+                          <option value="textarea">Textarea</option>
+                          <option value="number">Number</option>
+                          <option value="tel">Phone (tel)</option>
+                          <option value="url">URL</option>
+                        </select>
+                      </div>
+                      <div className="col-span-2 sm:col-span-1 flex items-center pt-2 sm:pt-4">
+                        <label className="flex items-center gap-2 cursor-pointer mt-1">
+                          <input
+                            type="checkbox"
+                            checked={newField.required}
+                            onChange={e => setNewField({ ...newField, required: e.target.checked })}
+                            className="rounded border-white/10 bg-black/40 text-violet-500 focus:ring-violet-500 w-4 h-4"
+                          />
+                          <span className="text-sm font-medium">Required field</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-2 border-t border-white/5 mt-2">
+                      <button
+                        onClick={() => setIsAddingField(false)}
+                        className="px-3 py-1.5 text-xs text-slate-400 hover:text-white"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={handleAddField}
+                        className="px-3 py-1.5 text-xs font-bold bg-violet-600 hover:bg-violet-500 rounded-lg transition-colors"
+                      >
+                        Add Field
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </section>
@@ -142,7 +225,7 @@ ${fieldHtml}
                   <Code2 size={20} className="text-violet-400" />
                   <h2 className="text-xl font-semibold">Generated Code</h2>
                 </div>
-                <button 
+                <button
                   onClick={copyCode}
                   className="flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-500 text-xs font-bold rounded-lg transition-all shadow-lg shadow-violet-900/20"
                 >
@@ -164,21 +247,33 @@ ${fieldHtml}
                 <h2 className="text-xl font-semibold">Live Preview</h2>
               </div>
               <div className="p-6 rounded-xl border border-white/10 bg-white/[0.02]">
-                <div className="space-y-4 max-w-md">
+                <form className="space-y-4 max-w-md" onSubmit={e => e.preventDefault()}>
                   {fields.map(field => (
                     <div key={field.id}>
-                      <label className="block text-sm font-medium mb-1.5">{field.label}</label>
+                      <label className="block text-sm font-medium mb-1.5 text-slate-300">
+                        {field.label}
+                        {field.required && <span className="text-rose-500 ml-1">*</span>}
+                      </label>
                       {field.type === 'textarea' ? (
-                        <div className="w-full h-20 rounded-lg bg-white/5 border border-white/10" />
+                        <textarea
+                          className="w-full min-h-[100px] rounded-lg bg-black/40 border border-white/10 px-4 py-3 text-sm outline-none focus:border-violet-500/50 transition-colors placeholder:text-slate-600 resize-y"
+                          placeholder={`Enter ${field.label.toLowerCase()}`}
+                          required={field.required}
+                        />
                       ) : (
-                        <div className="w-full h-10 rounded-lg bg-white/5 border border-white/10" />
+                        <input
+                          type={field.type}
+                          className="w-full h-[46px] rounded-lg bg-black/40 border border-white/10 px-4 text-sm outline-none focus:border-violet-500/50 transition-colors placeholder:text-slate-600"
+                          placeholder={field.type === 'email' ? 'you@example.com' : `Enter ${field.label.toLowerCase()}`}
+                          required={field.required}
+                        />
                       )}
                     </div>
                   ))}
-                  <div className="w-full h-10 rounded-lg bg-violet-600 mt-2 flex items-center justify-center font-bold text-sm">
+                  <button type="submit" className="w-full h-11 rounded-lg bg-violet-600 hover:bg-violet-500 mt-4 flex items-center justify-center font-bold text-sm transition-colors shadow-lg shadow-violet-900/20">
                     Submit Form
-                  </div>
-                </div>
+                  </button>
+                </form>
               </div>
             </div>
           </section>
