@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { X } from "lucide-react";
+import { X, ShieldCheck } from "lucide-react";
 
 interface PrivacyModalProps {
     isOpen: boolean;
@@ -26,169 +26,186 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
             className="fixed inset-0 z-[9999] flex items-center justify-center px-4"
             onClick={onClose}
         >
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
-            {/* Modal */}
             <div
-                className="relative w-full max-w-2xl max-h-[85vh] bg-zinc-950 border border-white/10 rounded-[2rem] shadow-2xl shadow-violet-500/5 overflow-hidden animate-modal-in"
+                className="relative w-full max-w-2xl max-h-[85vh] border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-modal-in"
+                style={{ background: "var(--bg-secondary)" }}
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-5 bg-zinc-950/95 backdrop-blur-xl border-b border-white/5">
-                    <h2 className="text-lg font-black uppercase tracking-widest italic text-white">
-                        Privacy <span className="text-emerald-500">Policy</span>
-                    </h2>
+                <div
+                    className="sticky top-0 z-10 flex items-center justify-between px-7 py-5 backdrop-blur-xl"
+                    style={{ background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)" }}
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg bg-violet-500/10 border border-violet-500/20">
+                            <ShieldCheck size={16} className="text-violet-400" />
+                        </div>
+                        <div>
+                            <h2 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
+                                Privacy Policy
+                            </h2>
+                            <p className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                                Last updated: April 2026
+                            </p>
+                        </div>
+                    </div>
                     <button
                         onClick={onClose}
                         className="p-2 rounded-xl hover:bg-white/5 transition-colors group"
                         aria-label="Close"
                     >
-                        <X size={20} className="text-slate-500 group-hover:text-white transition-colors" />
+                        <X size={18} className="text-slate-500 group-hover:text-white transition-colors" />
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="px-8 py-6 overflow-y-auto max-h-[calc(85vh-72px)] terms-scroll">
-                    {/* Information We Collect */}
-                    <section className="mb-8">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500 italic mb-3">
-                            Information We Collect
-                        </h3>
-                        <div className="space-y-3">
-                            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                                <p className="text-xs font-black uppercase tracking-widest text-white italic mb-1">
-                                    Client Data
-                                </p>
-                                <p className="text-sm text-slate-400 leading-relaxed">
-                                    Name, email, and business details provided during consultation.
-                                </p>
-                            </div>
-                            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                                <p className="text-xs font-black uppercase tracking-widest text-white italic mb-1">
-                                    Technical Data
-                                </p>
-                                <p className="text-sm text-slate-400 leading-relaxed">
-                                    IP addresses and usage logs via our website.
-                                </p>
-                            </div>
-                            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                                <p className="text-xs font-black uppercase tracking-widest text-white italic mb-1">
-                                    Inference Data
-                                </p>
-                                <p className="text-sm text-slate-400 leading-relaxed">
-                                    Data uploaded to our AI agents for processing.
-                                </p>
-                            </div>
-                        </div>
-                    </section>
+                <div className="px-7 py-6 overflow-y-auto max-h-[calc(85vh-76px)] legal-scroll">
 
-                    {/* How We Use Your Data */}
-                    <section className="mb-8">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500 italic mb-3">
-                            How We Use Your Data
-                        </h3>
-                        <ul className="space-y-2">
-                            <li className="text-sm text-slate-400 leading-relaxed flex items-start gap-2">
-                                <span className="text-emerald-500 mt-1">▸</span>
-                                To provide and optimize custom AI workflows.
-                            </li>
-                            <li className="text-sm text-slate-400 leading-relaxed flex items-start gap-2">
-                                <span className="text-emerald-500 mt-1">▸</span>
-                                To communicate project updates and technical support.
-                            </li>
+                    <p className="text-sm leading-relaxed mb-8" style={{ color: "var(--text-secondary)" }}>
+                        This Privacy Policy describes how SendMyForm ("we", "us", or "our"), operated by Achaia Labs, collects, uses, and handles information when you use our form backend service at sendmyform.live.
+                    </p>
+
+                    <Section title="1. What We Collect">
+                        <SubSection title="Account Information">
+                            When you sign in via Google OAuth, we receive your name, email address, and profile photo from Google. This is used solely to create and manage your SendMyForm account.
+                        </SubSection>
+                        <SubSection title="Project Configuration">
+                            We store your project settings — including project name, endpoint slug, email delivery address, and selected email theme — in our database (Firebase Firestore) to operate the service.
+                        </SubSection>
+                        <SubSection title="Form Submission Data">
+                            When a form is submitted to your endpoint, we receive the submitted fields (text, files, etc.) temporarily in memory to process and forward to your inbox. <strong className="text-white">We do not store submission data on our servers.</strong> It is processed and immediately discarded after delivery.
+                        </SubSection>
+                        <SubSection title="Usage Data">
+                            We collect anonymised analytics (via Google Analytics) including page views, session duration, and feature usage. This data is aggregated and does not identify individual users.
+                        </SubSection>
+                    </Section>
+
+                    <Section title="2. How We Use Your Data">
+                        <ul className="space-y-2 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            {[
+                                "To authenticate you and manage your account",
+                                "To route and deliver form submissions to your email address",
+                                "To send you transactional emails (e.g. submission notifications)",
+                                "To maintain uptime, debug issues, and improve the service",
+                                "To display relevant ads on the submission success page via Google AdSense",
+                            ].map((item, i) => (
+                                <li key={i} className="flex items-start gap-2">
+                                    <span className="text-violet-400 mt-1 flex-shrink-0">▸</span>
+                                    {item}
+                                </li>
+                            ))}
                         </ul>
-                        <div className="mt-4 p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
-                            <p className="text-xs font-black uppercase tracking-widest text-emerald-400 italic mb-1">
-                                Note on Training
-                            </p>
-                            <p className="text-sm text-slate-400 leading-relaxed">
-                                We do not use client-specific proprietary data to train our
-                                general-purpose models without explicit, written consent.
+                    </Section>
+
+                    <Section title="3. Data Storage & Security">
+                        <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--text-secondary)" }}>
+                            Your account and project data is stored securely in Google Firebase (Firestore), hosted on Google Cloud infrastructure with encryption at rest and in transit.
+                        </p>
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            Form submission content is never persisted. It exists in server memory only for the duration of the delivery process (typically under 2 seconds).
+                        </p>
+                        <div className="mt-4 p-4 rounded-xl bg-violet-500/5 border border-violet-500/15">
+                            <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-1">Zero Persistence Guarantee</p>
+                            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                                We do not build databases of your users' form submissions. Your end-users' data is delivered to you and then gone from our infrastructure.
                             </p>
                         </div>
-                    </section>
+                    </Section>
 
-                    {/* Data Security */}
-                    <section className="mb-8">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500 italic mb-3">
-                            Data Security
-                        </h3>
-                        <p className="text-sm text-slate-400 leading-relaxed">
-                            We implement industry-standard encryption and secure vector
-                            database protocols to ensure your data is protected. Access to
-                            client data is restricted to essential personnel only.
+                    <Section title="4. Third-Party Services">
+                        <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--text-secondary)" }}>
+                            We use the following third-party services which may process data on our behalf:
                         </p>
-                    </section>
+                        <div className="space-y-2">
+                            {[
+                                { name: "Google Firebase", purpose: "Authentication and database storage" },
+                                { name: "Google Analytics", purpose: "Anonymous usage analytics" },
+                                { name: "Google AdSense", purpose: "Advertising across the website for service sustainability. User experience is always prioritised over ad placement." },
+                                { name: "SMTP Provider", purpose: "Transactional email delivery" },
+                                { name: "Vercel", purpose: "Hosting and edge infrastructure" },
+                            ].map((s, i) => (
+                                <div key={i} className="flex items-start gap-3 p-3 rounded-xl border text-sm" style={{ background: "var(--bg-card)", borderColor: "var(--border-color)" }}>
+                                    <span className="font-semibold flex-shrink-0" style={{ color: "var(--text-primary)" }}>{s.name}</span>
+                                    <span style={{ color: "var(--text-muted)" }}>— {s.purpose}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </Section>
 
-                    {/* Third-Party Services */}
-                    <section className="mb-8">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500 italic mb-3">
-                            Third-Party Services
-                        </h3>
-                        <p className="text-sm text-slate-400 leading-relaxed">
-                            Our agency utilizes third-party providers (e.g., Cloud providers,
-                            LLM API providers). Your data may be processed by these entities
-                            under their respective privacy policies.
+                    <Section title="5. Cookies">
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            We use session cookies for authentication and Google Analytics cookies for usage tracking. Google AdSense may set cookies on the submission success page for ad personalisation. You can opt out of personalised ads via <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-violet-400 hover:underline">Google Ads Settings</a>.
                         </p>
-                    </section>
+                    </Section>
 
-                    {/* Your Rights */}
-                    <section className="mb-4">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-emerald-500 italic mb-3">
-                            Your Rights
-                        </h3>
-                        <p className="text-sm text-slate-400 leading-relaxed">
-                            Depending on your jurisdiction, you have the right to access,
-                            correct, or delete your personal data. To exercise these rights,
-                            contact us at{" "}
-                            <a
-                                href="mailto:achaialabs@gmail.com"
-                                className="text-emerald-400 hover:underline"
-                            >
-                                achaialabs@gmail.com
-                            </a>
-                            .
+                    <Section title="6. Your Rights">
+                        <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--text-secondary)" }}>
+                            Depending on your jurisdiction, you may have the right to access, correct, or request deletion of your personal data. To exercise any of these rights, contact us at:
                         </p>
-                    </section>
+                        <a
+                            href="mailto:contact@sendmyform.live"
+                            className="text-sm font-semibold text-violet-400 hover:underline"
+                        >
+                            contact@sendmyform.live
+                        </a>
+                        <p className="text-sm leading-relaxed mt-3" style={{ color: "var(--text-secondary)" }}>
+                            You may delete your account and all associated project data at any time from the Dashboard settings page.
+                        </p>
+                    </Section>
 
-                    {/* Footer */}
-                    <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                        <p className="text-[10px] font-black text-slate-700 uppercase tracking-[0.5em] italic">
-                            © 2026 Achaia Labs. All rights reserved.
+                    <Section title="7. Children's Privacy">
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            SendMyForm is not directed at children under 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, contact us at contact@sendmyform.live and we will delete it.
+                        </p>
+                    </Section>
+
+                    <Section title="8. Changes to This Policy">
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                            We may update this Privacy Policy from time to time. We will notify users of material changes by updating the "last updated" date at the top. Continued use of the service after changes constitutes acceptance of the updated policy.
+                        </p>
+                    </Section>
+
+                    <div className="mt-8 pt-5 text-center" style={{ borderTop: "1px solid var(--border-color)" }}>
+                        <p className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>
+                            © 2026 Achaia Labs. sendmyform.live
                         </p>
                     </div>
                 </div>
             </div>
 
             <style jsx global>{`
-        @keyframes modalIn {
-          from {
-            opacity: 0;
-            transform: scale(0.95) translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
-        }
-        .animate-modal-in {
-          animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .terms-scroll::-webkit-scrollbar {
-          width: 6px;
-        }
-        .terms-scroll::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .terms-scroll::-webkit-scrollbar-thumb {
-          background: #222;
-          border-radius: 99px;
-        }
-        .terms-scroll::-webkit-scrollbar-thumb:hover {
-          background: #10b981;
-        }
-      `}</style>
+                @keyframes modalIn {
+                    from { opacity: 0; transform: scale(0.97) translateY(16px); }
+                    to { opacity: 1; transform: scale(1) translateY(0); }
+                }
+                .animate-modal-in { animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+                .legal-scroll::-webkit-scrollbar { width: 5px; }
+                .legal-scroll::-webkit-scrollbar-track { background: transparent; }
+                .legal-scroll::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 99px; }
+                .legal-scroll::-webkit-scrollbar-thumb:hover { background: #6d28d9; }
+            `}</style>
+        </div>
+    );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <section className="mb-7">
+            <h3 className="text-sm font-bold text-white mb-4 pb-2" style={{ borderBottom: "1px solid var(--border-color)" }}>
+                {title}
+            </h3>
+            {children}
+        </section>
+    );
+}
+
+function SubSection({ title, children }: { title: string; children: React.ReactNode }) {
+    return (
+        <div className="mb-4 p-4 rounded-xl border" style={{ background: "var(--bg-card)", borderColor: "var(--border-color)" }}>
+            <p className="text-xs font-semibold uppercase tracking-wider mb-2 text-violet-400">{title}</p>
+            <p className="text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>{children}</p>
         </div>
     );
 }
