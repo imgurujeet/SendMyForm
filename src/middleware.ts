@@ -5,13 +5,16 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const url = request.nextUrl.clone();
 
-  // Canonical host config
-  const canonicalHost = 'sendmyform.live';
   const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1') || host.includes('[::1]');
 
-  // Redirect to canonical domain if not on localhost and host doesn't match
-  if (!isLocalhost && host !== canonicalHost) {
-    url.host = canonicalHost;
+  // Check if host is one of the verified project domains
+  const isProjectDomain = host === 'sendmyform.live' || host === 'www.sendmyform.live';
+
+  // Redirect alternative hosts (e.g. vercel preview URLs, old domains) to the primary domain.
+  // We allow both sendmyform.live and www.sendmyform.live to prevent infinite redirect loops
+  // with Vercel's DNS/edge domain configuration.
+  if (!isLocalhost && !isProjectDomain) {
+    url.host = 'sendmyform.live';
     url.protocol = 'https';
     return NextResponse.redirect(url, 301);
   }
