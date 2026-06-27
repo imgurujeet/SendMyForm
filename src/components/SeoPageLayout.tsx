@@ -1,12 +1,10 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { Copy, Check, ChevronRight, Terminal, ArrowRight } from "lucide-react";
+import { ChevronRight, Terminal, ArrowRight } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
-import TermsModal from "@/components/TermsModal";
-import PrivacyModal from "@/components/PrivacyModal";
 import { SeoPageData } from "@/lib/seo-data";
+import CopyCodeButton from "@/components/CopyCodeButton";
+import Footer from "@/app/footer";
 
 interface SeoPageLayoutProps {
   data: SeoPageData;
@@ -14,17 +12,6 @@ interface SeoPageLayoutProps {
 }
 
 export default function SeoPageLayout({ data, category }: SeoPageLayoutProps) {
-  const [copied, setCopied] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
-  const [showPrivacy, setShowPrivacy] = useState(false);
-
-  const handleCopy = () => {
-    if (data.codeSnippet) {
-      navigator.clipboard.writeText(data.codeSnippet);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
 
   // Generate breadcrumbs link
   const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1).replace("-", " ");
@@ -133,13 +120,7 @@ export default function SeoPageLayout({ data, category }: SeoPageLayoutProps) {
             <section className="mb-12">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Example Integration Code</h3>
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/[0.08] rounded-lg text-slate-400 hover:text-white transition-all text-xs font-medium"
-                >
-                  {copied ? <Check size={12} className="text-emerald-400" /> : <Copy size={12} />}
-                  {copied ? "Copied!" : "Copy Code"}
-                </button>
+                <CopyCodeButton code={data.codeSnippet} />
               </div>
               <div className="rounded-xl bg-[#080810] border border-white/[0.08] overflow-hidden">
                 <pre className="p-5 text-[13px] font-mono text-violet-300 leading-relaxed overflow-x-auto">
@@ -224,8 +205,8 @@ export default function SeoPageLayout({ data, category }: SeoPageLayoutProps) {
           <section className="border-t border-white/[0.05] pt-8">
             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Related Resources</h4>
             <div className="flex flex-wrap gap-3">
-              <Link href="/pricing" className="px-3.5 py-1.5 rounded-full border border-white/[0.05] bg-white/[0.02] text-xs text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
-                SendMyForm Pricing
+              <Link href="/free-forever" className="px-3.5 py-1.5 rounded-full border border-white/[0.05] bg-white/[0.02] text-xs text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
+                Free Forever
               </Link>
               <Link href="/integrations" className="px-3.5 py-1.5 rounded-full border border-white/[0.05] bg-white/[0.02] text-xs text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
                 All Integrations
@@ -246,45 +227,7 @@ export default function SeoPageLayout({ data, category }: SeoPageLayoutProps) {
       </div>
 
       {/* --- FOOTER --- */}
-      <footer style={{ borderTop: "1px solid var(--border-color)" }} className="px-6 md:px-16 py-12 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-10 text-center md:text-left">
-          <div>
-            <p className="text-base font-bold text-white mb-2">Send<span className="text-violet-500">My</span>Form</p>
-            <p className="text-xs text-slate-600 leading-relaxed max-w-[180px] mx-auto md:mx-0">
-              Form submissions handled simply, reliably, and privately.
-            </p>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Product</p>
-            <Link href="/pricing" className="text-sm text-slate-500 hover:text-white transition-colors">Pricing</Link>
-            <Link href="/dashboard" className="text-sm text-slate-500 hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/docs" className="text-sm text-slate-500 hover:text-white transition-colors">Documentation</Link>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Resources</p>
-            <Link href="/integrations" className="text-sm text-slate-500 hover:text-white transition-colors">Integrations</Link>
-            <Link href="/use-cases" className="text-sm text-slate-500 hover:text-white transition-colors">Use Cases</Link>
-            <Link href="/blog" className="text-sm text-slate-500 hover:text-white transition-colors">Blog</Link>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Legal</p>
-            <button onClick={() => setShowPrivacy(true)} className="text-sm text-slate-500 hover:text-white transition-colors text-left mx-auto md:mx-0">Privacy Policy</button>
-            <button onClick={() => setShowTerms(true)} className="text-sm text-slate-500 hover:text-white transition-colors text-left mx-auto md:mx-0">Terms & Conditions</button>
-          </div>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/[0.05] pt-6 text-center">
-          <p className="text-xs text-slate-700">© 2026 Achaia Labs. All rights reserved.</p>
-          <div className="flex gap-5 text-sm text-slate-600">
-            <a href="https://x.com/achaialabs" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
-            <a href="#" className="hover:text-white transition-colors">GitHub</a>
-            <a href="https://www.linkedin.com/company/achaia-labs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-          </div>
-        </div>
-      </footer>
-
-      <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
-      <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
+      <Footer />
     </div>
   );
 }

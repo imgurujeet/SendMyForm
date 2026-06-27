@@ -1,11 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import TermsModal from "@/components/TermsModal";
-import PrivacyModal from "@/components/PrivacyModal";
 import ThemeToggle from "@/components/ThemeToggle";
 import { trackCTAClick } from "@/lib/analytics";
 import AdSense from "@/components/AdSense";
+import Footer from "@/app/footer";
 import {
   Code2,
   ShieldCheck,
@@ -24,15 +23,6 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
-  const [mounted, setMounted] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
-  const [showPrivacy, setShowPrivacy] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', 'Inter', sans-serif", background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
@@ -394,47 +384,7 @@ export default function LandingPage() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer style={{ borderTop: '1px solid var(--border-color)' }} className="px-6 md:px-16 py-14 max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
-          <div className="col-span-2 md:col-span-1">
-            <p className="text-base font-bold text-white mb-2">Send<span className="text-violet-500">My</span>Form</p>
-            <p className="text-xs text-slate-600 leading-relaxed max-w-[180px]">
-              Form submissions handled simply, reliably, and privately.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Product</p>
-            <Link href="/about" className="text-sm text-slate-500 hover:text-white transition-colors">About</Link>
-            <Link href="/dashboard" className="text-sm text-slate-500 hover:text-white transition-colors">Dashboard</Link>
-            <Link href="/docs" className="text-sm text-slate-500 hover:text-white transition-colors">Documentation</Link>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Company</p>
-            <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-500 hover:text-white transition-colors">Achaia Labs</a>
-            <a href="mailto:contact@sendmyform.live" className="text-sm text-slate-500 hover:text-white transition-colors">Contact</a>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <p className="text-xs font-semibold text-white uppercase tracking-wider">Legal</p>
-            <button onClick={() => setShowPrivacy(true)} className="text-sm text-slate-500 hover:text-white transition-colors text-left">Privacy Policy</button>
-            <button onClick={() => setShowTerms(true)} className="text-sm text-slate-500 hover:text-white transition-colors text-left">Terms & Conditions</button>
-          </div>
-        </div>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-white/[0.05] pt-8">
-          <p className="text-xs text-slate-700">© 2026 <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="text-sm text-slate-700 hover:text-violet-500 transition-colors">Achaia Labs</a>. All rights reserved.</p>
-          <div className="flex gap-5 text-sm text-slate-600">
-            <a href="https://x.com/achaialabs" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
-            <a href="#" className="hover:text-white transition-colors">GitHub</a>
-            <a href="https://www.linkedin.com/company/achaia-labs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-          </div>
-        </div>
-      </footer>
-
-      <TermsModal isOpen={showTerms} onClose={() => setShowTerms(false)} />
-      <PrivacyModal isOpen={showPrivacy} onClose={() => setShowPrivacy(false)} />
+      <Footer />
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');

@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
 import { trackProjectCreate, trackProjectDelete, trackTabSwitch, trackCopyEndpoint } from "@/lib/analytics";
 import ThemeToggle from "@/components/ThemeToggle";
 import AdSense from "@/components/AdSense";
+import KoFiModal from "@/components/KoFiModal";
+import KoFiWidget from "@/components/KoFiWidget";
 
 const THEME_LIST = Object.values(THEMES) as Array<{
   id: string; name: string; primary: string; bg: string;
@@ -103,6 +105,9 @@ export default function Dashboard() {
   const [themeSaved, setThemeSaved] = useState(false);
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
   const themeDropdownRef = useRef<HTMLDivElement>(null);
+  const [showKoFiModal, setShowKoFiModal] = useState(false);
+  const [createdEndpointUrl, setCreatedEndpointUrl] = useState("");
+  const [createdProjectName, setCreatedProjectName] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -168,6 +173,14 @@ export default function Dashboard() {
         setIsCreatingNew(false);
         setNewName(""); setNewSlug("");
         setActiveTab("projects");
+
+        // ── NEW: trigger Ko-fi modal after endpoint is created ──────────────
+        const newEndpointUrl = `${origin}/api/f/${newSlug}`;
+        setCreatedEndpointUrl(newEndpointUrl);
+        setCreatedProjectName(newName);
+        // Small delay so the dashboard tab transition completes first
+        setTimeout(() => setShowKoFiModal(true), 600);
+        // ────────────────────────────────────────────────────────────────────
       } else {
         setError(data.error || "Failed to create project.");
       }
@@ -288,7 +301,7 @@ export default function Dashboard() {
         </div>
 
         <div className="px-4 pb-4">
-          <AdSense adSlot="dashboard_sidebar_bottom" adFormat="vertical" />
+          <KoFiWidget variant="inline" />
         </div>
       </aside>
 
@@ -420,9 +433,6 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-
-              <AdSense adSlot="dashboard_overview_middle" />
-
               {projects.length === 0 ? (
                 <div className="rounded-2xl border border-dashed p-16 text-center" style={{ borderColor: "var(--border-color)" }}>
                   <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mx-auto mb-4">
@@ -549,8 +559,6 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  <AdSense adSlot="dashboard_project_middle" />
-
                   {/* Code snippet card */}
                   <div className="rounded-2xl border overflow-hidden" style={card}>
                     <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: "1px solid var(--border-color)" }}>
@@ -671,6 +679,12 @@ export default function Dashboard() {
           ) : null}
         </div>
       </main>
+      <KoFiModal
+        isOpen={showKoFiModal}
+        onClose={() => setShowKoFiModal(false)}
+        endpointUrl={createdEndpointUrl}
+        projectName={createdProjectName}
+      />
     </div>
   );
 }
