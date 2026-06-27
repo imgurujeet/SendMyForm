@@ -21,17 +21,15 @@ import {
 import { THEMES, getTheme } from "@/lib/themes";
 import ThemeToggle from "@/components/ThemeToggle";
 import { trackDocSection, trackCopyEndpoint, trackEmailThemePreview } from "@/lib/analytics";
-import AdSense from "@/components/AdSense";
+import KoFiWidget from "@/components/KoFiWidget";
 
 export default function ApiDocsPage() {
-  const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [origin, setOrigin] = useState("https://sendmyform.live");
   const [activeThemePreview, setActiveThemePreview] = useState("modern");
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
     if (typeof window !== "undefined") {
       setOrigin(window.location.origin);
     }
@@ -54,11 +52,7 @@ export default function ApiDocsPage() {
     "Timestamp": "2026-04-06 14:25:33"
   };
 
-  if (!mounted) return (
-    <div className="h-screen bg-[#0A0A0F] flex items-center justify-center text-white text-sm font-medium">
-      Loading...
-    </div>
-  );
+
 
   return (
     <div className="min-h-screen overflow-x-hidden" style={{ fontFamily: "'DM Sans', 'Inter', sans-serif", background: 'var(--bg-primary)', color: 'var(--text-primary)' }}>
@@ -122,6 +116,9 @@ export default function ApiDocsPage() {
               </a>
             ))}
           </nav>
+          <div className="mt-auto pt-8">
+            <KoFiWidget variant="inline" />
+          </div>
         </aside>
       )}
 
@@ -166,7 +163,6 @@ export default function ApiDocsPage() {
   <button type="submit">Submit</button>
 </form>`}
             </CodeBlock>
-            <AdSense adSlot="docs_quickstart_bottom" />
           </section>
 
           {/* --- YOUR ENDPOINT --- */}
@@ -274,7 +270,6 @@ export default function ApiDocsPage() {
                 </tbody>
               </table>
             </div>
-            <AdSense adSlot="docs_examples_bottom" />
           </section>
 
           {/* --- EMAIL DELIVERY --- */}
@@ -454,8 +449,6 @@ export default function ApiDocsPage() {
               ))}
             </div>
           </section>
-
-          <AdSense adSlot="docs_footer" />
 
           {/* --- COMMON USE CASES FOR SEO/AEO --- */}
           <section id="usecases" className="mb-20 scroll-mt-20">

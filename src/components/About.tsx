@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,16 +12,9 @@ import {
   Heart,
   ExternalLink,
 } from "lucide-react";
+import Footer from "@/app/footer";
 
 export default function AboutPage() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <div
       className="min-h-screen bg-[#0A0A0F] text-white overflow-x-hidden"
@@ -270,14 +264,7 @@ export default function AboutPage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-white/[0.06] px-6 md:px-16 py-10 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-xs text-slate-700">© 2026 <a href="https://achaialabs.tech" target="_blank" rel="noopener noreferrer" className="hover:text-violet-400 transition-colors">Achaia Labs</a>. All rights reserved.</p>
-        <div className="flex gap-5 text-sm text-slate-600">
-          <a href="https://x.com/achaialabs" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter</a>
-          <a href="#" className="hover:text-white transition-colors">GitHub</a>
-          <a href="https://www.linkedin.com/company/achaia-labs/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-        </div>
-      </footer>
+      <Footer />
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');

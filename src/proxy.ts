@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get('host') || '';
   const url = request.nextUrl.clone();
 
@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
   // Get response
   const response = NextResponse.next();
 
-  // Add global CORS headers to every request matched by middleware
+  // Add global CORS headers to every request matched by proxy
   response.headers.set('Access-Control-Allow-Origin', '*')
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Enforce middleware on all routes except static files & next internals
+// Enforce proxy on all routes except static files & next internals
 export const config = {
   matcher: [
     /*

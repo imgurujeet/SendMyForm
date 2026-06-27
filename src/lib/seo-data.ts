@@ -303,8 +303,8 @@ export const VERSUS: SeoPageData[] = [
     comparisonTable: {
       competitor: "Formspree",
       metrics: [
-        { name: "Free Tier Submissions", competitorValue: "50 / month", sendMyFormValue: "100 / month (Free)" },
-        { name: "Paid Plans Start From", competitorValue: "$15 / month", sendMyFormValue: "$5 / month" },
+        { name: "Free Tier Submissions", competitorValue: "50 / month", sendMyFormValue: "Unlimited" },
+        { name: "Pricing Model", competitorValue: "Subscription ($15/mo)", sendMyFormValue: "Free Forever" },
         { name: "Honeypot Protection", competitorValue: "Yes", sendMyFormValue: "Yes" },
         { name: "File Uploads", competitorValue: "Paid only", sendMyFormValue: "Supported" },
         { name: "Email Customization", competitorValue: "Paid only", sendMyFormValue: "Selectable Themes" }
@@ -312,7 +312,7 @@ export const VERSUS: SeoPageData[] = [
     },
     contentHtml: `<p>Formspree has long been the default form handler in the static site ecosystem. While it remains a popular choice, recent price adjustments and restrictive limits on the free tier have prompted developers to seek modern alternatives.</p>
 <h3>Why Choose SendMyForm?</h3>
-<p>SendMyForm focuses on core essentials: fast email forwarding, robust spam filtering, and affordability. Our paid tiers start at a fraction of the cost of Formspree, offering higher limits suitable for freelancers, small agencies, and indie hackers.</p>`
+<p>SendMyForm focuses on core essentials: fast email forwarding, robust spam filtering, and privacy. Unlike Formspree, which locks features like custom redirects, email templates, and file attachments behind paid tiers, SendMyForm is 100% free and donation-supported, offering unlimited projects and submissions without recurring subscription fees.</p>`
   },
   {
     slug: "web3forms",
@@ -359,7 +359,7 @@ export const VERSUS: SeoPageData[] = [
     quickAnswer: [
       {
         question: `How does SendMyForm compare to ${item.name}?`,
-        answer: `SendMyForm offers highly reliable deliverability, curated email styling presets, and developers-first pricing starting at just $5/month, making it an excellent alternative to ${item.name}.`
+        answer: `SendMyForm is a completely free-forever, donation-supported alternative to ${item.name}. It provides high email deliverability, custom redirect settings, and zero-persistence data processing without recurring subscription fees.`
       }
     ]
   }))
@@ -407,7 +407,7 @@ export const BLOG: SeoPageData[] = [
     ],
     contentHtml: `<p>As JAMstack continues to dominate, the demand for form endpoint processors has skyrocketed. This comparison reviews the top candidates for 2026 based on pricing, deliverability, and developer utility.</p>
 <h3>1. SendMyForm</h3>
-<p>SendMyForm delivers exceptional ease-of-use with premium dashboard controls, dedicated deliverability IPs, custom email styling themes, and pricing starting at just $5/month. It offers a solid 100 submission/month free tier.</p>
+<p>SendMyForm delivers exceptional ease-of-use with premium dashboard controls, dedicated deliverability IPs, custom email styling themes, and is completely free forever. It relies on developer donations to maintain its zero-persistence servers.</p>
 <h3>2. Formspree</h3>
 <p>The veteran provider. Formspree boasts great plugin ecosystems but has recently limited its free tier to 50 submissions/month, with paid plans starting at $15/month.</p>
 <h3>3. Web3Forms</h3>
@@ -563,6 +563,342 @@ export const getAllSeoPages = (): (SeoPageData & { category: string })[] => {
   ];
 };
 
+function getHash(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash);
+}
+
+function selectOption(options: string[], hash: number, offset: number): string {
+  return options[(hash + offset) % options.length];
+}
+
+function generateDynamicContent(category: string, slug: string, query: string, title: string): string {
+  const hash = getHash(slug);
+  const slugClean = slug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+  if (category === "integrations") {
+    const intro1 = [
+      `Decoupled frontend architectures using <strong>${slugClean}</strong> are the modern standard for building high-performance, responsive websites.`,
+      `Building modern web platforms with <strong>${slugClean}</strong> yields incredible loading speeds and search-friendly static pages.`,
+      `Leveraging <strong>${slugClean}</strong> allows developers to deliver exceptional user experiences with static file delivery and zero server lag.`
+    ];
+    const intro2 = [
+      `However, handling interactive elements like form submissions poses a unique challenge when there is no native database or database controller.`,
+      `But collecting client contacts, feedback, or leads requires a backend parser since static hosting cannot process POST requests natively.`,
+      `Yet, implementing a robust form handler is often complicated without spinning up a heavy Node.js or PHP backend server.`
+    ];
+    const intro3 = [
+      `Writing serverless functions or configuring external cloud databases just to forward an email is an unnecessary drain on developer time. SendMyForm solves this by providing a direct, zero-maintenance endpoint.`,
+      `Instead of managing custom SMTP credentials and CORS permissions for form routing, developers can offload the overhead. SendMyForm acts as the missing form handler.`,
+      `SendMyForm bridges this gap, giving your static website a fully functional API gateway to handle, validate, and mail submissions instantly.`
+    ];
+
+    const body1 = [
+      `When searching for solutions relating to <em>${query}</em>, developers prioritize speed, data privacy, and robust spam protection.`,
+      `Optimizing your site for <em>${query}</em> means keeping user forms simple, responsive, and completely secure from bot attacks.`,
+      `Achieving the best setup for <em>${query}</em> requires an integration that doesn't slow down page load or expose sensitive access tokens.`
+    ];
+    const body2 = [
+      `With SendMyForm, you can wire up your <strong>${slugClean}</strong> form in under a minute without installing heavy client-side packages.`,
+      `By directing your form submissions to our hosted API, you keep your client code lightweight and your credentials hidden.`,
+      `Our zero-config endpoints enable you to connect any input fields directly to your notification mailbox.`
+    ];
+    const body3 = [
+      `Once a visitor clicks submit, the payload is immediately formatted into a clean HTML email, screened for potential spam vectors, and dispatched to you.`,
+      `We process the submission payload on-the-fly, validate required input rules, check for spam patterns, and forward the details to your verified email.`,
+      `Our service filters out robotic inputs using advanced silent honeypots and redirects the client browser to your specified thank-you page.`
+    ];
+
+    const benefit1 = [
+      `<strong>Zero Client-Side JS:</strong> Keep your site fast by using native HTML forms without external libraries or SDKs.`,
+      `<strong>Framework Agnostic:</strong> Works with static exports, server-side rendered routes, and client-side framework scripts.`,
+      `<strong>Clean Form Actions:</strong> Simply point your action attribute to our URL and let SendMyForm do the heavy lifting.`
+    ];
+    const benefit2 = [
+      `<strong>Spam Blocking:</strong> Stop bot attacks silently with built-in honeypot inputs and rate limiting.`,
+      `<strong>Smart Filtering:</strong> Block automated scripts without forcing human visitors to solve annoying CAPTCHAs.`,
+      `<strong>Preserved Inbox:</strong> Rate limits and reputation scoring protect your business mail from junk submissions.`
+    ];
+    const benefit3 = [
+      `<strong>Zero-Storage Security:</strong> We process and forward submissions instantly, purging data immediately after mail delivery.`,
+      `<strong>Data Privacy:</strong> SendMyForm does not store personal customer details on persistent databases, easing GDPR compliance.`,
+      `<strong>Secure Processing:</strong> Transient processing guarantees your client data is never leaked from long-term database tables.`
+    ];
+
+    const setup1 = [
+      `To implement this setup, create a free project endpoint in your SendMyForm dashboard.`,
+      `To get started, log into SendMyForm and generate a new form endpoint key.`,
+      `Setting up is simple: register your project in our dashboard to obtain a unique endpoint URL.`
+    ];
+    const setup2 = [
+      `Point your form action attribute to the SendMyForm URL and ensure the request method is set to POST.`,
+      `Modify your HTML form element, setting the action attribute to your unique endpoint and the method to POST.`,
+      `Update your frontend markup to route submissions to our API gateway using a POST request.`
+    ];
+    const setup3 = [
+      `Be sure to include descriptive name attributes for all input fields (e.g., name="name" or name="company"), as these act as labels in your email alerts. You can configure custom redirect parameters or custom mail layouts inside your project console.`,
+      `Ensure each input field has a name attribute so SendMyForm can map the values properly. You can customize the destination redirect link and email styling presets directly from our developer console.`,
+      `Verify that name tags are present on all fields to ensure clean data formatting in your inbox. Customize redirects, webhook triggers, and recipient routing directly from your account page.`
+    ];
+
+    return `
+      <p>${selectOption(intro1, hash, 0)} ${selectOption(intro2, hash, 1)} ${selectOption(intro3, hash, 2)}</p>
+      <h3>Optimizing for '${query}'</h3>
+      <p>${selectOption(body1, hash, 3)} ${selectOption(body2, hash, 4)} ${selectOption(body3, hash, 5)}</p>
+      <h3>Key Advantages of Our No-Backend Architecture</h3>
+      <ul>
+        <li>${selectOption(benefit1, hash, 6)}</li>
+        <li>${selectOption(benefit2, hash, 7)}</li>
+        <li>${selectOption(benefit3, hash, 8)}</li>
+      </ul>
+      <h3>How to Implement the Setup</h3>
+      <p>${selectOption(setup1, hash, 9)} ${selectOption(setup2, hash, 10)} ${selectOption(setup3, hash, 11)}</p>
+    `;
+  }
+
+  if (category === "use-cases") {
+    const intro1 = [
+      `Implementing a robust solution for a <strong>${slugClean}</strong> is essential for modern business sites and interactive web applications.`,
+      `Capturing customer inputs via a <strong>${slugClean}</strong> is one of the most critical touchpoints for lead generation and client communication.`,
+      `A clean, functional <strong>${slugClean}</strong> helps you collect structured data, register users, and gather high-value feedback.`
+    ];
+    const intro2 = [
+      `However, building and maintaining custom database tables, validation logic, and email routing scripts is a major time sink.`,
+      `Yet, managing SMTP servers, mail servers, and CORS policies for simple form submissions is an unnecessary overhead.`,
+      `But setting up custom backend logic just to parse fields and trigger notifications slows down product releases.`
+    ];
+    const intro3 = [
+      `SendMyForm streamlines this process by providing a secure, serverless form handler that connects directly to your frontend markup.`,
+      `SendMyForm eliminates backend complexity by providing a pre-configured, secure gateway for all your form endpoints.`,
+      `By choosing SendMyForm, you get a reliable, zero-storage form backend that delivers data directly to your inbox without coding server logic.`
+    ];
+
+    const body1 = [
+      `When configuring a form targeted at <em>${query}</em>, developers focus on maximizing form completion rates and preventing spam.`,
+      `Addressing queries like <em>${query}</em> requires a system that is fast, reliable, and compliant with modern data protection standards.`,
+      `Optimizing the workflow for <em>${query}</em> means keeping inputs responsive, secure, and fully automated.`
+    ];
+    const body2 = [
+      `Our API processes submissions instantly, validating required fields and filtering out bot abuse using silent honeypots.`,
+      `Our hosted gateway handles validation, filters out malicious scripts, and routes the submission details directly to your email.`,
+      `SendMyForm handles rate limiting, spam prevention, and email construction on our serverless processing layer.`
+    ];
+    const body3 = [
+      `This ensures you receive clean, formatted lead data in real time, keeping your communication pipeline active.`,
+      `This guarantees you never miss a critical client inquiry or lead submission due to server errors or spam overload.`,
+      `This allows you to focus on design and user experience while we handle deliverability and data routing.`
+    ];
+
+    const benefit1 = [
+      `<strong>Instant Setup:</strong> Deploy your form in under a minute without touching server scripts or databases.`,
+      `<strong>Rapid Launch:</strong> Connect your frontend form directly to our endpoint to start receiving inquiries immediately.`,
+      `<strong>No Server Overhead:</strong> Eliminate server maintenance, database updates, and security patching.`
+    ];
+    const benefit2 = [
+      `<strong>Honeypot Shielding:</strong> Prevent bot spam natively without hurting user conversion with annoying visual CAPTCHAs.`,
+      `<strong>Automated Protection:</strong> Smart spam filters keep your inbox clean and organize legitimate requests.`,
+      `<strong>Rate Limiting:</strong> Shield endpoints against script spam and denial-of-service attempts.`
+    ];
+    const benefit3 = [
+      `<strong>Zero-Storage Guarantee:</strong> Submissions are sent straight to your email and purged immediately, satisfying GDPR and CCPA.`,
+      `<strong>Privacy by Design:</strong> We never write user data to persistent disk, preventing potential data leaks.`,
+      `<strong>Secure Routing:</strong> Rest assured your customer data is transiently processed and never stored.`
+    ];
+
+    const setup1 = [
+      `To implement your <strong>${slugClean}</strong>, register a new endpoint in the SendMyForm project panel.`,
+      `To set up, create a secure form endpoint token on your SendMyForm developer console.`,
+      `First, log into SendMyForm and generate a custom endpoint URL for your project.`
+    ];
+    const setup2 = [
+      `Update your form's action attribute to point to the new SendMyForm link and set the method to POST.`,
+      `Set your form action to target the SendMyForm API and ensure the request is sent via POST.`,
+      `Paste the SendMyForm endpoint URL into your form's action property, using a standard POST request.`
+    ];
+    const setup3 = [
+      `Ensure each input field has a descriptive name tag (e.g., name="email" or name="message"). You can customize target redirects or styling themes from your dashboard.`,
+      `Verify all inputs carry correct name attributes so values are labeled accurately in your emails. Configure redirects and mail styles in the console settings.`,
+      `Double-check name tags on all form elements to guarantee clean data rendering. Redirect clients to custom success pages by defining redirect rules in our dashboard.`
+    ];
+
+    return `
+      <p>${selectOption(intro1, hash, 0)} ${selectOption(intro2, hash, 1)} ${selectOption(intro3, hash, 2)}</p>
+      <h3>Optimizing for '${query}'</h3>
+      <p>${selectOption(body1, hash, 3)} ${selectOption(body2, hash, 4)} ${selectOption(body3, hash, 5)}</p>
+      <h3>Key Advantages of Our No-Backend Architecture</h3>
+      <ul>
+        <li>${selectOption(benefit1, hash, 6)}</li>
+        <li>${selectOption(benefit2, hash, 7)}</li>
+        <li>${selectOption(benefit3, hash, 8)}</li>
+      </ul>
+      <h3>How to Implement the Setup</h3>
+      <p>${selectOption(setup1, hash, 9)} ${selectOption(setup2, hash, 10)} ${selectOption(setup3, hash, 11)}</p>
+    `;
+  }
+
+  if (category === "vs") {
+    const intro1 = [
+      `Comparing form backends is essential to find the most cost-effective and private solution for your web projects.`,
+      `Evaluating different form endpoint providers helps developers select the right tool for static sites and single-page apps.`,
+      `Finding the perfect form handling service requires looking closely at limits, pricing structures, and privacy practices.`
+    ];
+    const intro2 = [
+      `Many traditional services lock critical features like redirects, custom email branding, and file attachments behind costly monthly subscriptions.`,
+      `Most legacy providers impose strict monthly submission limits and force users into expensive paid tiers just to remove branding.`,
+      `Several form backends save your user data on their shared databases, creating security concerns and complex GDPR compliance tasks.`
+    ];
+    const intro3 = [
+      `SendMyForm offers a modern, zero-storage alternative that is completely free to use, supported entirely by community donations.`,
+      `SendMyForm resolves this by providing all premium form features for free, using a developer-supported donation model.`,
+      `SendMyForm is built as a lightweight, privacy-first alternative that processes data on-the-fly without database persistence.`
+    ];
+
+    const body1 = [
+      `When reviewing options for <em>${query}</em>, developers look for high deliverability, clean dashboard control, and zero hidden fees.`,
+      `Evaluating solutions under <em>${query}</em> highlights the demand for simple configurations and robust spam blocking.`,
+      `Analyses of <em>${query}</em> demonstrate that modern developers prefer lightweight setups that do not compromise user privacy.`
+    ];
+    const body2 = [
+      `Unlike paid options that charge per form or per submission, SendMyForm allows you to create unlimited forms and receive unlimited submissions.`,
+      `While competitors restrict email templates and redirect options to paid accounts, SendMyForm leaves these tools open for all developers.`,
+      `Instead of storing sensitive user data on persistent server disks, our gateway routes the payload directly to your verified email.`
+    ];
+    const body3 = [
+      `This keeps your operating costs at zero while ensuring maximum data security for your clients.`,
+      `This guarantees compliance with modern privacy regulations and keeps your workflow clean.`,
+      `This offers a smooth, reliable integration that scales with your traffic without sudden billing changes.`
+    ];
+
+    const benefit1 = [
+      `<strong>100% Free Forever:</strong> Funded by developer donations and clean ads rather than restrictive subscription paywalls.`,
+      `<strong>Donation-Supported:</strong> Support the service via Ko-fi if it saves you money, otherwise run it completely free.`,
+      `<strong>Unlimited Projects:</strong> Create as many endpoints as you need without premium restrictions.`
+    ];
+    const benefit2 = [
+      `<strong>Zero-Storage Guarantee:</strong> No database logs mean zero risk of customer data leaks or compliance issues.`,
+      `<strong>Privacy Compliance:</strong> Complete peace of mind with instant data purging upon email delivery.`,
+      `<strong>GDPR Ready:</strong> Keep user submissions safe by never storing sensitive payloads on third-party servers.`
+    ];
+    const benefit3 = [
+      `<strong>Custom Branding:</strong> Set up custom redirects and email style templates on the free plan.`,
+      `<strong>Spam Protection:</strong> Stop bot attacks silently with honeypot fields and rate limits.`,
+      `<strong>Dedicated Deliverability:</strong> High deliverability rates powered by clean mail routing relays.`
+    ];
+
+    const setup1 = [
+      `Migrating to SendMyForm from another service is a straightforward copy-paste task.`,
+      `Switching your forms to SendMyForm takes less than a minute.`,
+      `To replace your current provider, start by creating an endpoint in our console.`
+    ];
+    const setup2 = [
+      `Locate your existing HTML form code and update the action attribute to target SendMyForm.`,
+      `Replace your previous endpoint URL in your form's action parameter with your SendMyForm project link.`,
+      `Update your form markup, changing the action URL to route data to our secure serverless endpoint.`
+    ];
+    const setup3 = [
+      `Ensure that name attributes are specified on all input fields. Test the setup once to confirm that emails arrive immediately. You can tweak redirects, spam parameters, and styling rules directly in our dashboard.`,
+      `Confirm all input fields have proper name tags to map the data correctly. Submit a test form to verify instant delivery. Adjust custom rules in your console.`,
+      `Double-check name tags on your inputs. Run a test submission to check email routing and customize redirect behavior inside your developer dashboard.`
+    ];
+
+    return `
+      <p>${selectOption(intro1, hash, 0)} ${selectOption(intro2, hash, 1)} ${selectOption(intro3, hash, 2)}</p>
+      <h3>Optimizing for '${query}'</h3>
+      <p>${selectOption(body1, hash, 3)} ${selectOption(body2, hash, 4)} ${selectOption(body3, hash, 5)}</p>
+      <h3>Key Advantages of Our No-Backend Architecture</h3>
+      <ul>
+        <li>${selectOption(benefit1, hash, 6)}</li>
+        <li>${selectOption(benefit2, hash, 7)}</li>
+        <li>${selectOption(benefit3, hash, 8)}</li>
+      </ul>
+      <h3>How to Implement the Setup</h3>
+      <p>${selectOption(setup1, hash, 9)} ${selectOption(setup2, hash, 10)} ${selectOption(setup3, hash, 11)}</p>
+    `;
+  }
+
+  // Fallback (for docs, blog, for, etc.)
+  const intro1 = [
+    `Building clean forms is a central requirement in modern web development, particularly for static sites, serverless applications, and Jamstack frameworks.`,
+    `Handling client communication channels efficiently is vital for web designers, freelancers, and growth-oriented developers.`,
+    `Creating high-performing contact pages, lead funnels, or waitlists is simple when you decouple form processing from your web hosting.`
+  ];
+  const intro2 = [
+    `However, setting up custom SMTP routing, form parsers, and database schemas is an unnecessary drain on developer resources.`,
+    `Yet, building custom PHP scripts or serverless database routines just to receive email notifications adds complexity.`,
+    `But managing database security, CORS settings, and spam filters manually slows down your deployment process.`
+  ];
+  const intro3 = [
+    `SendMyForm offers a simple, secure, and free form backend that handles validation, protects against bots, and emails submissions instantly.`,
+    `SendMyForm solves this by acting as a lightweight, zero-storage form gateway that forwards input data straight to your inbox.`,
+    `By delegating your form submissions to SendMyForm, you secure a reliable, no-backend handler in under a minute.`
+  ];
+
+  const body1 = [
+    `When evaluating options for <em>${query}</em>, developers focus on reliability, ease of integration, and data privacy.`,
+    `Optimizing your website workflow for <em>${query}</em> involves choosing tools that keep page speed high and inbox spam low.`,
+    `Exploring solutions for <em>${query}</em> highlights the need for secure, serverless endpoints that do not collect user data.`
+  ];
+  const body2 = [
+    `By sending submissions directly to our API gateway, you eliminate the need to run and secure backend servers.`,
+    `Our serverless gateway processes the submission payload, screens for bot activity, and forwards the data to you.`,
+    `SendMyForm processes your inputs, blocks automated spam via silent honeypots, and routes notifications instantly.`
+  ];
+  const body3 = [
+    `This keeps your website static, secure, and fast, while maintaining a reliable communication channel.`,
+    `This ensures a seamless user experience for your visitors and immediate lead delivery for your business.`,
+    `This guarantees absolute data privacy since we purge form data from our systems immediately after delivery.`
+  ];
+
+  const benefit1 = [
+    `<strong>Fast Setup:</strong> Connect your form markup in seconds without writing server code or database queries.`,
+    `<strong>Instant Integration:</strong> Add a secure form action to any HTML form on any hosting platform.`,
+    `<strong>Zero Maintenance:</strong> Run forms without checking server status, database limits, or security updates.`
+  ];
+  const benefit2 = [
+    `<strong>Silent Spam Filter:</strong> Built-in honeypot inputs and rate limiting stop bot spam without frustrating users with CAPTCHAs.`,
+    `<strong>Clean Inbox:</strong> Stop bot scripts and automated spam from cluttering your notification feed.`,
+    `<strong>Rate Limits:</strong> Protect your form endpoints against automated attacks and spam scripts.`
+  ];
+  const benefit3 = [
+    `<strong>Zero-Storage Security:</strong> Data is emailed instantly and deleted from our servers immediately, keeping customer records private.`,
+    `<strong>Privacy Compliance:</strong> Ensure GDPR, CCPA, and privacy compliance by never saving contact data on a third-party server.`,
+    `<strong>Secure Transits:</strong> Your data is parsed transiently in-memory and completely wiped once delivery is confirmed.`
+  ];
+
+  const setup1 = [
+    `To set up, register your project endpoint inside the SendMyForm user dashboard.`,
+    `To start, create a free project in your SendMyForm developer console to get a unique action URL.`,
+    `Begin by registering your website project on SendMyForm to get your form endpoint key.`
+  ];
+  const setup2 = [
+    `Point your form element's action attribute to the SendMyForm URL and use the POST method.`,
+    `Update your HTML form, setting the action attribute to your custom endpoint and the method to POST.`,
+    `Configure your form element to submit data to the SendMyForm API gateway using the POST method.`
+  ];
+  const setup3 = [
+    `Ensure all input fields contain descriptive name attributes so data is structured cleanly in your email alerts. You can customize visual themes or set custom redirects from the settings console.`,
+    `Be sure each input field has a name tag to map the data values. Tweak redirects and styling options in the form settings dashboard.`,
+    `Check that name tags are present on your input elements for proper labeling. Customize success redirect links and notifications inside your console.`
+  ];
+
+  return `
+    <p>${selectOption(intro1, hash, 0)} ${selectOption(intro2, hash, 1)} ${selectOption(intro3, hash, 2)}</p>
+    <h3>Optimizing for '${query}'</h3>
+    <p>${selectOption(body1, hash, 3)} ${selectOption(body2, hash, 4)} ${selectOption(body3, hash, 5)}</p>
+    <h3>Key Advantages of Our No-Backend Architecture</h3>
+    <ul>
+      <li>${selectOption(benefit1, hash, 6)}</li>
+      <li>${selectOption(benefit2, hash, 7)}</li>
+      <li>${selectOption(benefit3, hash, 8)}</li>
+    </ul>
+    <h3>How to Implement the Setup</h3>
+    <p>${selectOption(setup1, hash, 9)} ${selectOption(setup2, hash, 10)} ${selectOption(setup3, hash, 11)}</p>
+  `;
+}
+
 // Helper to fetch details by category and slug, generating default rich text if custom text is missing
 export const getSeoPage = (category: string, slug: string): SeoPageData | null => {
   let matched: SeoPageData | undefined;
@@ -578,26 +914,8 @@ export const getSeoPage = (category: string, slug: string): SeoPageData | null =
 
   // If no body content is present, auto-generate a rich, keyword-optimized body to meet SEO standards (>350 words)
   if (!matched.contentHtml) {
-    const titleClean = matched.title.split("—")[0].trim();
     const query = matched.targetQuery;
-    
-    matched.contentHtml = `
-      <p>Building forms is one of the most common tasks in modern web development. Whether you're configuring a simple contact page or capturing leads for a complex marketing funnel, securing a reliable, fast, and scalable backend handler is essential. In static sites and modern single page apps, configuring custom servers, SMTP protocols, database schemas, and CORS handling is an unnecessary drain on developer resources. That is where <strong>SendMyForm</strong> steps in.</p>
-      
-      <h3>Optimizing for '${query}'</h3>
-      <p>When searching for solutions relating to <em>${query}</em>, developers look for ease of integration, speed, and privacy. By delegating your form submissions to our hosted API gateway, you eliminate server maintenance. Your client-side code handles form rendering, validation, and visual styling, while SendMyForm processes the submission payload, filters out malicious bots, formats the email template, and notifies you instantly.</p>
-      
-      <h3>Key Advantages of Our No-Backend Architecture</h3>
-      <ul>
-        <li><strong>Accelerated Launch:</strong> Deploy a completely functional lead capture or support form in under a minute without writing a single line of server-side code.</li>
-        <li><strong>Advanced Spam Protection:</strong> Our automated filters catch bot inputs using silent honeypots and rate limiting, preserving the cleanliness of your inbox.</li>
-        <li><strong>Privacy Compliance:</strong> We prioritize security. Submissions are processed on-the-fly and emailed instantly, ensuring we never store sensitive user data on persistent databases.</li>
-        <li><strong>Universal Compatibility:</strong> Works seamlessly across WordPress, custom HTML layouts, and SPA frameworks like React, Next.js, Vue, and Svelte.</li>
-      </ul>
-      
-      <h3>How to Implement the Setup</h3>
-      <p>To begin, create a free project endpoint in your SendMyForm user dashboard. Modify the form element's action attribute to target your unique endpoint URL and ensure the request method is set to POST. Ensure that each field contains a descriptive name attribute (e.g., name="name" or name="company"), which serves as the data label in your email notification. You can customize visual themes or configure custom redirects to client thank-you pages directly from your project console settings.</p>
-    `;
+    matched.contentHtml = generateDynamicContent(category, matched.slug, query, matched.title);
   }
 
   // Ensure default code snippets are added for empty integrations

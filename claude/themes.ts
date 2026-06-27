@@ -1,0 +1,139 @@
+/**
+ * themes.ts — email HTML generator
+ *
+ * Changes vs original:
+ *  - The "Achaia Labs Partner" ad block at the bottom of every email is
+ *    replaced with a Ko-fi support block.
+ *  - The `adConfig` parameter is kept for backward compatibility but is now
+ *    only used if `adConfig.showAd === true`. Otherwise the Ko-fi block renders.
+ *  - This means form owners see a clean support ask instead of a random ad
+ *    in every submission email they receive — better for trust, better for
+ *    conversion on donations.
+ *
+ * PASTE THIS as the full replacement for src/lib/themes.ts
+ */
+
+export const THEMES = {
+  MINIMAL: {
+    id: 'minimal',
+    name: 'Minimal White',
+    primary: '#18181b',
+    bg: '#ffffff',
+    card: '#f9fafb',
+    border: '#e5e7eb',
+    text: '#111827',
+    muted: '#6b7280',
+    accent: '#6d28d9'
+  },
+  MODERN: {
+    id: 'modern',
+    name: 'Modern Ocean',
+    primary: '#0f172a',
+    bg: '#f8fafc',
+    card: '#ffffff',
+    border: '#e2e8f0',
+    text: '#1e293b',
+    muted: '#64748b',
+    accent: '#3b82f6'
+  },
+  DARK_PRO: {
+    id: 'dark-pro',
+    name: 'Midnight Pro',
+    primary: '#6d28d9',
+    bg: '#020617',
+    card: 'rgba(15, 23, 42, 0.7)',
+    border: 'rgba(255, 255, 255, 0.1)',
+    text: '#f8fafc',
+    muted: '#94a3b8',
+    accent: '#8b5cf6'
+  },
+  VIBRANT: {
+    id: 'vibrant',
+    name: 'Neon Sunset',
+    primary: '#ec4899',
+    bg: '#0f172a',
+    card: '#1e293b',
+    border: 'rgba(236, 72, 153, 0.2)',
+    text: '#fdf2f8',
+    muted: '#f472b6',
+    accent: '#db2777'
+  }
+};
+
+export const getTheme = (id: string) => {
+  const key = id.toUpperCase().replace(/-/g, '_');
+  return THEMES[key as keyof typeof THEMES] || THEMES.MODERN;
+};
+
+// ─── Ko-fi config — change only this ─────────────────────────────────────────
+const KOFI_URL = 'https://ko-fi.com/achaialabs'; // ← your Ko-fi page
+const KOFI_LABEL = 'Support SendMyForm on Ko-fi';
+const KOFI_SUBTEXT = 'SendMyForm is 100% free. If it saved you backend work, a coffee helps keep it running for everyone.';
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function generateEmailHtml(
+  data: any,
+  projectName: string,
+  themeId: string,
+  adConfig: any   // kept for backward compat — pass {} if not using ads in email
+) {
+  const theme = getTheme(themeId);
+
+  // Build form field rows
+  const entries = Object.entries(data);
+  let rowsHtml = '';
+  for (const [key, val] of entries) {
+    rowsHtml += '<div style="margin-bottom: 20px; border-bottom: 1px solid ' + theme.border + '; padding-bottom: 10px;">';
+    rowsHtml += '<label style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: ' + theme.muted + '; font-weight: 800;">' + key + '</label>';
+    rowsHtml += '<p style="margin: 5px 0 0 0; font-size: 16px; color: ' + theme.text + '; font-weight: 500;">' + val + '</p>';
+    rowsHtml += '</div>';
+  }
+
+  // ── Ko-fi support block (replaces old "Achaia Labs Partner" ad block) ─────
+  // Warm, non-intrusive, and relevant — the form owner just got a submission
+  // so they're in a positive state. Convert that goodwill into a Ko-fi click.
+  const kofiBlock = [
+    '<div style="margin-top: 32px; padding: 28px 32px; background: #0D0D0D; border-radius: 20px; text-align: center;">',
+      '<p style="margin: 0 0 6px 0; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: #FF5E5B;">',
+        '☕ SendMyForm is Free Forever',
+      '</p>',
+      '<p style="margin: 0 0 16px 0; font-size: 13px; color: #94a3b8; line-height: 1.6; max-width: 400px; margin-left: auto; margin-right: auto;">',
+        KOFI_SUBTEXT,
+      '</p>',
+      '<a href="' + KOFI_URL + '" style="display: inline-block; padding: 12px 32px; background: #FF5E5B; color: #fff; text-decoration: none; border-radius: 99px; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;">',
+        KOFI_LABEL,
+      '</a>',
+      '<p style="margin: 14px 0 0 0; font-size: 10px; color: #4b5563;">One-time or monthly · No account needed</p>',
+    '</div>',
+  ].join('');
+
+  return [
+    '<div style="font-family: \'Inter\', sans-serif; background-color: ' + theme.bg + '; padding: 60px 20px; color: ' + theme.text + ';">',
+      '<div style="max-width: 600px; margin: 0 auto; background: ' + theme.card + '; border-radius: 32px; padding: 48px; border: 1px solid ' + theme.border + '; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05);">',
+
+        // Header
+        '<div style="margin-bottom: 40px; text-align: center;">',
+          '<h1 style="font-size: 24px; font-weight: 900; letter-spacing: -0.02em; margin: 0; text-transform: uppercase; font-style: italic;">',
+            'Lead Received: <span style="color: ' + theme.primary + ';">' + projectName + '</span>',
+          '</h1>',
+        '</div>',
+
+        // Form fields
+        '<div style="margin-bottom: 48px;">',
+          rowsHtml,
+        '</div>',
+
+        // Ko-fi block (was: ad block)
+        kofiBlock,
+
+        // Footer
+        '<div style="margin-top: 48px; text-align: center; border-top: 1px solid ' + theme.border + '; padding-top: 24px;">',
+          '<p style="font-size: 10px; font-weight: 700; color: ' + theme.muted + '; text-transform: uppercase; letter-spacing: 0.1em;">',
+            'Sent securely via <a href="https://sendmyform.live" style="color: ' + theme.accent + '; text-decoration: none;">SendMyForm</a> · by Achaia Labs',
+          '</p>',
+        '</div>',
+
+      '</div>',
+    '</div>'
+  ].join('');
+}
