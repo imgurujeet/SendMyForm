@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
+import * as admin from "firebase-admin";
 import { db } from "@/lib/firebase-admin";
 import { generateEmailHtml } from "@/lib/themes";
 
@@ -88,6 +89,52 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     }
 
     const validatedData = formSchema.parse(data);
+
+    // 2.5 Newsletter Integration: automatically enroll form submitter as contact
+    const submitterEmail = validatedData.email || validatedData.Email || validatedData.EMAIL;
+    if (submitterEmail && projectDoc.newsletterIntegrationEnabled && projectDoc.newsletterListId) {
+      try {
+        const emailKey = submitterEmail.trim().toLowerCase();
+        const contactRef = db.collection("contacts").doc(`${projectDoc.uid}_${emailKey}`);
+        const contactDoc = await contactRef.get();
+        
+        const submitterName = validatedData.name || validatedData.Name || validatedData.NAME || "";
+        
+        if (contactDoc.exists) {
+          const existingData = contactDoc.data() || {};
+          const existingLists = existingData.lists || [];
+          if (!existingLists.includes(projectDoc.newsletterListId)) {
+            await contactRef.update({
+              lists: [...existingLists, projectDoc.newsletterListId],
+              updatedAt: new Date()
+            });
+            
+            // Increment list size
+            await db.collection("lists").doc(projectDoc.newsletterListId).update({
+              contactCount: admin.firestore.FieldValue.increment(1)
+            });
+          }
+        } else {
+          await contactRef.set({
+            uid: projectDoc.uid,
+            email: emailKey,
+            name: submitterName,
+            status: "subscribed",
+            tags: ["form-submission", projectDoc.name],
+            lists: [projectDoc.newsletterListId],
+            joinedDate: new Date(),
+            updatedAt: new Date()
+          });
+          
+          // Increment list size
+          await db.collection("lists").doc(projectDoc.newsletterListId).update({
+            contactCount: admin.firestore.FieldValue.increment(1)
+          });
+        }
+      } catch (err) {
+        console.error("Newsletter sync error:", err);
+      }
+    }
 
     // 3. Setup Transporter
     const transporter = nodemailer.createTransport({

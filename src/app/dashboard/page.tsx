@@ -2,12 +2,12 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { collection, query, where, onSnapshot, doc, deleteDoc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import {
   Plus, Layers, LogOut, Settings, Home, Copy, Check, X,
   ShieldCheck, Trash2, Link2, Menu, ChevronDown,
-  Mail, Code2, ArrowRight, Activity, Pencil
+  Mail, Code2, ArrowRight, Activity, Pencil, Users, FileText, BarChart4, PieChart
 } from "lucide-react";
 import { THEMES } from "@/lib/themes";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,15 @@ import ThemeToggle from "@/components/ThemeToggle";
 import AdSense from "@/components/AdSense";
 import KoFiModal from "@/components/KoFiModal";
 import KoFiWidget from "@/components/KoFiWidget";
+
+import OnboardingWizard from "@/components/newsletter/OnboardingWizard";
+import DashboardView from "@/components/newsletter/DashboardView";
+import ContactsView from "@/components/newsletter/ContactsView";
+import ListsView from "@/components/newsletter/ListsView";
+import CampaignsView from "@/components/newsletter/CampaignsView";
+import TemplatesView from "@/components/newsletter/TemplatesView";
+import AnalyticsView from "@/components/newsletter/AnalyticsView";
+import SettingsView from "@/components/newsletter/SettingsView";
 
 const THEME_LIST = Object.values(THEMES) as Array<{
   id: string; name: string; primary: string; bg: string;
@@ -80,6 +89,10 @@ const EmailPreviewCard = ({ theme, projectName, previewData }: any) => {
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [profileLoading, setProfileLoading] = useState(true);
+  const [activeProduct, setActiveProduct] = useState<"forms" | "newsletter" | null>(null);
+
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
@@ -109,6 +122,37 @@ export default function Dashboard() {
   const [createdEndpointUrl, setCreatedEndpointUrl] = useState("");
   const [createdProjectName, setCreatedProjectName] = useState("");
 
+  const [lists, setLists] = useState<any[]>([]);
+  const [isUpdatingIntegration, setIsUpdatingIntegration] = useState(false);
+
+  const handleUpdateIntegration = async (enabled: boolean, listId: string) => {
+    if (!currentProject) return;
+    setIsUpdatingIntegration(true);
+    try {
+      const projRef = doc(db, "projects", currentProject.id);
+      await updateDoc(projRef, {
+        newsletterIntegrationEnabled: enabled,
+        newsletterListId: listId,
+        updatedAt: new Date()
+      });
+    } catch (err) {
+      console.error("Failed to update project integration settings:", err);
+      alert("Failed to update integration settings.");
+    } finally {
+      setIsUpdatingIntegration(false);
+    }
+  };
+
+  // Load mailing lists for integration select dropdown
+  useEffect(() => {
+    if (!user) return;
+    const qLists = query(collection(db, "lists"), where("uid", "==", user.uid));
+    const unsub = onSnapshot(qLists, (snap) => {
+      setLists(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+    });
+    return () => unsub();
+  }, [user]);
+
   useEffect(() => {
     setMounted(true);
     setOrigin(
@@ -116,23 +160,57 @@ export default function Dashboard() {
         ? "http://localhost:3002"
         : `https://${window.location.host}`
     );
-    const unsub = onAuthStateChanged(auth, (u) => {
+    let unsubProfile: (() => void) | null = null;
+    let unsubProjects: (() => void) | null = null;
+
+    const unsubAuth = onAuthStateChanged(auth, (u) => {
       if (u) {
         setUser(u);
+        
+        // Listen to User Profile
+        const userProfileRef = doc(db, "users", u.uid);
+        unsubProfile = onSnapshot(userProfileRef, (docSnap) => {
+          if (docSnap.exists()) {
+            const profile = docSnap.data();
+            setUserProfile(profile);
+            if (profile.onboardingCompleted) {
+              setActiveProduct((prev) => {
+                if (prev) return prev;
+                return profile.productPreference === "newsletter" ? "newsletter" : "forms";
+              });
+              setActiveTab((prev) => {
+                if (prev !== "overview" && prev !== "dashboard") return prev;
+                return profile.productPreference === "newsletter" ? "dashboard" : "overview";
+              });
+            }
+          } else {
+            setUserProfile(null);
+          }
+          setProfileLoading(false);
+        }, (err) => {
+          console.error(err);
+          setProfileLoading(false);
+        });
+
+        // Listen to Projects
         const q = query(collection(db, "projects"), where("uid", "==", u.uid));
-        const unsubProjects = onSnapshot(q, (snap) => {
+        unsubProjects = onSnapshot(q, (snap) => {
           setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
           setLoading(false);
         }, () => {
           setError("Failed to load projects. Please refresh.");
           setLoading(false);
         });
-        return () => unsubProjects();
       } else {
         window.location.href = "/auth";
       }
     });
-    return () => unsub();
+
+    return () => {
+      unsubAuth();
+      if (unsubProfile) unsubProfile();
+      if (unsubProjects) unsubProjects();
+    };
   }, []);
 
   const currentProject = useMemo(
@@ -224,7 +302,7 @@ export default function Dashboard() {
     setSidebarOpen(false);
   };
 
-  if (!mounted || loading) {
+  if (!mounted || loading || profileLoading) {
     return (
       <div className="h-screen flex items-center justify-center" style={{ background: "var(--bg-primary)" }}>
         <div className="flex flex-col items-center gap-4">
@@ -234,6 +312,35 @@ export default function Dashboard() {
       </div>
     );
   }
+
+  if (user && (!userProfile || !userProfile.onboardingCompleted)) {
+    return (
+      <OnboardingWizard
+        user={user}
+        onComplete={(prof) => {
+          setUserProfile(prof);
+          setActiveProduct(prof.productPreference === "newsletter" ? "newsletter" : "forms");
+          setActiveTab(prof.productPreference === "newsletter" ? "dashboard" : "overview");
+        }}
+      />
+    );
+  }
+
+  const sidebarTabs = activeProduct === "newsletter"
+    ? [
+        { id: "dashboard", label: "Dashboard", icon: Home },
+        { id: "contacts", label: "Contacts", icon: Users },
+        { id: "lists", label: "Lists", icon: FileText },
+        { id: "campaigns", label: "Campaigns", icon: Mail },
+        { id: "templates", label: "Templates", icon: Code2 },
+        { id: "analytics", label: "Analytics", icon: BarChart4 },
+        { id: "newsletter_settings", label: "Settings", icon: Settings },
+      ]
+    : [
+        { id: "overview", label: "Overview", icon: Home },
+        { id: "projects", label: "My Forms", icon: Layers },
+        { id: "settings", label: "Settings", icon: Settings },
+      ];
 
   const activeTheme = THEME_LIST.find((t) => t.id === selectedTheme) || THEME_LIST[1];
   const userInitial = user?.displayName?.charAt(0) || user?.email?.charAt(0)?.toUpperCase() || "U";
@@ -276,12 +383,39 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <nav className="flex flex-col gap-1 p-3 flex-1">
-          {[
-            { id: "overview", label: "Overview", icon: Home },
-            { id: "projects", label: "My Forms", icon: Layers },
-            { id: "settings", label: "Settings", icon: Settings },
-          ].map((t) => (
+        {userProfile?.productPreference === "both" && (
+          <div className="px-4 py-2 flex-shrink-0" style={{ borderBottom: "1px solid var(--border-color)" }}>
+            <div className="flex bg-slate-950/60 p-1 rounded-xl border border-white/5">
+              <button
+                onClick={() => {
+                  setActiveProduct("forms");
+                  setActiveTab("overview");
+                  setIsCreatingNew(false);
+                }}
+                className={cn("flex-1 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg transition-all",
+                  activeProduct === "forms" ? "bg-violet-600 text-white shadow-sm" : "text-slate-500 hover:text-white"
+                )}
+              >
+                Forms
+              </button>
+              <button
+                onClick={() => {
+                  setActiveProduct("newsletter");
+                  setActiveTab("dashboard");
+                  setIsCreatingNew(false);
+                }}
+                className={cn("flex-1 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg transition-all",
+                  activeProduct === "newsletter" ? "bg-violet-600 text-white shadow-sm" : "text-slate-500 hover:text-white"
+                )}
+              >
+                Newsletter
+              </button>
+            </div>
+          </div>
+        )}
+
+        <nav className="flex flex-col gap-1 p-3 flex-1 overflow-y-auto">
+          {sidebarTabs.map((t) => (
             <button key={t.id} onClick={() => switchTab(t.id)}
               className={cn("w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
                 activeTab === t.id && !isCreatingNew ? "bg-violet-600/15 text-violet-400 border border-violet-500/20" : "hover:bg-white/[0.04]")}
@@ -323,10 +457,12 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <button onClick={() => { setIsCreatingNew(true); setActiveTab(""); setError(null); }}
-              className="flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-lg transition-all shadow-lg shadow-violet-900/30">
-              <Plus size={15} />New project
-            </button>
+            {activeProduct === "forms" && (
+              <button onClick={() => { setIsCreatingNew(true); setActiveTab(""); setError(null); }}
+                className="flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-lg transition-all shadow-lg shadow-violet-900/30">
+                <Plus size={15} />New project
+              </button>
+            )}
           </div>
         </div>
 
@@ -340,8 +476,17 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* ── CREATE PROJECT ── */}
-          {isCreatingNew ? (
+          {activeProduct === "newsletter" ? (
+            <div className="animate-fade-in">
+              {activeTab === "dashboard" && <DashboardView user={user} setActiveTab={setActiveTab} />}
+              {activeTab === "contacts" && <ContactsView user={user} />}
+              {activeTab === "lists" && <ListsView user={user} />}
+              {activeTab === "campaigns" && <CampaignsView user={user} />}
+              {activeTab === "templates" && <TemplatesView user={user} />}
+              {activeTab === "analytics" && <AnalyticsView user={user} />}
+              {activeTab === "newsletter_settings" && <SettingsView user={user} />}
+            </div>
+          ) : isCreatingNew ? (
             <div className="animate-fade-in">
               <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                 <div>
@@ -617,6 +762,75 @@ export default function Dashboard() {
                               Submit
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Newsletter Integration Card */}
+                  <div className="p-6 rounded-2xl border bg-slate-950/20" style={card}>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Mail size={14} className="text-violet-400" />
+                      <p className="text-xs font-semibold uppercase tracking-wider" style={muted}>Newsletter Integration</p>
+                    </div>
+
+                    {userProfile?.productPreference === "newsletter" || userProfile?.productPreference === "both" ? (
+                      <div className="space-y-4">
+                        <p className="text-xs" style={muted}>
+                          Automatically enroll form submitters as contacts in one of your mailing lists.
+                        </p>
+                        
+                        <div className="flex items-center justify-between p-3 rounded-xl border" style={{ background: "var(--bg-secondary)", borderColor: "var(--border-color)" }}>
+                          <span className="text-xs font-medium">Enable Integration</span>
+                          <button
+                            onClick={() => handleUpdateIntegration(!(currentProject.newsletterIntegrationEnabled || false), currentProject.newsletterListId || "")}
+                            disabled={isUpdatingIntegration}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              (currentProject.newsletterIntegrationEnabled || false) ? "bg-violet-600" : "bg-slate-800"
+                            }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                (currentProject.newsletterIntegrationEnabled || false) ? "translate-x-6" : "translate-x-1"
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {(currentProject.newsletterIntegrationEnabled || false) && (
+                          <div className="space-y-2 animate-fade-in">
+                            <label className="text-[10px] font-bold uppercase tracking-wider block" style={muted}>Select Mailing List</label>
+                            {lists.length === 0 ? (
+                              <div className="p-3 border rounded-xl border-dashed text-center" style={{ borderColor: "var(--border-color)" }}>
+                                <p className="text-xs" style={muted}>No mailing lists found. Create one under the Newsletter dashboard first.</p>
+                              </div>
+                            ) : (
+                              <select
+                                value={currentProject.newsletterListId || ""}
+                                disabled={isUpdatingIntegration}
+                                onChange={(e) => handleUpdateIntegration(true, e.target.value)}
+                                className="w-full h-10 rounded-lg border px-3 text-xs outline-none cursor-pointer"
+                                style={{ background: "var(--bg-secondary)", borderColor: "var(--border-color)", color: "var(--text-primary)" }}
+                              >
+                                <option value="" disabled style={{ background: "var(--bg-secondary)" }}>Choose a mailing list...</option>
+                                {lists.map((l) => (
+                                  <option key={l.id} value={l.id} style={{ background: "var(--bg-secondary)" }}>{l.name} ({l.contactCount || 0} contacts)</option>
+                                ))}
+                              </select>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <p className="text-xs" style={muted}>
+                          Connect your web forms to your newsletter campaigns. Automatically sync, segment, and follow up with form submitters.
+                        </p>
+                        <div className="p-4 bg-violet-600/10 border border-violet-500/20 rounded-xl">
+                          <p className="text-xs font-semibold text-violet-400 mb-1">Feature Locked</p>
+                          <p className="text-[11px]" style={muted}>
+                            Please activate the Newsletter product in your Settings to enable this integration.
+                          </p>
                         </div>
                       </div>
                     )}
