@@ -15,25 +15,25 @@ import {
 
 // --- HELPERS & STYLES ---
 const mainStyle = {
-  backgroundColor: "#020617",
+  backgroundColor: "#f8fafc",
   fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-  color: "#f1f5f9",
+  color: "#334155",
   padding: "40px 20px",
 };
 
 const containerStyle = {
   maxWidth: "600px",
   margin: "0 auto",
-  backgroundColor: "#0b1329",
-  border: "1px solid rgba(255,255,255,0.05)",
-  borderRadius: "24px",
+  backgroundColor: "#ffffff",
+  border: "1px solid #e2e8f0",
+  borderRadius: "16px",
   padding: "40px",
-  boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+  boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.025)",
 };
 
 const logoContainerStyle = {
   textAlign: "center" as const,
-  marginBottom: "30px",
+  marginBottom: "32px",
 };
 
 const logoStyle = {
@@ -43,13 +43,12 @@ const logoStyle = {
 
 const headingStyle = {
   fontSize: "24px",
-  fontWeight: "900",
+  fontWeight: "800",
   textAlign: "center" as const,
-  color: "#ffffff",
-  margin: "0 0 20px 0",
-  letterSpacing: "-0.05em",
-  textTransform: "uppercase" as const,
-  fontStyle: "italic",
+  color: "#0f172a",
+  margin: "0 0 24px 0",
+  letterSpacing: "-0.025em",
+  textTransform: "none" as const,
 };
 
 const highlightStyle = {
@@ -59,42 +58,41 @@ const highlightStyle = {
 const textStyle = {
   fontSize: "15px",
   lineHeight: "1.6",
-  color: "#94a3b8",
-  margin: "0 0 24px 0",
+  color: "#334155",
+  margin: "0 0 20px 0",
 };
 
 const buttonContainerStyle = {
   textAlign: "center" as const,
-  margin: "30px 0",
+  margin: "32px 0",
 };
 
 const buttonStyle = {
   backgroundColor: "#e11d48",
-  borderRadius: "14px",
+  borderRadius: "8px",
   color: "#ffffff",
   fontSize: "14px",
-  fontWeight: "bold",
+  fontWeight: "600",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "16px 32px",
-  boxShadow: "0 4px 15px rgba(225,29,72,0.4)",
+  padding: "14px 28px",
 };
 
 const hrStyle = {
-  borderColor: "rgba(255,255,255,0.05)",
-  margin: "30px 0",
+  borderColor: "#e2e8f0",
+  margin: "32px 0",
 };
 
 const footerStyle = {
   fontSize: "12px",
-  color: "#475569",
+  color: "#64748b",
   textAlign: "center" as const,
-  lineHeight: "1.5",
+  lineHeight: "1.6",
 };
 
 const footerLinkStyle = {
-  color: "#94a3b8",
+  color: "#64748b",
   textDecoration: "underline",
   margin: "0 8px",
 };
@@ -223,7 +221,18 @@ export const NewsletterCampaignEmail = ({
 }: NewsletterCampaignEmailProps) => {
   return (
     <Html>
-      <Head />
+      <Head>
+        <style dangerouslySetInnerHTML={{ __html: `
+          h1 { font-size: 24px; font-weight: 800; color: #0f172a; margin-top: 24px; margin-bottom: 12px; font-style: italic; }
+          h2 { font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 20px; margin-bottom: 10px; }
+          p { margin-bottom: 16px; color: #334155; }
+          ul { list-style-type: disc; padding-left: 20px; margin-bottom: 16px; }
+          ol { list-style-type: decimal; padding-left: 20px; margin-bottom: 16px; }
+          li { margin-bottom: 8px; color: #334155; }
+          blockquote { border-left: 4px solid #e11d48; padding-left: 16px; margin: 20px 0; font-style: italic; color: #475569; }
+          a { color: #e11d48; text-decoration: underline; }
+        `}} />
+      </Head>
       <Body style={mainStyle}>
         <Container style={containerStyle}>
           <div style={logoContainerStyle}>
@@ -239,7 +248,7 @@ export const NewsletterCampaignEmail = ({
           
           {/* Inject contentHtml rendered from TipTap */}
           <div 
-            style={{ color: "#e2e8f0", fontSize: "15px", lineHeight: "1.6", marginBottom: "24px" }}
+            style={{ color: "#334155", fontSize: "15px", lineHeight: "1.6", marginBottom: "24px" }}
             dangerouslySetInnerHTML={{ __html: contentHtml }}
           />
 

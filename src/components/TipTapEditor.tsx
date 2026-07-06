@@ -101,6 +101,9 @@ export default function TipTapEditor({
   if (!editor) return null;
 
   const setLink = () => {
+    const { from, to } = editor.state.selection;
+    const isTextSelected = from !== to;
+    
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("Enter URL:", previousUrl);
 
@@ -109,13 +112,30 @@ export default function TipTapEditor({
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+
+    // Add protocol helper if missing
+    let finalUrl = url.trim();
+    if (finalUrl && !/^(https?:\/\/|mailto:|tel:)/i.test(finalUrl)) {
+      finalUrl = `https://${finalUrl}`;
+    }
+
+    if (!isTextSelected) {
+      const text = window.prompt("Enter link text:", "Link");
+      if (!text) return;
+      editor.chain().focus().insertContent(`<a href="${finalUrl}">${text}</a>`).run();
+    } else {
+      editor.chain().focus().extendMarkRange("link").setLink({ href: finalUrl }).run();
+    }
   };
 
   const addImage = () => {
     const url = window.prompt("Enter image URL:");
     if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
+      let finalUrl = url.trim();
+      if (finalUrl && !/^(https?:\/\/)/i.test(finalUrl)) {
+        finalUrl = `https://${finalUrl}`;
+      }
+      editor.chain().focus().setImage({ src: finalUrl }).run();
     }
   };
 

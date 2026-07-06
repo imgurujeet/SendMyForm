@@ -58,6 +58,65 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const PRESET_TEMPLATES = [
+  {
+    name: "Product Update",
+    desc: "For detailing software iterations & features",
+    subject: "SendMyForm Product Update: Check out what we built",
+    contentHtml: `<h1>SendMyForm Product Update</h1>
+<p>Hey {{name}},</p>
+<p>We've been hard at work building features to make your experience seamless. Here is what is new:</p>
+<h2>🛡️ Advanced Spam Filtering</h2>
+<p>Our bot protection model has been updated. You will now see fewer spam submissions in your dashboard with zero configuration changes required.</p>
+<h2>⚡ Enhanced Webhooks</h2>
+<p>Webhook delivery has been optimized to execute in under 100ms. We have also added support for secure webhook signatures so you can verify the payload comes from SendMyForm.</p>
+<h2>🎨 New Styling Themes</h2>
+<p>Style your redirect thank-you pages with 5 premium design templates, including sleek glassmorphic themes and dark modes.</p>
+<br/>
+<p>Try these new features today in your developer dashboard!</p>`,
+  },
+  {
+    name: "Feature Launch",
+    desc: "Sleek card layout announcing key feature",
+    subject: "Introducing [Feature Name]: Ramping up your productivity!",
+    contentHtml: `<h1>Announcing Our Brand New Feature</h1>
+<p>Hi {{name}},</p>
+<p>We are thrilled to launch our new feature. Here is what you can do with it:</p>
+<ul>
+  <li>Integrate with 300+ apps.</li>
+  <li>Automate data exports.</li>
+  <li>Track submissions in real time.</li>
+</ul>
+<p>We hope this helps you build better workflows!</p>`,
+  },
+  {
+    name: "Weekly Digest",
+    desc: "Consolidated updates list for readers",
+    subject: "SendMyForm Weekly Digest: Top Articles & Tips",
+    contentHtml: `<h1>Your Weekly Roundup</h1>
+<p>Here is a summary of articles and resources from this week:</p>
+<ul>
+  <li><strong>5 Form Security Best Practices</strong></li>
+  <li><strong>Optimizing Conversion Rates on Landing Pages</strong></li>
+  <li><strong>Getting Started with Zero Persistence Data</strong></li>
+</ul>
+<p>Hope you find these resources useful!</p>`,
+  },
+  {
+    name: "Security Advisory",
+    desc: "High alert red notice styled advisory",
+    subject: "Important Security Advisory: Action required",
+    contentHtml: `<h1>Important Security Advisory</h1>
+<p>We are issuing a security update regarding token verification. Please ensure your API keys are rotated. Action required:</p>
+<ol>
+  <li>Go to your dashboard settings.</li>
+  <li>Click "Rotate API Keys".</li>
+  <li>Update your environment variables.</li>
+</ol>
+<p>If you have any questions, reach out to support immediately.</p>`,
+  }
+];
+
 export default function SuperAdmin() {
   const [user, setUser] = useState<any>(null);
   const [stats, setStats] = useState({ users: 0, projects: 0, submissions: 0, growth: 12.5 });
@@ -193,10 +252,14 @@ export default function SuperAdmin() {
       setStats(prev => ({ ...prev, users: uniqueUids.size, projects: snap.size }));
       const userList = Array.from(uniqueUids).map(uid => ({ uid, count: snap.docs.filter(d => d.data().uid === uid).length }));
       setAllUsers(userList.sort((a, b) => b.count - a.count).slice(0, 10));
+    }, (err) => {
+      console.warn("Firestore projects snapshot read denied (check security rules):", err.message);
     });
 
     onSnapshot(collection(db, "submissions"), (snap) => {
       setStats(prev => ({ ...prev, submissions: snap.size }));
+    }, (err) => {
+      console.warn("Firestore submissions snapshot read denied (check security rules):", err.message);
     });
 
     fetch("/api/admin/config").then(r => r.json()).then(setConfig);
@@ -1302,28 +1365,41 @@ export default function SuperAdmin() {
             {/* List templates */}
             <div className="grid grid-cols-3 gap-6">
               {/* Default presets */}
-              {[
-                { name: "Product Update", desc: "For detailing software iterations & features" },
-                { name: "Feature Launch", desc: "Sleek card layout announcing key feature" },
-                { name: "Weekly Digest", desc: "Consolidated updates list for readers" },
-                { name: "Security Advisory", desc: "High alert red notice styled advisory" },
-              ].map((p, i) => (
+              {PRESET_TEMPLATES.map((p, i) => (
                 <div key={i} className="p-6 rounded-3xl bg-slate-950/40 border border-white/5 relative overflow-hidden group">
                   <span className="absolute top-4 right-4 text-[8px] font-black uppercase tracking-widest bg-rose-500/10 text-rose-500 px-2 py-0.5 rounded border border-rose-500/20">PRESET</span>
                   <h4 className="text-lg font-black text-white mb-2 italic">{p.name}</h4>
                   <p className="text-slate-500 text-xs font-semibold mb-6">{p.desc}</p>
-                  <button 
-                    onClick={() => {
-                      setCampaignForm((prev: any) => ({
-                        ...prev,
-                        contentHtml: `<h1>${p.name}</h1><p>Hey {{name}},</p><p>We are excited to share this layout content with you...</p>`,
-                      }));
-                      setIsCampaignModalOpen(true);
-                    }}
-                    className="text-xs font-black text-rose-500 hover:underline uppercase tracking-wider flex items-center gap-1"
-                  >
-                    Load into builder <Send size={10} />
-                  </button>
+                  <div className="flex gap-4 items-center">
+                    <button 
+                      onClick={() => {
+                        setCampaignForm((prev: any) => ({
+                          ...prev,
+                          subject: p.subject,
+                          contentHtml: p.contentHtml,
+                        }));
+                        setIsCampaignModalOpen(true);
+                      }}
+                      className="text-xs font-black text-rose-500 hover:underline uppercase tracking-wider flex items-center gap-1"
+                    >
+                      Load into builder <Send size={10} />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setEditingTemplateId(null);
+                        setTemplateForm({
+                          name: `Custom ${p.name}`,
+                          subject: p.subject,
+                          contentHtml: p.contentHtml,
+                          contentJson: "",
+                        });
+                        setIsTemplateModalOpen(true);
+                      }}
+                      className="text-xs font-black text-slate-400 hover:text-white uppercase tracking-wider"
+                    >
+                      Customize
+                    </button>
+                  </div>
                 </div>
               ))}
 
@@ -1914,7 +1990,7 @@ export default function SuperAdmin() {
       {/* --- MODAL: CREATE/EDIT TEMPLATE --- */}
       {isTemplateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-fade-in p-4 text-left">
-          <div className="w-full max-w-2xl bg-slate-950 border border-white/10 rounded-[32px] p-8 shadow-2xl space-y-6 flex flex-col max-h-[90vh]">
+          <div className="w-full max-w-4xl bg-slate-950 border border-white/10 rounded-[32px] p-8 shadow-2xl space-y-6 flex flex-col max-h-[90vh]">
             <h3 className="text-2xl font-black text-white italic uppercase">{editingTemplateId ? "Edit Template" : "Create Template"}</h3>
             <form onSubmit={handleSaveTemplate} className="space-y-4 flex-1 overflow-y-auto pr-1">
               <div className="grid grid-cols-2 gap-4">
@@ -1943,13 +2019,19 @@ export default function SuperAdmin() {
               
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Template Content HTML</label>
-                <textarea
-                  value={templateForm.contentHtml}
-                  onChange={(e) => setTemplateForm({ ...templateForm, contentHtml: e.target.value })}
-                  className="w-full h-64 bg-slate-900 border border-white/5 rounded-xl p-4 text-xs font-mono text-emerald-400 outline-none focus:border-rose-500/30"
-                  placeholder="<h1>Heading</h1><p>Template contents here...</p>"
-                  required
-                />
+                <div className="rounded-xl border border-white/5 bg-slate-950 overflow-hidden text-left">
+                  <TipTapEditor
+                    value={templateForm.contentHtml}
+                    onChange={(html, json) => {
+                      setTemplateForm(prev => ({
+                        ...prev,
+                        contentHtml: html,
+                        contentJson: json
+                      }));
+                    }}
+                    placeholder="Start composing template layout..."
+                  />
+                </div>
               </div>
 
               <div className="flex gap-4 pt-4">

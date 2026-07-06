@@ -12,7 +12,7 @@ import {
   Heart,
   ExternalLink,
 } from "lucide-react";
-import Footer from "@/app/footer";
+import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
