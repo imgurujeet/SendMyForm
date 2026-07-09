@@ -20,12 +20,64 @@ export default function Footer() {
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [msg, setMsg] = useState("");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubmitting(true);
+    setMsg("");
+    try {
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "footer" }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setMsg(data.message);
+        setEmail("");
+      } else {
+        setMsg(data.error || "Subscription request failed.");
+      }
+    } catch (err) {
+      setMsg("Connection error. Please try again.");
+    }
+    setSubmitting(false);
+  };
+
   return (
     <>
       <footer className="border-t border-white/5 px-6 md:px-20 py-12 md:py-16 flex flex-col gap-12">
 
         {/* ── Ko-fi banner — top of footer, high visibility ─────────────────── */}
         <KoFiWidget variant="banner" />
+
+        {/* --- Newsletter Signup Widget --- */}
+        <div className="max-w-md mx-auto w-full p-8 rounded-[32px] bg-slate-950/40 border border-white/5 text-center space-y-4">
+          <p className="text-[10px] font-black text-rose-500 uppercase tracking-[0.2em] italic">Product updates & release logs</p>
+          <h4 className="text-lg font-black text-white uppercase italic tracking-tight">Join the developer newsletter</h4>
+          <form onSubmit={handleSubscribe} className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="developer@example.com"
+              className="flex-1 bg-slate-900 border border-white/5 rounded-xl px-4 py-2.5 text-xs outline-none text-slate-100 font-bold placeholder-slate-600 focus:border-rose-500/30"
+              required
+            />
+            <button
+              type="submit"
+              disabled={submitting}
+              className="bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white font-black uppercase text-[10px] tracking-widest px-5 py-2.5 rounded-xl transition-all"
+            >
+              {submitting ? "Joining..." : "Subscribe"}
+            </button>
+          </form>
+          {msg && <p className="text-[10px] text-rose-500 font-bold uppercase italic mt-1">{msg}</p>}
+        </div>
 
         {/* ── Tagline ───────────────────────────────────────────────────────── */}
         <div className="text-center">

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft, Gift, ShieldAlert, Heart, Activity, DollarSign } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
-import Footer from "@/app/footer";
+import Footer from "@/components/Footer";
 import KoFiWidget from "@/components/KoFiWidget";
 import { Metadata } from "next";
 

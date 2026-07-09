@@ -4,7 +4,7 @@ import { ChevronRight, Terminal, ArrowRight } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import { SeoPageData } from "@/lib/seo-data";
 import CopyCodeButton from "@/components/CopyCodeButton";
-import Footer from "@/app/footer";
+import Footer from "@/components/Footer";
 
 interface SeoPageLayoutProps {
   data: SeoPageData;

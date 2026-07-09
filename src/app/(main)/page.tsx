@@ -4,7 +4,7 @@ import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import { trackCTAClick } from "@/lib/analytics";
 import AdSense from "@/components/AdSense";
-import Footer from "@/app/footer";
+import Footer from "@/components/Footer";
 import {
   Code2,
   ShieldCheck,
